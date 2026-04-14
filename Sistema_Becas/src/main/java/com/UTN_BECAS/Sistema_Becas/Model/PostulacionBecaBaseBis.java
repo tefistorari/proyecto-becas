@@ -1,6 +1,7 @@
 package com.UTN_BECAS.Sistema_Becas.Model;
 
 import com.UTN_BECAS.Sistema_Becas.Enum.CondicionLaboral;
+import com.UTN_BECAS.Sistema_Becas.Enum.Salud;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -33,6 +34,9 @@ public class PostulacionBecaBaseBis {
     @NotBlank(message = "La carrera es obligatoria")
     @Size(max = 150)
     private String carrera;
+
+    @NotNull(message = "La salud debe ser obligatoria")
+    private Salud salud;
 
     @NotNull(message = "Debe indicar si tiene discapacidad")
     private Boolean tieneDiscapacidad;
@@ -94,6 +98,14 @@ public class PostulacionBecaBaseBis {
 
     public String getCarrera() {
         return carrera;
+    }
+
+    public Salud getSalud() {
+        return salud;
+    }
+
+    public void setSalud(Salud salud) {
+        this.salud = salud;
     }
 
     public void setCarrera(String carrera) {
