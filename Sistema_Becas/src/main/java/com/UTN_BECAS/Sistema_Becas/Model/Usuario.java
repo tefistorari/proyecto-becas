@@ -3,6 +3,7 @@ package com.UTN_BECAS.Sistema_Becas.Model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "usuario")
 public class Usuario {
 
     @Id
@@ -18,7 +19,7 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
     @ManyToOne

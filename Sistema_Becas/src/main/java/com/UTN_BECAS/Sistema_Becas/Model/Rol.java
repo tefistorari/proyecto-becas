@@ -3,6 +3,7 @@ package com.UTN_BECAS.Sistema_Becas.Model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "rol")
 public class Rol {
 
     @Id
