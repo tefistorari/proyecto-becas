@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class Datos_Personales {
+@Table(name = "datos_personales")
+public class DatosPersonales {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +45,10 @@ public class Datos_Personales {
     @Column(nullable = false)
     private String provincia;
 
-    public Datos_Personales(){}
+    @Column(nullable = false)
+    private String nacionalidad;
+
+    public DatosPersonales(){}
 
     public Long getId() {
         return id;
@@ -140,5 +144,13 @@ public class Datos_Personales {
 
     public void setProvincia(String provincia) {
         this.provincia = provincia;
+    }
+
+    public String getNacionalidad() {
+        return nacionalidad;
+    }
+
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
     }
 }
