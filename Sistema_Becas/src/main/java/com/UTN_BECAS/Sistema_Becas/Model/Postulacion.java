@@ -1,8 +1,10 @@
 package com.UTN_BECAS.Sistema_Becas.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Enum.EstadoPostulacion;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "postulacion",
@@ -21,10 +23,15 @@ public class Postulacion {
     @JoinColumn(name = "convocatoria_id", nullable = false)
     private Convocatoria convocatoria;
 
+    @Column(nullable = false)
     private LocalDateTime fechaEnvio;
 
     @Column(nullable = false)
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private EstadoPostulacion estado;
+
+    @OneToMany(mappedBy = "postulacion", cascade = CascadeType.ALL)
+    private List<GrupoFamiliar> grupoFamiliar = new ArrayList<>();
 
     public Postulacion(){
     }
@@ -61,13 +68,19 @@ public class Postulacion {
         this.fechaEnvio = fechaEnvio;
     }
 
-    public String getEstado() {
+    public EstadoPostulacion getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoPostulacion estado) {
         this.estado = estado;
     }
 
+    public List<GrupoFamiliar> getGrupoFamiliar() {
+        return grupoFamiliar;
+    }
 
+    public void setGrupoFamiliar(List<GrupoFamiliar> grupoFamiliar) {
+        this.grupoFamiliar = grupoFamiliar;
+    }
 }

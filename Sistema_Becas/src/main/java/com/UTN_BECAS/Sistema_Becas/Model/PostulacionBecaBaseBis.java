@@ -17,10 +17,8 @@ public class PostulacionBecaBaseBis {
 
     @OneToOne
     @JoinColumn(name = "postulacion_id", nullable = false, unique = true)
-    @NotNull(message = "La postulación es obligatoria")
     private Postulacion postulacion;
 
-    @NotNull(message = "El ingreso familiar es obligatorio")
     @PositiveOrZero(message = "El ingreso familiar no puede ser negativo")
     private Double ingresoFamiliar;
 
@@ -28,30 +26,23 @@ public class PostulacionBecaBaseBis {
     @Size(max = 500)
     private String tipoVivienda;
 
-    @NotBlank(message = "La condicion laboral es obligatora")
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CondicionLaboral condicionLaboral;
 
     @NotBlank(message = "La carrera es obligatoria")
     @Size(max = 150)
     private String carrera;
 
-    @NotNull(message = "La salud debe ser obligatoria")
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Salud salud;
 
-    @NotNull(message = "Debe indicar si tiene discapacidad")
     private Boolean tieneDiscapacidad;
 
     @Size(max = 4000, message = "El detalle de discapacidad no puede superar los 4000 caracteres")
     @Column(name = "detalle_discapacidad", length = 4000)
     private String detalleDiscapacidad;
-
-    @AssertTrue(message = "Debe completar el detalle discapacidad si indicó que tiene una discapacidad")
-    public boolean isDetalleValido () {
-        if(Boolean.TRUE.equals(tieneDiscapacidad)) {
-            return detalleDiscapacidad != null & !detalleDiscapacidad.isBlank();
-        }
-        return true;
-    }
 
     public PostulacionBecaBaseBis() {
     }
