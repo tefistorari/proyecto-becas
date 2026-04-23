@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Enum.EstadoConvocatoria;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -25,8 +26,9 @@ public class Convocatoria {
     @Column(name = "fecha_cierre", nullable = false)
     private LocalDateTime fechaCierre;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String estado;
+    private EstadoConvocatoria estado;
 
     public Convocatoria(){
     }
@@ -71,11 +73,11 @@ public class Convocatoria {
         this.fechaCierre = fechaCierre;
     }
 
-    public String getEstado() {
+    public EstadoConvocatoria getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoConvocatoria estado) {
         this.estado = estado;
     }
 }
