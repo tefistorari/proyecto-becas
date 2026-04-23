@@ -26,6 +26,9 @@ public class Usuario {
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
 
+    public Usuario() {
+    }
+
     public Long getId() {
         return id;
     }

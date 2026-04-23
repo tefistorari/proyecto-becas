@@ -32,6 +32,9 @@ public class GrupoFamiliar {
     @JoinColumn(name = "postulacion_id", nullable = false)
     private Postulacion postulacion;
 
+    public GrupoFamiliar() {
+    }
+
     public Long getId() {
         return id;
     }
