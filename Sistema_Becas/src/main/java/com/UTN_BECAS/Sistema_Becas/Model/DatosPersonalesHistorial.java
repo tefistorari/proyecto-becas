@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Enum.Genero;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -17,13 +18,19 @@ public class DatosPersonalesHistorial {
     private Postulacion postulacion;
 
     @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false)
+    private String apellido;
+
+    @Column(nullable = false)
     private String dni;
 
     @Column(nullable = false)
     private LocalDate fechaNacimiento;
 
     @Column(nullable = false)
-    private String genero;
+    private Genero genero;
 
     @Column(nullable = false)
     private String celular;
@@ -83,11 +90,27 @@ public class DatosPersonalesHistorial {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getGenero() {
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public Genero getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
 
