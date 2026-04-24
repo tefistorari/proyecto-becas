@@ -3,6 +3,8 @@ package com.UTN_BECAS.Sistema_Becas.Model;
 import com.UTN_BECAS.Sistema_Becas.Enum.CategoriaBinid;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "postulacion_beca_binid")
 public class PostulacionBecaBinid {
@@ -10,6 +12,10 @@ public class PostulacionBecaBinid {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "postulacion_id", nullable = false, unique = true)
+    private Postulacion postulacion;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -27,20 +33,20 @@ public class PostulacionBecaBinid {
     /*Si es estudiante*/
     private Integer materiasCursadas;
 
-    @Column(nullable = false)
-    private Double promedioConAplazos;
+    @Column(nullable = false, precision = 5, scale = 2)
+    private BigDecimal promedioConAplazos;
 
-    private Double promedioSinAplazos;
+    @Column(precision = 5, scale = 2)
+    private BigDecimal promedioSinAplazos;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String pregunta;
 
     @Column(nullable = false)
     private String nombreDirectorProyecto;
 
-    @OneToOne
-    @JoinColumn(name = "postulacion_id", nullable = false, unique = true)
-    private Postulacion postulacion;
+    @Column(nullable = false)
+    private String apellidoDirectorProyecto;
 
     public PostulacionBecaBinid() {
     }
@@ -93,19 +99,19 @@ public class PostulacionBecaBinid {
         this.materiasCursadas = materiasCursadas;
     }
 
-    public Double getPromedioConAplazos() {
+    public BigDecimal getPromedioConAplazos() {
         return promedioConAplazos;
     }
 
-    public void setPromedioConAplazos(Double promedioConAplazos) {
+    public void setPromedioConAplazos(BigDecimal promedioConAplazos) {
         this.promedioConAplazos = promedioConAplazos;
     }
 
-    public Double getPromedioSinAplazos() {
+    public BigDecimal getPromedioSinAplazos() {
         return promedioSinAplazos;
     }
 
-    public void setPromedioSinAplazos(Double promedioSinAplazos) {
+    public void setPromedioSinAplazos(BigDecimal promedioSinAplazos) {
         this.promedioSinAplazos = promedioSinAplazos;
     }
 
@@ -123,6 +129,14 @@ public class PostulacionBecaBinid {
 
     public void setNombreDirectorProyecto(String nombreDirectorProyecto) {
         this.nombreDirectorProyecto = nombreDirectorProyecto;
+    }
+
+    public String getApellidoDirectorProyecto() {
+        return apellidoDirectorProyecto;
+    }
+
+    public void setApellidoDirectorProyecto(String apellidoDirectorProyecto) {
+        this.apellidoDirectorProyecto = apellidoDirectorProyecto;
     }
 
     public Postulacion getPostulacion() {

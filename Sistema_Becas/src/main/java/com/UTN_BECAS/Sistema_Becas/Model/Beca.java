@@ -13,14 +13,15 @@ public class Beca {
     @Column(nullable = false)
     private String nombre;
 
+    @Column(columnDefinition = "TEXT")
     private String descripcion;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_beca", nullable = false)
     private TipoBeca tipoBeca;
 
-    @Column(name = "requiere_ingenieria")
-    private Boolean requiereIngenieria;
+    @Column(name = "requiere_ingenieria", nullable = false)
+    private boolean requiereIngenieria;
 
     public Beca(){
     }
@@ -57,11 +58,11 @@ public class Beca {
         this.tipoBeca = tipoBeca;
     }
 
-    public Boolean getRequiereIngenieria() {
+    public boolean getRequiereIngenieria() {
         return requiereIngenieria;
     }
 
-    public void setRequiereIngenieria(Boolean requiereIngenieria) {
+    public void setRequiereIngenieria(boolean requiereIngenieria) {
         this.requiereIngenieria = requiereIngenieria;
     }
 

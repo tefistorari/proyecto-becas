@@ -29,6 +29,7 @@ public class DatosPersonalesHistorial {
     @Column(nullable = false)
     private LocalDate fechaNacimiento;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Genero genero;
 
@@ -74,22 +75,6 @@ public class DatosPersonalesHistorial {
         this.postulacion = postulacion;
     }
 
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
-    }
-
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -104,6 +89,22 @@ public class DatosPersonalesHistorial {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public Genero getGenero() {

@@ -3,9 +3,9 @@ package com.UTN_BECAS.Sistema_Becas.Model;
 import com.UTN_BECAS.Sistema_Becas.Enum.CondicionLaboral;
 import com.UTN_BECAS.Sistema_Becas.Enum.Salud;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
-import java.awt.*;
+import java.math.BigDecimal;
+
 
 @Entity
 @Table(name = "postulacion_beca_base_bis")
@@ -19,29 +19,27 @@ public class PostulacionBecaBaseBis {
     @JoinColumn(name = "postulacion_id", nullable = false, unique = true)
     private Postulacion postulacion;
 
-    @PositiveOrZero(message = "El ingreso familiar no puede ser negativo")
-    private Double ingresoFamiliar;
+    @Column(name = "ingreso_familiar", precision = 10, scale = 2)
+    private BigDecimal ingresoFamiliar;
 
-    @NotBlank(message = "El tipo de vivienda es obligatorio")
-    @Size(max = 500)
+    @Column(name = "tipo_vivienda", nullable = false, length = 500)
     private String tipoVivienda;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "condicion_laboral", nullable = false)
     private CondicionLaboral condicionLaboral;
 
-    @NotBlank(message = "La carrera es obligatoria")
-    @Size(max = 150)
+    @Column(nullable = false, length = 150)
     private String carrera;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Salud salud;
 
-    private Boolean tieneDiscapacidad;
+    @Column(name = "tiene_discapacidad", nullable = false)
+    private boolean tieneDiscapacidad;
 
-    @Size(max = 4000, message = "El detalle de discapacidad no puede superar los 4000 caracteres")
-    @Column(name = "detalle_discapacidad", length = 4000)
+    @Column(name = "detalle_discapacidad", columnDefinition = "TEXT")
     private String detalleDiscapacidad;
 
     public PostulacionBecaBaseBis() {
@@ -63,11 +61,11 @@ public class PostulacionBecaBaseBis {
         this.postulacion = postulacion;
     }
 
-    public Double getIngresoFamiliar() {
+    public BigDecimal getIngresoFamiliar() {
         return ingresoFamiliar;
     }
 
-    public void setIngresoFamiliar(Double ingresoFamiliar) {
+    public void setIngresoFamiliar(BigDecimal ingresoFamiliar) {
         this.ingresoFamiliar = ingresoFamiliar;
     }
 
@@ -91,6 +89,10 @@ public class PostulacionBecaBaseBis {
         return carrera;
     }
 
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
+    }
+
     public Salud getSalud() {
         return salud;
     }
@@ -99,15 +101,11 @@ public class PostulacionBecaBaseBis {
         this.salud = salud;
     }
 
-    public void setCarrera(String carrera) {
-        this.carrera = carrera;
-    }
-
-    public Boolean getTieneDiscapacidad() {
+    public boolean getTieneDiscapacidad() {
         return tieneDiscapacidad;
     }
 
-    public void setTieneDiscapacidad(Boolean tieneDiscapacidad) {
+    public void setTieneDiscapacidad(boolean tieneDiscapacidad) {
         this.tieneDiscapacidad = tieneDiscapacidad;
     }
 

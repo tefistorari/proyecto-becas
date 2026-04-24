@@ -1,10 +1,17 @@
 package com.UTN_BECAS.Sistema_Becas.Model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +32,12 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private DatosPersonales datosPersonales;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Postulacion> postulaciones = new ArrayList<>();
 
     public Usuario() {
     }
@@ -75,5 +88,56 @@ public class Usuario {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public DatosPersonales getDatosPersonales() {
+        return datosPersonales;
+    }
+
+    public void setDatosPersonales(DatosPersonales datosPersonales) {
+        this.datosPersonales = datosPersonales;
+    }
+
+    public List<Postulacion> getPostulaciones() {
+        return postulaciones;
+    }
+
+    public void setPostulaciones(List<Postulacion> postulaciones) {
+        this.postulaciones = postulaciones;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + rol.getNombre()));
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 }

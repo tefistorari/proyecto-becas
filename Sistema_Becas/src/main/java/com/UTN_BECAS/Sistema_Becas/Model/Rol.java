@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Enum.NombreRol;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,8 +11,9 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private String name;
+    private NombreRol nombre;
 
     public Rol (){}
 
@@ -23,11 +25,11 @@ public class Rol {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public NombreRol getNombre() {
+        return nombre;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(NombreRol nombre) {
+        this.nombre = nombre;
     }
 }

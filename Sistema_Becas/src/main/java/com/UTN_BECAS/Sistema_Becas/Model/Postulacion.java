@@ -23,15 +23,32 @@ public class Postulacion {
     @JoinColumn(name = "convocatoria_id", nullable = false)
     private Convocatoria convocatoria;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime fechaEnvio;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EstadoPostulacion estado;
 
-    @OneToMany(mappedBy = "postulacion", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "postulacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MateriasACursar> materiasACursar = new ArrayList<>();
+
+    @OneToMany(mappedBy = "postulacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MateriasARendir> materiasARendir = new ArrayList<>();
+
+    @OneToMany(mappedBy = "postulacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Archivo> archivos = new ArrayList<>();
+
+    @OneToOne(mappedBy = "postulacion", cascade = CascadeType.ALL)
+    private DatosPersonalesHistorial datosPersonalesHistorial;
+
+    @OneToMany(mappedBy = "postulacion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GrupoFamiliar> grupoFamiliar = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate(){
+        this.fechaEnvio = LocalDateTime.now();
+    }
 
     public Postulacion(){
     }
@@ -78,6 +95,38 @@ public class Postulacion {
 
     public List<GrupoFamiliar> getGrupoFamiliar() {
         return grupoFamiliar;
+    }
+
+    public List<MateriasACursar> getMateriasACursar() {
+        return materiasACursar;
+    }
+
+    public void setMateriasACursar(List<MateriasACursar> materiasACursar) {
+        this.materiasACursar = materiasACursar;
+    }
+
+    public List<MateriasARendir> getMateriasARendir() {
+        return materiasARendir;
+    }
+
+    public void setMateriasARendir(List<MateriasARendir> materiasARendir) {
+        this.materiasARendir = materiasARendir;
+    }
+
+    public List<Archivo> getArchivos() {
+        return archivos;
+    }
+
+    public void setArchivos(List<Archivo> archivos) {
+        this.archivos = archivos;
+    }
+
+    public DatosPersonalesHistorial getDatosPersonalesHistorial() {
+        return datosPersonalesHistorial;
+    }
+
+    public void setDatosPersonalesHistorial(DatosPersonalesHistorial datosPersonalesHistorial) {
+        this.datosPersonalesHistorial = datosPersonalesHistorial;
     }
 
     public void setGrupoFamiliar(List<GrupoFamiliar> grupoFamiliar) {

@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Enum.Genero;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,8 +23,9 @@ public class DatosPersonales {
     @Column(nullable = false)
     private LocalDate fechaNacimiento;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String genero;
+    private Genero genero;
 
     @Column(nullable = false)
     private String celular;
@@ -82,11 +84,11 @@ public class DatosPersonales {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
 

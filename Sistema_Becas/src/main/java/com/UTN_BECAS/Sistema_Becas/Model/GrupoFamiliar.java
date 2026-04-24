@@ -1,6 +1,9 @@
 package com.UTN_BECAS.Sistema_Becas.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Enum.Parentesco;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "grupo_familiar")
@@ -19,14 +22,15 @@ public class GrupoFamiliar {
     @Column(nullable = false)
     private String dni;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String parentesco;
+    private Parentesco parentesco;
 
     @Column(nullable = false)
     private String ocupacion;
 
-    @Column(nullable = false)
-    private Double ingreso;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal ingreso;
 
     @ManyToOne
     @JoinColumn(name = "postulacion_id", nullable = false)
@@ -67,11 +71,11 @@ public class GrupoFamiliar {
         this.dni = dni;
     }
 
-    public String getParentesco() {
+    public Parentesco getParentesco() {
         return parentesco;
     }
 
-    public void setParentesco(String parentesco) {
+    public void setParentesco(Parentesco parentesco) {
         this.parentesco = parentesco;
     }
 
@@ -83,11 +87,11 @@ public class GrupoFamiliar {
         this.ocupacion = ocupacion;
     }
 
-    public Double getIngreso() {
+    public BigDecimal getIngreso() {
         return ingreso;
     }
 
-    public void setIngreso(Double ingreso) {
+    public void setIngreso(BigDecimal ingreso) {
         this.ingreso = ingreso;
     }
 
