@@ -26,6 +26,12 @@ public class Beca {
     public Beca(){
     }
 
+    public Beca(String nombre, TipoBeca tipoBeca, boolean requiereIngenieria) {
+        this.nombre = nombre;
+        this.tipoBeca = tipoBeca;
+        this.requiereIngenieria = requiereIngenieria;
+    }
+
     public Long getId() {
         return id;
     }

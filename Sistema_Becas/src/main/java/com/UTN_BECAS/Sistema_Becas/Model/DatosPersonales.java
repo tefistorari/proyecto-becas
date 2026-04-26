@@ -52,6 +52,20 @@ public class DatosPersonales {
 
     public DatosPersonales(){}
 
+    public DatosPersonales(Usuario usuario, String dni, LocalDate fechaNacimiento, Genero genero, String celular, String domicilioCalle, Integer domicilioNumero, String codigoPostal, String localidad, String provincia, String nacionalidad) {
+        this.usuario = usuario;
+        this.dni = dni;
+        this.fechaNacimiento = fechaNacimiento;
+        this.genero = genero;
+        this.celular = celular;
+        this.domicilioCalle = domicilioCalle;
+        this.domicilioNumero = domicilioNumero;
+        this.codigoPostal = codigoPostal;
+        this.localidad = localidad;
+        this.provincia = provincia;
+        this.nacionalidad = nacionalidad;
+    }
+
     public Long getId() {
         return id;
     }

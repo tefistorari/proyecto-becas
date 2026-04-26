@@ -33,6 +33,14 @@ public class MateriasARendir {
     public MateriasARendir(){
     }
 
+    public MateriasARendir(Postulacion postulacion, String nombreMateria, NivelMateria nivelMateria, MesMesa mesMesa, Integer anioMesa) {
+        this.postulacion = postulacion;
+        this.nombreMateria = nombreMateria;
+        this.nivelMateria = nivelMateria;
+        this.mesMesa = mesMesa;
+        this.anioMesa = anioMesa;
+    }
+
     public Long getId() {
         return id;
     }

@@ -17,6 +17,10 @@ public class Rol {
 
     public Rol (){}
 
+    public Rol(NombreRol nombre) {
+        this.nombre = nombre;
+    }
+
     public Long getId() {
         return id;
     }

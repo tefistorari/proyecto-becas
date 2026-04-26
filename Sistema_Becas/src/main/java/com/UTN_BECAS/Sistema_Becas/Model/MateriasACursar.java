@@ -33,6 +33,14 @@ public class MateriasACursar {
     public MateriasACursar(){
     }
 
+    public MateriasACursar(Postulacion postulacion, String nombreMateria, NivelMateria nivelMateria, RegimenMateria regimenMateria, Integer anioMateria) {
+        this.postulacion = postulacion;
+        this.nombreMateria = nombreMateria;
+        this.nivelMateria = nivelMateria;
+        this.regimenMateria = regimenMateria;
+        this.anioMateria = anioMateria;
+    }
+
     public Long getId() {
         return id;
     }
