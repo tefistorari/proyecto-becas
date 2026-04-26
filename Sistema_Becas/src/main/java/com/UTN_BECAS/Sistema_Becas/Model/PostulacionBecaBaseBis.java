@@ -45,6 +45,15 @@ public class PostulacionBecaBaseBis {
     public PostulacionBecaBaseBis() {
     }
 
+    public PostulacionBecaBaseBis(Postulacion postulacion, String tipoVivienda, CondicionLaboral condicionLaboral, String carrera, Salud salud, boolean tieneDiscapacidad) {
+        this.postulacion = postulacion;
+        this.tipoVivienda = tipoVivienda;
+        this.condicionLaboral = condicionLaboral;
+        this.carrera = carrera;
+        this.salud = salud;
+        this.tieneDiscapacidad = tieneDiscapacidad;
+    }
+
     public Long getId() {
         return id;
     }

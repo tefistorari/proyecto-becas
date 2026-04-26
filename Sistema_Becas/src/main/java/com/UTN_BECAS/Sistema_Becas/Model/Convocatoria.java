@@ -36,6 +36,14 @@ public class Convocatoria {
     public Convocatoria(){
     }
 
+    public Convocatoria(Beca beca, Integer anio, LocalDateTime fechaApertura, LocalDateTime fechaCierre, EstadoConvocatoria estado) {
+        this.beca = beca;
+        this.anio = anio;
+        this.fechaApertura = fechaApertura;
+        this.fechaCierre = fechaCierre;
+        this.estado = estado;
+    }
+
     public Long getId() {
         return id;
     }

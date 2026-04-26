@@ -39,6 +39,16 @@ public class GrupoFamiliar {
     public GrupoFamiliar() {
     }
 
+    public GrupoFamiliar(String nombre, String apellido, String dni, Parentesco parentesco, String ocupacion, BigDecimal ingreso, Postulacion postulacion) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.parentesco = parentesco;
+        this.ocupacion = ocupacion;
+        this.ingreso = ingreso;
+        this.postulacion = postulacion;
+    }
+
     public Long getId() {
         return id;
     }

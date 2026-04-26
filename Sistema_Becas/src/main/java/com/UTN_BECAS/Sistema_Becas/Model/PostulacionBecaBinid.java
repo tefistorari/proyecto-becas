@@ -51,6 +51,17 @@ public class PostulacionBecaBinid {
     public PostulacionBecaBinid() {
     }
 
+    public PostulacionBecaBinid(Postulacion postulacion, CategoriaBinid categoriaBinid, String carreraGrado, Integer anioIngreso, BigDecimal promedioConAplazos, String pregunta, String nombreDirectorProyecto, String apellidoDirectorProyecto) {
+        this.postulacion = postulacion;
+        this.categoriaBinid = categoriaBinid;
+        this.carreraGrado = carreraGrado;
+        this.anioIngreso = anioIngreso;
+        this.promedioConAplazos = promedioConAplazos;
+        this.pregunta = pregunta;
+        this.nombreDirectorProyecto = nombreDirectorProyecto;
+        this.apellidoDirectorProyecto = apellidoDirectorProyecto;
+    }
+
     public Long getId() {
         return id;
     }

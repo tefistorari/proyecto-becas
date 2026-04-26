@@ -53,6 +53,12 @@ public class Postulacion {
     public Postulacion(){
     }
 
+    public Postulacion(Usuario usuario, Convocatoria convocatoria, EstadoPostulacion estado) {
+        this.usuario = usuario;
+        this.convocatoria = convocatoria;
+        this.estado = estado;
+    }
+
     public Long getId() {
         return id;
     }

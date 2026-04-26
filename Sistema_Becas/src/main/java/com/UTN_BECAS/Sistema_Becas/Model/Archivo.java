@@ -39,6 +39,13 @@ public class Archivo {
 
     }
 
+    public Archivo(Postulacion postulacion, TipoArchivo tipoArchivo, String nombreOriginal, String ruta) {
+        this.postulacion = postulacion;
+        this.tipoArchivo = tipoArchivo;
+        this.nombreOriginal = nombreOriginal;
+        this.ruta = ruta;
+    }
+
     public Long getId() {
         return id;
     }

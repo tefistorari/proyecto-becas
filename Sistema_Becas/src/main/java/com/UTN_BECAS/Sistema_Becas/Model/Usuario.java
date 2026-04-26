@@ -42,6 +42,14 @@ public class Usuario implements UserDetails {
     public Usuario() {
     }
 
+    public Usuario(String nombre, String apellido, String email, String passwordHash, Rol rol) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.rol = rol;
+    }
+
     public Long getId() {
         return id;
     }

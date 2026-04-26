@@ -59,6 +59,22 @@ public class DatosPersonalesHistorial {
     public DatosPersonalesHistorial() {
     }
 
+    public DatosPersonalesHistorial(Postulacion postulacion, String nombre, String apellido, String dni, LocalDate fechaNacimiento, Genero genero, String celular, String domicilioCalle, Integer domicilioNumero, String codigoPostal, String localidad, String provincia, String nacionalidad) {
+        this.postulacion = postulacion;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.fechaNacimiento = fechaNacimiento;
+        this.genero = genero;
+        this.celular = celular;
+        this.domicilioCalle = domicilioCalle;
+        this.domicilioNumero = domicilioNumero;
+        this.codigoPostal = codigoPostal;
+        this.localidad = localidad;
+        this.provincia = provincia;
+        this.nacionalidad = nacionalidad;
+    }
+
     public Long getId() {
         return id;
     }
