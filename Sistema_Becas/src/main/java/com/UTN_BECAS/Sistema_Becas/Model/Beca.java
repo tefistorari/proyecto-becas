@@ -64,7 +64,7 @@ public class Beca {
         this.tipoBeca = tipoBeca;
     }
 
-    public boolean getRequiereIngenieria() {
+    public boolean isRequiereIngenieria() {
         return requiereIngenieria;
     }
 
