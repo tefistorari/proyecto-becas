@@ -6,7 +6,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "grupo_familiar")
+@Table(name = "grupo_familiar",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"postulacion_id", "dni"}))
 public class GrupoFamiliar {
 
     @Id
