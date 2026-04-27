@@ -5,7 +5,8 @@ import com.UTN_BECAS.Sistema_Becas.Enum.NivelMateria;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "materias_a_rendir")
+@Table(name = "materias_a_rendir",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"postulacion_id", "nombre_materia"}))
 public class MateriasARendir {
 
     @Id

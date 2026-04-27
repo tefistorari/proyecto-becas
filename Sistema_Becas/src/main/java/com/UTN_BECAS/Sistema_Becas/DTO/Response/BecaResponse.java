@@ -1,35 +1,17 @@
-package com.UTN_BECAS.Sistema_Becas.Model;
+package com.UTN_BECAS.Sistema_Becas.DTO.Response;
 
 import com.UTN_BECAS.Sistema_Becas.Enum.TipoBeca;
-import jakarta.persistence.*;
 
-@Entity
-@Table(name = "beca")
-public class Beca {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BecaResponse {
+
     private Long id;
-
-    @Column(nullable = false, unique = true)
     private String nombre;
-
-    @Column(columnDefinition = "TEXT")
     private String descripcion;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_beca", nullable = false)
     private TipoBeca tipoBeca;
-
-    @Column(name = "requiere_ingenieria", nullable = false)
     private boolean requiereIngenieria;
 
-    public Beca(){
-    }
+    public BecaResponse(){
 
-    public Beca(String nombre, TipoBeca tipoBeca, boolean requiereIngenieria) {
-        this.nombre = nombre;
-        this.tipoBeca = tipoBeca;
-        this.requiereIngenieria = requiereIngenieria;
     }
 
     public Long getId() {
@@ -64,13 +46,11 @@ public class Beca {
         this.tipoBeca = tipoBeca;
     }
 
-    public boolean getRequiereIngenieria() {
+    public boolean isRequiereIngenieria() {
         return requiereIngenieria;
     }
 
     public void setRequiereIngenieria(boolean requiereIngenieria) {
         this.requiereIngenieria = requiereIngenieria;
     }
-
-
 }

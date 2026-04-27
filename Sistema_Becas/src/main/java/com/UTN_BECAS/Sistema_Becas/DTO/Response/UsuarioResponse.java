@@ -1,23 +1,23 @@
 package com.UTN_BECAS.Sistema_Becas.DTO.Response;
 
-public class AuthResponse {
+public class UsuarioResponse {
 
-    private String token;
+    private Long id;
     private String nombre;
     private String apellido;
     private String email;
     private String rol;
 
-    public AuthResponse(){
+    public UsuarioResponse(){
 
     }
 
-    public String getToken() {
-        return token;
+    public Long getId() {
+        return id;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
