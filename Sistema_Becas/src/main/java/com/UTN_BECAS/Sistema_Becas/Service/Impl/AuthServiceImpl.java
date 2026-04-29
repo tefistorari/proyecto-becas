@@ -8,8 +8,11 @@ import com.UTN_BECAS.Sistema_Becas.Model.Rol;
 import com.UTN_BECAS.Sistema_Becas.Model.Usuario;
 import com.UTN_BECAS.Sistema_Becas.Repository.RolRepository;
 import com.UTN_BECAS.Sistema_Becas.Repository.UsuarioRepository;
+import com.UTN_BECAS.Sistema_Becas.Security.JwtUtil;
 import com.UTN_BECAS.Sistema_Becas.Service.Interface.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
     public AuthResponse register(RegisterRequest request){
@@ -55,6 +64,29 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(LoginRequest request){
-        return null;
+        //Verifica credenciales
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        //Busca el usuario
+        Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        //Genera el token JWT
+        String token = jwtUtil.generateToken(usuario.getEmail());
+
+        //Arma la respuesta
+        AuthResponse response = new AuthResponse();
+        response.setToken(token);
+        response.setNombre(usuario.getNombre());
+        response.setApellido(usuario.getApellido());
+        response.setEmail(usuario.getEmail());
+        response.setRol(usuario.getRol().getNombre().name());
+
+        return response;
     }
 }
