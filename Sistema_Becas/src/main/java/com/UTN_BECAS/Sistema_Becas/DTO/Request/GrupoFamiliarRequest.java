@@ -20,6 +20,9 @@ public class GrupoFamiliarRequest {
     @NotNull(message = "El parentesco es obligatorio")
     private Parentesco parentesco;
 
+    @NotNull(message = "La ocupacion es obligatoria")
+    private String ocupacion;
+
     @NotBlank(message = "El ingreso es obligatorio")
     private BigDecimal ingreso;
 
@@ -56,6 +59,14 @@ public class GrupoFamiliarRequest {
 
     public void setParentesco(Parentesco parentesco) {
         this.parentesco = parentesco;
+    }
+
+    public String getOcupacion() {
+        return ocupacion;
+    }
+
+    public void setOcupacion(String ocupacion) {
+        this.ocupacion = ocupacion;
     }
 
     public BigDecimal getIngreso() {

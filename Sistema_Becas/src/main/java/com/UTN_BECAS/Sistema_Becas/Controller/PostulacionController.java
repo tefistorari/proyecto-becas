@@ -1,8 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Controller;
 
-import com.UTN_BECAS.Sistema_Becas.DTO.Request.PostulacionBecaBaseBisRequest;
-import com.UTN_BECAS.Sistema_Becas.DTO.Request.PostulacionBecaBinidRequest;
-import com.UTN_BECAS.Sistema_Becas.DTO.Request.PostulacionRequest;
+import com.UTN_BECAS.Sistema_Becas.DTO.Request.*;
 import com.UTN_BECAS.Sistema_Becas.DTO.Response.PostulacionResponse;
 import com.UTN_BECAS.Sistema_Becas.Enum.EstadoPostulacion;
 import com.UTN_BECAS.Sistema_Becas.Model.Usuario;
@@ -24,29 +22,48 @@ public class PostulacionController {
     @Autowired
     private PostulacionService postulacionService;
 
-    @PreAuthorize("hasRole('ALUMNO')")
-    @PostMapping
-    public ResponseEntity<PostulacionResponse> crear(
+//    @PreAuthorize("hasRole('ALUMNO')")
+//    @PostMapping
+//    public ResponseEntity<PostulacionResponse> crear(
+//            @AuthenticationPrincipal UserDetails userDetails,
+//            @Valid @RequestBody PostulacionRequest request) {
+//        Long usuarioId = ((Usuario) userDetails).getId();
+//        return ResponseEntity.ok(postulacionService.crear(usuarioId, request));
+//    }
+//
+//    @PreAuthorize("hasRole('ALUMNO')")
+//    @PostMapping("/{postulacionId}/base-bis")
+//    public ResponseEntity<PostulacionResponse> completarBaseBis(
+//            @PathVariable Long postulacionId,
+//            @Valid @RequestBody PostulacionBecaBaseBisRequest request) {
+//        return ResponseEntity.ok(postulacionService.completarBaseBis(postulacionId, request));
+//    }
+//
+//    @PreAuthorize("hasRole('ALUMNO')")
+//    @PostMapping("/{postulacionId}/binid")
+//    public ResponseEntity<PostulacionResponse> completarBinid(
+//            @PathVariable Long postulacionId,
+//            @Valid @RequestBody PostulacionBecaBinidRequest request) {
+//        return ResponseEntity.ok(postulacionService.completarBinid(postulacionId, request));
+//    }
+
+    @PreAuthorize("hasRole('ALUMNO")
+    @PostMapping("/base-bis")
+    public ResponseEntity<PostulacionResponse> postularBaseBis(
             @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody PostulacionRequest request) {
+            @Valid @RequestBody PostulacionBaseBisUnificadoRequest request
+            ) {
         Long usuarioId = ((Usuario) userDetails).getId();
-        return ResponseEntity.ok(postulacionService.crear(usuarioId, request));
+        return ResponseEntity.ok(postulacionService.postularBaseBis(usuarioId,request));
     }
 
     @PreAuthorize("hasRole('ALUMNO')")
-    @PostMapping("/{postulacionId}/base-bis")
-    public ResponseEntity<PostulacionResponse> completarBaseBis(
-            @PathVariable Long postulacionId,
-            @Valid @RequestBody PostulacionBecaBaseBisRequest request) {
-        return ResponseEntity.ok(postulacionService.completarBaseBis(postulacionId, request));
-    }
-
-    @PreAuthorize("hasRole('ALUMNO')")
-    @PostMapping("/{postulacionId}/binid")
-    public ResponseEntity<PostulacionResponse> completarBinid(
-            @PathVariable Long postulacionId,
-            @Valid @RequestBody PostulacionBecaBinidRequest request) {
-        return ResponseEntity.ok(postulacionService.completarBinid(postulacionId, request));
+    @PostMapping("/binid")
+    public ResponseEntity<PostulacionResponse> postularBinid(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody PostulacionBinidUnificadoRequest request) {
+        Long usuarioId = ((Usuario) userDetails).getId();
+        return ResponseEntity.ok(postulacionService.postularBinid(usuarioId, request));
     }
 
     @PreAuthorize("hasRole('ALUMNO')")
