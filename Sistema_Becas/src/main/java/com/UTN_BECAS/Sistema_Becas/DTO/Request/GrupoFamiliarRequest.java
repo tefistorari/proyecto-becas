@@ -20,10 +20,10 @@ public class GrupoFamiliarRequest {
     @NotNull(message = "El parentesco es obligatorio")
     private Parentesco parentesco;
 
-    @NotNull(message = "La ocupacion es obligatoria")
+    @NotBlank(message = "La ocupacion es obligatoria")
     private String ocupacion;
 
-    @NotBlank(message = "El ingreso es obligatorio")
+    @NotNull(message = "El ingreso es obligatorio")
     private BigDecimal ingreso;
 
     public GrupoFamiliarRequest() {

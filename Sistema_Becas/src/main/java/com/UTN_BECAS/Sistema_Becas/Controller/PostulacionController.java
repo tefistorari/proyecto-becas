@@ -47,7 +47,7 @@ public class PostulacionController {
 //        return ResponseEntity.ok(postulacionService.completarBinid(postulacionId, request));
 //    }
 
-    @PreAuthorize("hasRole('ALUMNO")
+    @PreAuthorize("hasRole('ALUMNO')")
     @PostMapping("/base-bis")
     public ResponseEntity<PostulacionResponse> postularBaseBis(
             @AuthenticationPrincipal UserDetails userDetails,
