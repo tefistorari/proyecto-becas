@@ -88,6 +88,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         historial.setProvincia(dp.getProvincia());
         historial.setNacionalidad(dp.getNacionalidad());
         datosPersonalesHistorialRepository.save(historial);
+        postulacion.setDatosPersonalesHistorial(historial);
 
         // 3.Datos especificos BASE-BIS
         PostulacionBecaBaseBis baseBis = new PostulacionBecaBaseBis();
@@ -113,6 +114,7 @@ public class PostulacionServiceImpl implements PostulacionService {
                 familiar.setOcupacion(gf.getOcupacion());
                 familiar.setIngreso(gf.getIngreso());
                 grupoFamiliarRepository.save(familiar);
+                postulacion.getGrupoFamiliar().add(familiar);
             }
         }
 
@@ -126,6 +128,7 @@ public class PostulacionServiceImpl implements PostulacionService {
                 materia.setRegimenMateria(mc.getRegimenMateria());
                 materia.setAnioMateria(mc.getAnioMateria());
                 materiasACursarRepository.save(materia);
+                postulacion.getMateriasACursar().add(materia);
             }
         }
 
@@ -139,6 +142,7 @@ public class PostulacionServiceImpl implements PostulacionService {
                 materia.setMesMesa(mr.getMesMesa());
                 materia.setAnioMesa(mr.getAnioMesa());
                 materiasARendirRepository.save(materia);
+                postulacion.getMateriasARendir().add(materia);
             }
         }
 
@@ -195,6 +199,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         historial.setProvincia(dp.getProvincia());
         historial.setNacionalidad(dp.getNacionalidad());
         datosPersonalesHistorialRepository.save(historial);
+        postulacion.setDatosPersonalesHistorial(historial);
 
         // 3.Datos especificos BINID
         PostulacionBecaBinid binid = new PostulacionBecaBinid();
@@ -284,6 +289,7 @@ public class PostulacionServiceImpl implements PostulacionService {
     }*/
 
     @Override
+    @Transactional(readOnly = true)
     public List<PostulacionResponse> listarPorUsuario(Long usuarioId) {
         return postulacionRepository.findByUsuarioId(usuarioId)
                 .stream()
@@ -292,6 +298,7 @@ public class PostulacionServiceImpl implements PostulacionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PostulacionResponse> listarTodas() {
         return postulacionRepository.findAll()
                 .stream()
@@ -300,6 +307,7 @@ public class PostulacionServiceImpl implements PostulacionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PostulacionResponse> listarPorEstado(EstadoPostulacion estado) {
         return postulacionRepository.findByEstado(estado)
                 .stream()
@@ -308,6 +316,7 @@ public class PostulacionServiceImpl implements PostulacionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PostulacionResponse buscarPorId(Long id) {
         Postulacion postulacion = postulacionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Postulacion no encontrada"));
