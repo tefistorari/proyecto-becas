@@ -125,4 +125,8 @@ public class PostulacionBecaBaseBis {
     public void setDetalleDiscapacidad(String detalleDiscapacidad) {
         this.detalleDiscapacidad = detalleDiscapacidad;
     }
+
+    public boolean isTieneDiscapacidad() {
+        return tieneDiscapacidad;
+    }
 }

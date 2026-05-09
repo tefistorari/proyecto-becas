@@ -12,6 +12,8 @@ public class PostulacionResponse {
     private EstadoPostulacion estado;
     private ConvocatoriaResponse convocatoria;
     private UsuarioResponse usuario;
+    private PostulacionBecaBaseBisResponse becaBaseBis;
+    private PostulacionBecaBinidResponse becaBinid;
     private DatosPersonalesHistorialResponse datosPersonalesHistorial;
     private List<GrupoFamiliarResponse> grupoFamiliar;
     private List<MateriasACursarResponse> materiasACursar;
@@ -72,4 +74,11 @@ public class PostulacionResponse {
 
     public List<MateriasARendirResponse> getMateriasARendir() { return materiasARendir; }
     public void setMateriasARendir(List<MateriasARendirResponse> materiasARendir) { this.materiasARendir = materiasARendir; }
+
+    public PostulacionBecaBaseBisResponse getBecaBaseBis() { return becaBaseBis; }
+    public void setBecaBaseBis(PostulacionBecaBaseBisResponse becaBaseBis) { this.becaBaseBis = becaBaseBis; }
+
+    public PostulacionBecaBinidResponse getBecaBinid() { return becaBinid; }
+    public void setBecaBinid(PostulacionBecaBinidResponse becaBinid) { this.becaBinid = becaBinid; }
+
 }

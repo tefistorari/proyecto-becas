@@ -1,57 +1,23 @@
-package com.UTN_BECAS.Sistema_Becas.DTO.Request;
+package com.UTN_BECAS.Sistema_Becas.DTO.Response;
 
 import com.UTN_BECAS.Sistema_Becas.Enum.CategoriaBinid;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public class PostulacionBinidUnificadoRequest {
+public class PostulacionBecaBinidResponse {
 
-    @NotNull(message = "La convocatoria es obligatoria")
-    private Long convocatoriaId;
-
-    @NotNull(message = "Los datos personales son obligatorios")
-    @Valid
-    private DatosPersonalesRequest datosPersonales;
-
-    @NotNull(message = "La categoria es obligatoria")
     private CategoriaBinid categoriaBinid;
-
-    @NotBlank(message = "La carrera de grado es obligatoria")
     private String carreraGrado;
-
-    @NotNull(message = "El año de ingreso es obligatorio")
     private Integer anioIngreso;
-
-    /* Solo Graduado */
     private Integer anioEgreso;
-
-    /* Solo Estudiante */
     private Integer materiasCursadas;
-
-    @NotNull(message = "El promedio con aplazos es obligatorio")
     private BigDecimal promedioConAplazos;
-
     private BigDecimal promedioSinAplazos;
-
-    @NotBlank(message = "La pregunta es obligatoria")
     private String pregunta;
-
-    @NotBlank(message = "El nombre del director es obligatorio")
     private String nombreDirectorProyecto;
-
-    @NotBlank(message = "El apellido del director es obligatorio")
     private String apellidoDirectorProyecto;
 
-    public PostulacionBinidUnificadoRequest() {}
-
-    public Long getConvocatoriaId() { return convocatoriaId; }
-    public void setConvocatoriaId(Long convocatoriaId) { this.convocatoriaId = convocatoriaId; }
-
-    public DatosPersonalesRequest getDatosPersonales() { return datosPersonales; }
-    public void setDatosPersonales(DatosPersonalesRequest datosPersonales) { this.datosPersonales = datosPersonales; }
+    public PostulacionBecaBinidResponse() {}
 
     public CategoriaBinid getCategoriaBinid() { return categoriaBinid; }
     public void setCategoriaBinid(CategoriaBinid categoriaBinid) { this.categoriaBinid = categoriaBinid; }
@@ -81,5 +47,5 @@ public class PostulacionBinidUnificadoRequest {
     public void setNombreDirectorProyecto(String nombreDirectorProyecto) { this.nombreDirectorProyecto = nombreDirectorProyecto; }
 
     public String getApellidoDirectorProyecto() { return apellidoDirectorProyecto; }
-    public void setApellidoDirectorProyecto(String apellidoDirectorProyecto) { this.apellidoDirectorProyecto = apellidoDirectorProyecto;}
+    public void setApellidoDirectorProyecto(String apellidoDirectorProyecto) { this.apellidoDirectorProyecto = apellidoDirectorProyecto; }
 }

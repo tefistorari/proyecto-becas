@@ -146,7 +146,7 @@ public class PostulacionServiceImpl implements PostulacionService {
             }
         }
 
-        return PostulacionMapper.toResponse(postulacion);
+        return PostulacionMapper.toResponse(postulacion, baseBis);
     }
 
     @Override
@@ -216,7 +216,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         binid.setApellidoDirectorProyecto(request.getApellidoDirectorProyecto());
         binidRepository.save(binid);
 
-        return PostulacionMapper.toResponse(postulacion);
+        return PostulacionMapper.toResponse(postulacion, binid);
     }
     /*@Override
     public PostulacionResponse crear(Long usuarioId, PostulacionRequest request) {

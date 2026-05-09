@@ -3,11 +3,48 @@ package com.UTN_BECAS.Sistema_Becas.Mapper;
 import com.UTN_BECAS.Sistema_Becas.DTO.Response.*;
 import com.UTN_BECAS.Sistema_Becas.Model.DatosPersonalesHistorial;
 import com.UTN_BECAS.Sistema_Becas.Model.Postulacion;
+import com.UTN_BECAS.Sistema_Becas.Model.PostulacionBecaBaseBis;
+import com.UTN_BECAS.Sistema_Becas.Model.PostulacionBecaBinid;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PostulacionMapper {
+
+    public static PostulacionResponse toResponse(Postulacion postulacion, PostulacionBecaBaseBis baseBis) {
+        PostulacionResponse response = toResponse(postulacion);
+        if (baseBis != null) {
+            PostulacionBecaBaseBisResponse baseBisResponse = new PostulacionBecaBaseBisResponse();
+            baseBisResponse.setIngresoFamiliar(baseBis.getIngresoFamiliar());
+            baseBisResponse.setTipoVivienda(baseBis.getTipoVivienda());
+            baseBisResponse.setCondicionLaboral(baseBis.getCondicionLaboral());
+            baseBisResponse.setCarrera(baseBis.getCarrera());
+            baseBisResponse.setSalud(baseBis.getSalud());
+            baseBisResponse.setTieneDiscapacidad(baseBis.isTieneDiscapacidad());
+            baseBisResponse.setDetalleDiscapacidad(baseBis.getDetalleDiscapacidad());
+            response.setBecaBaseBis(baseBisResponse);
+        }
+        return response;
+    }
+
+    public static PostulacionResponse toResponse(Postulacion postulacion, PostulacionBecaBinid binid) {
+        PostulacionResponse response = toResponse(postulacion);
+        if (binid != null) {
+            PostulacionBecaBinidResponse binidResponse = new PostulacionBecaBinidResponse();
+            binidResponse.setCategoriaBinid(binid.getCategoriaBinid());
+            binidResponse.setCarreraGrado(binid.getCarreraGrado());
+            binidResponse.setAnioIngreso(binid.getAnioIngreso());
+            binidResponse.setAnioEgreso(binid.getAnioEgreso());
+            binidResponse.setMateriasCursadas(binid.getMateriasCursadas());
+            binidResponse.setPromedioConAplazos(binid.getPromedioConAplazos());
+            binidResponse.setPromedioSinAplazos(binid.getPromedioSinAplazos());
+            binidResponse.setPregunta(binid.getPregunta());
+            binidResponse.setNombreDirectorProyecto(binid.getNombreDirectorProyecto());
+            binidResponse.setApellidoDirectorProyecto(binid.getApellidoDirectorProyecto());
+            response.setBecaBinid(binidResponse);
+        }
+        return response;
+    }
 
     public static PostulacionResponse toResponse(Postulacion postulacion) {
         PostulacionResponse response = new PostulacionResponse();
@@ -94,13 +131,6 @@ public class PostulacionMapper {
         return response;
     }
 
-    /*public static PostulacionResponse toResponse(Postulacion postulacion){
-        PostulacionResponse response = new PostulacionResponse();
-        response.setId(postulacion.getId());
-        response.setFechaEnvio(postulacion.getFechaEnvio());
-        response.setEstado(postulacion.getEstado());
-        response.setConvocatoria(ConvocatoriaMapper.toResponse(postulacion.getConvocatoria()));
-        response.setUsuario(UsuarioMapper.toResponse(postulacion.getUsuario()));
-        return response;
-    }*/
 }
+
+
