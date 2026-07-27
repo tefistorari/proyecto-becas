@@ -1,9 +1,9 @@
 package com.UTN_BECAS.Sistema_Becas.Postulaciones.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Archivos.Model.Archivo;
 import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Model.Convocatoria;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.EstadoPostulacion;
-import com.UTN_BECAS.Sistema_Becas.Archivos.Model.Archivo;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

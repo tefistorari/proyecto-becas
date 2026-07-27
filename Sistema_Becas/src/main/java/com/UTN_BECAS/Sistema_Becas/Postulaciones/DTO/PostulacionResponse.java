@@ -1,10 +1,15 @@
 package com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO;
 
-import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Auth.DTO.UsuarioResponse;
+import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.EstadoPostulacion;
+import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.DatosPersonalesHistorialResponse;
+import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.GrupoFamiliarResponse;
+import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.MateriasACursarResponse;
+import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.MateriasARendirResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PostulacionResponse {
 
@@ -13,6 +18,12 @@ public class PostulacionResponse {
     private EstadoPostulacion estado;
     private ConvocatoriaResponse convocatoria;
     private UsuarioResponse usuario;
+    private PostulacionBecaBaseBisResponse becaBaseBis;
+    private PostulacionBecaBinidResponse becaBinid;
+    private DatosPersonalesHistorialResponse datosPersonalesHistorial;
+    private List<GrupoFamiliarResponse> grupoFamiliar;
+    private List<MateriasACursarResponse> materiasACursar;
+    private List<MateriasARendirResponse> materiasARendir;
 
     public PostulacionResponse(){
 
@@ -57,4 +68,23 @@ public class PostulacionResponse {
     public void setUsuario(UsuarioResponse usuario) {
         this.usuario = usuario;
     }
+
+    public DatosPersonalesHistorialResponse getDatosPersonalesHistorial() { return datosPersonalesHistorial; }
+    public void setDatosPersonalesHistorial(DatosPersonalesHistorialResponse datosPersonalesHistorial) { this.datosPersonalesHistorial = datosPersonalesHistorial; }
+
+    public List<GrupoFamiliarResponse> getGrupoFamiliar() { return grupoFamiliar; }
+    public void setGrupoFamiliar(List<GrupoFamiliarResponse> grupoFamiliar) { this.grupoFamiliar = grupoFamiliar; }
+
+    public List<MateriasACursarResponse> getMateriasACursar() { return materiasACursar; }
+    public void setMateriasACursar(List<MateriasACursarResponse> materiasACursar) { this.materiasACursar = materiasACursar; }
+
+    public List<MateriasARendirResponse> getMateriasARendir() { return materiasARendir; }
+    public void setMateriasARendir(List<MateriasARendirResponse> materiasARendir) { this.materiasARendir = materiasARendir; }
+
+    public PostulacionBecaBaseBisResponse getBecaBaseBis() { return becaBaseBis; }
+    public void setBecaBaseBis(PostulacionBecaBaseBisResponse becaBaseBis) { this.becaBaseBis = becaBaseBis; }
+
+    public PostulacionBecaBinidResponse getBecaBinid() { return becaBinid; }
+    public void setBecaBinid(PostulacionBecaBinidResponse becaBinid) { this.becaBinid = becaBinid; }
+
 }
