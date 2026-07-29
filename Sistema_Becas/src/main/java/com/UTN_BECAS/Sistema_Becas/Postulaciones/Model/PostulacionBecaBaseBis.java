@@ -110,10 +110,6 @@ public class PostulacionBecaBaseBis {
         this.salud = salud;
     }
 
-    public boolean getTieneDiscapacidad() {
-        return tieneDiscapacidad;
-    }
-
     public void setTieneDiscapacidad(boolean tieneDiscapacidad) {
         this.tieneDiscapacidad = tieneDiscapacidad;
     }
@@ -128,5 +124,18 @@ public class PostulacionBecaBaseBis {
 
     public boolean isTieneDiscapacidad() {
         return tieneDiscapacidad;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PostulacionBecaBaseBis)) return false;
+        PostulacionBecaBaseBis that = (PostulacionBecaBaseBis) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

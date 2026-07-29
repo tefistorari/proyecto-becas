@@ -2,8 +2,10 @@ package com.UTN_BECAS.Sistema_Becas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class SistemaBecasApplication {
 
 	public static void main(String[] args) {

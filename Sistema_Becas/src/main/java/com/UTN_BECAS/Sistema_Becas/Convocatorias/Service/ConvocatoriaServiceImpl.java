@@ -8,6 +8,8 @@ import com.UTN_BECAS.Sistema_Becas.Becas.Model.Beca;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Model.Convocatoria;
 import com.UTN_BECAS.Sistema_Becas.Becas.Repository.BecaRepository;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Repository.ConvocatoriaRepository;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.RecursoNoEncontradoException;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.ReglaDeNegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +28,10 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
     @Override
     public ConvocatoriaResponse crear(ConvocatoriaRequest request) {
         Beca beca = becaRepository.findById(request.getBecaId())
-                .orElseThrow(() -> new RuntimeException("Beca no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Beca no encontrada"));
 
         if (request.getFechaCierre().isBefore(request.getFechaApertura())) {
-            throw new RuntimeException("La fecha de cierre debe ser posterior a la fecha de apertura");
+            throw new ReglaDeNegocioException("La fecha de cierre debe ser posterior a la fecha de apertura");
         }
 
         Convocatoria convocatoria = new Convocatoria();
@@ -63,21 +65,21 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
     @Override
     public ConvocatoriaResponse buscarPorId(Long id) {
         Convocatoria convocatoria = convocatoriaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Convocatoria no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Convocatoria no encontrada"));
         return ConvocatoriaMapper.toResponse(convocatoria);
     }
 
     @Override
     public ConvocatoriaResponse actualizar(Long id, ConvocatoriaRequest request) {
         Convocatoria convocatoria = convocatoriaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Convocatoria no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Convocatoria no encontrada"));
 
         if (request.getFechaCierre().isBefore(request.getFechaApertura())) {
-            throw new RuntimeException("La fecha de cierre debe ser posterior a la fecha de apertura");
+            throw new ReglaDeNegocioException("La fecha de cierre debe ser posterior a la fecha de apertura");
         }
 
         Beca beca = becaRepository.findById(request.getBecaId())
-                .orElseThrow(() -> new RuntimeException("Beca no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Beca no encontrada"));
 
         convocatoria.setBeca(beca);
         convocatoria.setAnio(request.getAnio());
@@ -92,7 +94,7 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
     @Override
     public ConvocatoriaResponse cambiarEstado(Long id, EstadoConvocatoria estado) {
         Convocatoria convocatoria = convocatoriaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Convocatoria no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Convocatoria no encontrada"));
         convocatoria.setEstado(estado);
         convocatoriaRepository.save(convocatoria);
         return ConvocatoriaMapper.toResponse(convocatoria);
@@ -101,7 +103,7 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
     @Override
     public void eliminar(Long id) {
         Convocatoria convocatoria = convocatoriaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Convocatoria no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Convocatoria no encontrada"));
         convocatoriaRepository.delete(convocatoria);
     }
 }

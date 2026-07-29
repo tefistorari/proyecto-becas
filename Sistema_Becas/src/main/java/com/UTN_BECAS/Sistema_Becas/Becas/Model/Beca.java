@@ -71,5 +71,17 @@ public class Beca {
         this.requiereIngenieria = requiereIngenieria;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Beca)) return false;
+        Beca beca = (Beca) o;
+        return id != null && id.equals(beca.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 
 }

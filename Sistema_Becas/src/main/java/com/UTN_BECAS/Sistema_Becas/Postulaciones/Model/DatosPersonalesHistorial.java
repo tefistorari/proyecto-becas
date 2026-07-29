@@ -194,4 +194,17 @@ public class DatosPersonalesHistorial {
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DatosPersonalesHistorial)) return false;
+        DatosPersonalesHistorial that = (DatosPersonalesHistorial) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

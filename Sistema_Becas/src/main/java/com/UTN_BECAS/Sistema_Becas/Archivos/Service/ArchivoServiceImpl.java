@@ -4,6 +4,8 @@ import com.UTN_BECAS.Sistema_Becas.Archivos.DTO.ArchivoResponse;
 import com.UTN_BECAS.Sistema_Becas.Archivos.Model.TipoArchivo;
 import com.UTN_BECAS.Sistema_Becas.Archivos.Mapper.ArchivoMapper;
 import com.UTN_BECAS.Sistema_Becas.Archivos.Model.Archivo;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.RecursoNoEncontradoException;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.ReglaDeNegocioException;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.Postulacion;
 import com.UTN_BECAS.Sistema_Becas.Archivos.Repository.ArchivoRepository;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Repository.PostulacionRepository;
@@ -35,7 +37,7 @@ public class ArchivoServiceImpl implements ArchivoService {
     @Override
     public ArchivoResponse subir(Long postulacionId, TipoArchivo tipoArchivo, MultipartFile file) {
         Postulacion postulacion = postulacionRepository.findById(postulacionId)
-                .orElseThrow(() -> new RuntimeException("Postulacion no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
 
         try{
 
@@ -62,7 +64,7 @@ public class ArchivoServiceImpl implements ArchivoService {
             archivoRepository.save(archivo);
             return ArchivoMapper.toResponse(archivo);
         }catch (IOException e){
-            throw new RuntimeException("Error al guardar el archivo: " + e.getMessage());
+            throw new ReglaDeNegocioException("Error al guardar el archivo: " + e.getMessage());
         }
     }
 
@@ -77,14 +79,14 @@ public class ArchivoServiceImpl implements ArchivoService {
     @Override
     public void eliminar(Long archivoId) {
         Archivo archivo = archivoRepository.findById(archivoId)
-                .orElseThrow(() -> new RuntimeException("Archivo no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Archivo no encontrado"));
 
         try{
             //Eliminar el archivo del servidor
             Path filePath = Paths.get(archivo.getRuta());
             Files.deleteIfExists(filePath);
         }catch (IOException e ){
-            throw new RuntimeException("Error al eliminar el archivo: " + e.getMessage());
+            throw new ReglaDeNegocioException("Error al eliminar el archivo: " + e.getMessage());
         }
 
         archivoRepository.delete(archivo);

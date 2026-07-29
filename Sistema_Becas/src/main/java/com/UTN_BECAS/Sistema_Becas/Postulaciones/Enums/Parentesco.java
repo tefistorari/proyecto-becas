@@ -10,7 +10,7 @@ public enum Parentesco {
     TIA,
     ABUELO,
     ABUELA,
-    CONYUGUE,
+    CONYUGE,
     PAREJA,
     TUTOR,
     OTRO

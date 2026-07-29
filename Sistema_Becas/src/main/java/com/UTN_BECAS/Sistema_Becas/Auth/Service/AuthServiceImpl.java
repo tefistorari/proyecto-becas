@@ -9,6 +9,8 @@ import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
 import com.UTN_BECAS.Sistema_Becas.Auth.Repository.RolRepository;
 import com.UTN_BECAS.Sistema_Becas.Auth.Repository.UsuarioRepository;
 import com.UTN_BECAS.Sistema_Becas.Auth.Security.JwtUtil;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.ConflictoException;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.RecursoNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,11 +38,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse register(RegisterRequest request){
         if (usuarioRepository.existsByEmail(request.getEmail())){
-            throw new RuntimeException("El email ya esta registrado");
+            throw new ConflictoException("El email ya esta registrado");
         }
 
         Rol rol = rolRepository.findByNombre(NombreRol.ALUMNO)
-                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Rol no encontrado"));
 
         Usuario usuario = new Usuario();
         usuario.setNombre(request.getNombre());
@@ -51,12 +53,14 @@ public class AuthServiceImpl implements AuthService {
 
         usuarioRepository.save(usuario);
 
+        String token = jwtUtil.generateToken(usuario.getEmail());
+
         AuthResponse response = new AuthResponse();
         response.setNombre(usuario.getNombre());
         response.setApellido(usuario.getApellido());
         response.setEmail(usuario.getEmail());
         response.setRol(rol.getNombre().name());
-        response.setToken(null);
+        response.setToken(token);
 
         return response;
     }
@@ -73,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
 
         //Busca el usuario
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
         //Genera el token JWT
         String token = jwtUtil.generateToken(usuario.getEmail());

@@ -157,4 +157,17 @@ public class PostulacionBecaBinid {
     public void setPostulacion(Postulacion postulacion) {
         this.postulacion = postulacion;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PostulacionBecaBinid)) return false;
+        PostulacionBecaBinid that = (PostulacionBecaBinid) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

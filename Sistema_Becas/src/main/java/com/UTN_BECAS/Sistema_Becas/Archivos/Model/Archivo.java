@@ -93,4 +93,17 @@ public class Archivo {
     public void setFechaSubida(LocalDateTime fechaSubida) {
         this.fechaSubida = fechaSubida;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Archivo)) return false;
+        Archivo archivo = (Archivo) o;
+        return id != null && id.equals(archivo.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

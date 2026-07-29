@@ -4,6 +4,9 @@ import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
 import com.UTN_BECAS.Sistema_Becas.Auth.Repository.UsuarioRepository;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Model.Convocatoria;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Repository.ConvocatoriaRepository;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.ConflictoException;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.RecursoNoEncontradoException;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.ReglaDeNegocioException;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionBaseBisUnificadoRequest;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionBinidUnificadoRequest;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionResponse;
@@ -161,25 +164,25 @@ public class PostulacionServiceImpl implements PostulacionService {
     @Transactional
     public PostulacionResponse postularBinid(Long usuarioId, PostulacionBinidUnificadoRequest request) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
         Convocatoria convocatoria = convocatoriaRepository.findById(request.getConvocatoriaId())
-                .orElseThrow(() -> new RuntimeException("Convocatoria no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Convocatoria no encontrada"));
 
         if(convocatoria.getEstado() != EstadoConvocatoria.ABIERTA) {
-            throw new RuntimeException("La convocatoria no está abierta");
+            throw new ReglaDeNegocioException("La convocatoria no está abierta");
         }
 
         if(postulacionRepository.existsByUsuarioIdAndConvocatoriaId(usuarioId, request.getConvocatoriaId())) {
-            throw new RuntimeException("Ya te postulaste a esta convocatoria");
+            throw new ConflictoException("Ya te postulaste a esta convocatoria");
         }
 
         if(request.getCategoriaBinid() == CategoriaBinid.GRADUADO && request.getAnioEgreso() == null) {
-            throw new RuntimeException("El año del egreso es obligatorio para graduados");
+            throw new ReglaDeNegocioException("El año del egreso es obligatorio para graduados");
         }
 
         if(request.getCategoriaBinid() == CategoriaBinid.ESTUDIANTE_AVANZADO && request.getMateriasCursadas() == null) {
-            throw new RuntimeException("Las materias cursadas son obligatorias para estudiantes avanzados");
+            throw new ReglaDeNegocioException("Las materias cursadas son obligatorias para estudiantes avanzados");
         }
 
         // 1.Crear postulacion
@@ -232,7 +235,13 @@ public class PostulacionServiceImpl implements PostulacionService {
     public List<PostulacionResponse> listarPorUsuario(Long usuarioId) {
         return postulacionRepository.findByUsuarioId(usuarioId)
                 .stream()
-                .map(PostulacionMapper::toResponse)
+                .map(p -> {
+                    PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(p.getId()).orElse(null);
+                    PostulacionBecaBinid binid = binidRepository.findByPostulacionId(p.getId()).orElse(null);
+                    if (baseBis != null) return PostulacionMapper.toResponse(p, baseBis);
+                    if (binid != null) return PostulacionMapper.toResponse(p, binid);
+                    return PostulacionMapper.toResponse(p);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -241,7 +250,13 @@ public class PostulacionServiceImpl implements PostulacionService {
     public List<PostulacionResponse> listarTodas() {
         return postulacionRepository.findAll()
                 .stream()
-                .map(PostulacionMapper::toResponse)
+                .map(p -> {
+                    PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(p.getId()).orElse(null);
+                    PostulacionBecaBinid binid = binidRepository.findByPostulacionId(p.getId()).orElse(null);
+                    if (baseBis != null) return PostulacionMapper.toResponse(p, baseBis);
+                    if (binid != null) return PostulacionMapper.toResponse(p, binid);
+                    return PostulacionMapper.toResponse(p);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -250,7 +265,13 @@ public class PostulacionServiceImpl implements PostulacionService {
     public List<PostulacionResponse> listarPorEstado(EstadoPostulacion estado) {
         return postulacionRepository.findByEstado(estado)
                 .stream()
-                .map(PostulacionMapper::toResponse)
+                .map(p -> {
+                    PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(p.getId()).orElse(null);
+                    PostulacionBecaBinid binid = binidRepository.findByPostulacionId(p.getId()).orElse(null);
+                    if (baseBis != null) return PostulacionMapper.toResponse(p, baseBis);
+                    if (binid != null) return PostulacionMapper.toResponse(p, binid);
+                    return PostulacionMapper.toResponse(p);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -258,14 +279,14 @@ public class PostulacionServiceImpl implements PostulacionService {
     @Transactional(readOnly = true)
     public PostulacionResponse buscarPorId(Long id) {
         Postulacion postulacion = postulacionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Postulacion no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
         return PostulacionMapper.toResponse(postulacion);
     }
 
     @Override
     public PostulacionResponse cambiarEstado(Long id, EstadoPostulacion estado) {
         Postulacion postulacion = postulacionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Postulacion no encontrada"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
         postulacion.setEstado(estado);
         postulacionRepository.save(postulacion);
         return PostulacionMapper.toResponse(postulacion);

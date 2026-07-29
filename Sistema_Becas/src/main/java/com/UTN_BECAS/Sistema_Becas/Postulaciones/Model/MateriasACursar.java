@@ -89,4 +89,17 @@ public class MateriasACursar {
     public void setAnioMateria(Integer anioMateria) {
         this.anioMateria = anioMateria;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MateriasACursar)) return false;
+        MateriasACursar that = (MateriasACursar) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

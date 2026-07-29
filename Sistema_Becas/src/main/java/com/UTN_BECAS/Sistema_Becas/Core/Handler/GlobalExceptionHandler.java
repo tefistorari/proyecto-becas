@@ -1,5 +1,8 @@
-package com.UTN_BECAS.Sistema_Becas.Core.Exception;
+package com.UTN_BECAS.Sistema_Becas.Core.Handler;
 
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.ConflictoException;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.RecursoNoEncontradoException;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.ReglaDeNegocioException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -34,5 +37,26 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage())
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler(RecursoNoEncontradoException.class)
+    public ResponseEntity<Map<String, String>> handleRecursoNoEncontrado(RecursoNoEncontradoException e) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(ConflictoException.class)
+    public ResponseEntity<Map<String, String>> handleConflicto(ConflictoException e) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(ReglaDeNegocioException.class)
+    public ResponseEntity<Map<String, String>> handleReglaDeNegocio(ReglaDeNegocioException e) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
     }
 }

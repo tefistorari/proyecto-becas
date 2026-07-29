@@ -99,4 +99,17 @@ public class Convocatoria {
     public void setEstado(EstadoConvocatoria estado) {
         this.estado = estado;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Convocatoria)) return false;
+        Convocatoria convocatoria = (Convocatoria) o;
+        return id != null && id.equals(convocatoria.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

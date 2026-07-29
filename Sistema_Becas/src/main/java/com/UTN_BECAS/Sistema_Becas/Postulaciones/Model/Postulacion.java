@@ -141,4 +141,17 @@ public class Postulacion {
     public void setGrupoFamiliar(List<GrupoFamiliar> grupoFamiliar) {
         this.grupoFamiliar = grupoFamiliar;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Postulacion)) return false;
+        Postulacion postulacion = (Postulacion) o;
+        return id != null && id.equals(postulacion.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }
