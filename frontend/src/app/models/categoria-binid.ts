@@ -1,0 +1,4 @@
+export enum CategoriaBinid {
+    GRADUADO = 'GRADUADO',
+    ESTUDIANTE_AVANZADO = 'ESTUDIANTE_AVANZADO'
+}
