@@ -1,0 +1,13 @@
+.footer{
+  background:#111827;
+  color:#e5e7eb;
+  margin-top:40px;
+}
+
+.footer .container{
+  padding:24px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
