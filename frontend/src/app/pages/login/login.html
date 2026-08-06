@@ -1,1 +1,47 @@
-<p>login works!</p>
+<section class="auth-container">
+
+    <form [formGroup]="loginForm" (ngSubmit)="ingresar()">
+
+        <h1>Iniciar sesión</h1>
+
+        <input type="email"
+        id="email"
+        placeholder="Correo electronico"
+        formControlName="email">
+        
+        @if (loginForm.controls.email.touched && loginForm.controls.email.hasError('required')) {
+            <small class="error">
+                El correo electronico es obligatorio.
+            </small>
+        }
+
+        @if(loginForm.controls.email.touched && loginForm.controls.email.hasError('email')) {
+            <small class="error">
+                Ingresá un correo válido.
+            </small>
+        }
+
+        <input type="password"
+        id="password"
+        placeholder="Contraseña"
+        formControlName="password">
+
+        @if (loginForm.controls.password.touched &&
+        loginForm.controls.password.hasError('required')) {
+            <small class="error">
+                La contraseña es obligatoria.
+            </small>
+        }
+
+        <button type="submit">
+            ingresar
+        </button>
+
+        <a routerLink="/registro"
+        class="secondary-link">
+            ¿No tenés cuenta? Registrate
+        </a>
+        
+    </form>
+
+</section>
