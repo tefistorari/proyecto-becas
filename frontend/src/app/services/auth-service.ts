@@ -4,6 +4,7 @@ import { AuthResponse } from '../models/auth-response';
 import { AuthRequest } from '../models/auth-request';
 import { Observable, tap } from 'rxjs';
 import { Rol } from '../models/rol';
+import { RegisterRequest } from '../models/register-request';
 
 @Service()
 export class AuthService {
@@ -57,20 +58,33 @@ export class AuthService {
         return this.currentUser()?.rol === 'ALUMNO';
     }
 
+    private saveSession(response: AuthResponse): void {
+        localStorage.setItem("token", response.token);
+        
+        localStorage.setItem(
+            "user",
+            JSON.stringify(response)
+        );
+
+        this.authenticated.set(true);
+        this.currentUser.set(response);
+    }
+
     login(request: AuthRequest): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(
             `${this.API_URL}/login`,
             request).pipe(
-                tap(response => {
-                    localStorage.setItem("token", response.token);
-                    localStorage.setItem(
-                        "user", 
-                        JSON.stringify(response));
+                tap(response => this.saveSession(response))
+            );
+    }
 
-                    this.authenticated.set(true);
-                    this.currentUser.set(response);
-                })
-            )
+    register(request: RegisterRequest): Observable<AuthResponse> {
+
+        return this.http.post<AuthResponse>(
+            `${this.API_URL}/register`,
+            request).pipe(
+                tap(response => this.saveSession(response))
+            );
     }
 
     logout(): void {
