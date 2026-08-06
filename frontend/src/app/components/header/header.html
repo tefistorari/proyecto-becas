@@ -5,7 +5,11 @@
             Sistema Becas
         </a>
         
-        <nav>
+        <nav class="nav">
+
+            <a routerLink="/">
+                Inicio
+            </a>
 
             @if (!authService.isAuthenticated()) {
 
@@ -39,10 +43,13 @@
 
                 @if (authService.isAlumno()) {
                     <a routerLink="/alumno/dashboard">
-                        Inicio
+                        Mi panel
                     </a>
                     <a routerLink="/alumno/mis-postulaciones">
                         Mis postulaciones
+                    </a>
+                    <a routerLink="/alumno/perfil">
+                        Mi perfil
                     </a>
                 }
 

@@ -10,6 +10,7 @@ import { FormularioBinid } from './pages/alumno/postular/formulario-binid/formul
 import { DashboardAdmin } from './pages/admin/dashboard-admin/dashboard-admin';
 import { Postulaciones } from './pages/admin/postulaciones/postulaciones';
 import { Convocatorias } from './pages/admin/convocatorias/convocatorias';
+import { DashboardAlumno } from './pages/alumno/dashboard-alumno/dashboard-alumno';
 
 
 export const routes: Routes = [
@@ -17,6 +18,7 @@ export const routes: Routes = [
     {path: 'login', component: Login},
     {path: 'registro', component: Registro},
 
+    {path: 'alumno/dashboard', component: DashboardAlumno},
     {path: 'alumno/perfil', component: Perfil},
     {path: 'alumno/mis-postulaciones', component: MisPostulaciones},
     {path: 'alumno/postular/base', component: FormularioBase},
