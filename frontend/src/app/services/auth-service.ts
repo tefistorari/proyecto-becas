@@ -49,6 +49,14 @@ export class AuthService {
         return this.currentUser()?.rol === role;
     }
 
+    isAdmin(): boolean {
+        return this.currentUser()?.rol === 'ADMINISTRADOR';
+    }
+
+    isAlumno(): boolean {
+        return this.currentUser()?.rol === 'ALUMNO';
+    }
+
     login(request: AuthRequest): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(
             `${this.API_URL}/login`,

@@ -28,6 +28,12 @@
   align-items:center;
 }
 
+.welcome{
+  color:#1e3a8a;
+  font-weight:600;
+  margin-right:8px;
+}
+
 .nav a{
   text-decoration:none;
   color:#374151;

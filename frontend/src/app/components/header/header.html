@@ -5,7 +5,55 @@
             Sistema Becas
         </a>
         
-        
+        <nav>
+
+            @if (!authService.isAuthenticated()) {
+
+                <a routerLink="/login" >
+                    Iniciar sesión
+                </a>
+
+                <a routerLink="/registro">
+                    Registrarse
+                </a>
+
+            } @else {
+
+                <span class="welcome">
+                    ¡Hola, {{authService.user()?.nombre}}!
+                </span>
+
+                @if (authService.isAdmin()) {
+                    <a routerLink="/admin/dashboard">
+                        Inicio
+                    </a>
+
+                    <a routerLink="/admin/convocatorias">
+                        Convocatorias
+                    </a>
+
+                    <a routerLink="/admin/postulaciones">
+                        Postulaciones
+                    </a>
+                }
+
+                @if (authService.isAlumno()) {
+                    <a routerLink="/alumno/dashboard">
+                        Inicio
+                    </a>
+                    <a routerLink="/alumno/mis-postulaciones">
+                        Mis postulaciones
+                    </a>
+                }
+
+                <button type="button" (click)="logout()">
+                    Cerrar sesión
+                </button>
+
+            }
+
+        </nav>
+
     </div>
 
 </header>
