@@ -1,0 +1,86 @@
+.auth-container{
+  min-height: calc(100vh - 140px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:40px 20px;
+  background:#f8fafc;
+}
+
+form{
+  width:100%;
+  max-width:430px;
+  background:white;
+  padding:40px;
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+h1{
+  text-align:center;
+  margin-bottom:10px;
+  color:#1e3a8a;
+  font-size:2rem;
+}
+
+.form-field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+input{
+  padding:14px 16px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  font-size:1rem;
+  outline:none;
+  transition:.2s;
+}
+
+input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+button{
+  margin-top:10px;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  background:#2563eb;
+  color:white;
+  font-size:1rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  background:#1d4ed8;
+  transform:translateY(-2px);
+}
+
+.secondary-link{
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  margin-top:6px;
+  padding:12px;
+  border-radius:10px;
+  font-weight:600;
+  color:#2563eb;
+  transition:.2s;
+}
+
+.secondary-link:hover{
+  background:#eff6ff;
+}
+
+.error{
+  color:#dc2626;
+  font-size:.85rem;
+}

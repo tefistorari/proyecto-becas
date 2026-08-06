@@ -1,1 +1,95 @@
-<p>registro works!</p>
+<section class="auth-container">
+
+    <form [formGroup]="registerForm" (ngSubmit)="registrarse()">
+
+        <h1>Crear cuenta</h1>
+
+        <div class="form-field">
+
+            <input type="text"
+            id="nombre"
+            placeholder="Nombre"
+            formControlName="nombre">
+
+            @if(registerForm.controls.nombre.touched &&
+            registerForm.controls.nombre.hasError('required')){
+                <small class="error">
+                    El nombre es obligatorio.
+                </small>
+            }
+
+        </div>
+
+        <div class="form-field">
+
+            <input type="text"
+            id="apellido"
+            placeholder="Apellido"
+            formControlName="apellido">
+
+            @if (registerForm.controls.apellido.touched &&
+            registerForm.controls.apellido.hasError('required')) {
+                <small class="error">
+                    El apellido es obligatorio.
+                </small>
+            }
+        </div>
+
+        <div class="form-field">
+
+            <input type="email"
+            id="email"
+            placeholder="Correo electronico"
+            formControlName="email">
+
+            @if(registerForm.controls.email.touched &&
+            registerForm.controls.email.hasError('required')) {
+                <small class="error">
+                    El correo electronico es obligatorio.
+                </small>
+            }
+
+            @if (registerForm.controls.email.touched &&
+            registerForm.controls.email.hasError('email')) {
+                <small class="error">
+                    Ingresa un correo válido.
+                </small>
+            }
+
+        </div>
+
+        <div class="form-field">
+
+            <input type="password"
+            id="password"
+            placeholder="Contraseña"
+            formControlName="password">
+
+            @if (registerForm.controls.password.touched &&
+            registerForm.controls.password.hasError('required')) {
+                <small class="error">
+                    La contraseña es obligatoria.
+                </small>
+            }
+
+            @if (registerForm.controls.password.touched &&
+            registerForm.controls.password.hasError('minlength')) {
+                <small class="error">
+                    La contraseña debe tener al menos 8 caracteres.
+                </small>
+            }
+            
+        </div>
+
+        <button type="submit">
+            Registrarse
+        </button>
+
+        <a routerLink="/login"
+        class="secondary-link">
+            ¿Ya tenes cuenta? Ingresá
+        </a>
+
+    </form>
+
+</section>
