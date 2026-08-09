@@ -33,6 +33,12 @@
             </small>
         }
 
+        @if(errorMessage()) {
+            <div class="error-message">
+                {{ errorMessage() }}
+            </div>
+        }
+
         <button type="submit">
             ingresar
         </button>

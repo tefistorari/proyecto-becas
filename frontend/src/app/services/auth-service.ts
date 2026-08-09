@@ -51,7 +51,7 @@ export class AuthService {
     }
 
     isAdmin(): boolean {
-        return this.currentUser()?.rol === 'ADMINISTRADOR';
+        return this.currentUser()?.rol === 'ADMIN';
     }
 
     isAlumno(): boolean {

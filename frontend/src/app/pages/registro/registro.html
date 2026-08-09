@@ -13,7 +13,7 @@
 
             @if(registerForm.controls.nombre.touched &&
             registerForm.controls.nombre.hasError('required')){
-                <small class="error">
+                <small class="field-error">
                     El nombre es obligatorio.
                 </small>
             }
@@ -29,7 +29,7 @@
 
             @if (registerForm.controls.apellido.touched &&
             registerForm.controls.apellido.hasError('required')) {
-                <small class="error">
+                <small class="field-error">
                     El apellido es obligatorio.
                 </small>
             }
@@ -44,14 +44,14 @@
 
             @if(registerForm.controls.email.touched &&
             registerForm.controls.email.hasError('required')) {
-                <small class="error">
+                <small class="field-error">
                     El correo electronico es obligatorio.
                 </small>
             }
 
             @if (registerForm.controls.email.touched &&
             registerForm.controls.email.hasError('email')) {
-                <small class="error">
+                <small class="field-error">
                     Ingresa un correo válido.
                 </small>
             }
@@ -67,19 +67,25 @@
 
             @if (registerForm.controls.password.touched &&
             registerForm.controls.password.hasError('required')) {
-                <small class="error">
+                <small class="field-error">
                     La contraseña es obligatoria.
                 </small>
             }
 
             @if (registerForm.controls.password.touched &&
             registerForm.controls.password.hasError('minlength')) {
-                <small class="error">
+                <small class="field-error">
                     La contraseña debe tener al menos 8 caracteres.
                 </small>
             }
             
         </div>
+
+        @if(errorMessage()) {
+            <div class="error-message">
+                {{errorMessage()}}
+            </div>
+        }
 
         <button type="submit">
             Registrarse
