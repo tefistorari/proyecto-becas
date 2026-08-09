@@ -9,56 +9,78 @@
         </a>
         
         <nav class="nav">
+            <!-- IZQUIERDA: Navegacion general. Home -->
+            <div class="nav-left">
 
-            <a routerLink="/">
-                Inicio
-            </a>
+                <a routerLink="/">
+                    Inicio
+                </a>
+
+            </div>
 
             @if (!authService.isAuthenticated()) {
+                <!-- DERECHA: Usuario no autenticado. -->
+                <div class="nav-right">
 
-                <a routerLink="/login" >
-                    Iniciar sesión
-                </a>
+                    <a routerLink="/login">
+                        Iniciar sesión
+                    </a>
 
-                <a routerLink="/registro">
-                    Registrarse
-                </a>
+                    <a routerLink="/registro">
+                        Registrarse
+                    </a>
+
+                </div>
 
             } @else {
+                <!--CENTRO: Usuario -->
+                <div class="nav-center">
 
-                <span class="welcome">
-                    ¡Hola, {{authService.user()?.nombre}}!
-                </span>
+                    <span class="welcome">
+                        ¡Hola, {{authService.user()?.nombre}}!
+                    </span>
 
-                @if (authService.isAdmin()) {
-                    <a routerLink="/admin/dashboard">
-                        Inicio
-                    </a>
+                </div>
+                
+                <div class="nav-right">
+                    
+                    @if(authService.isAdmin()) {
 
-                    <a routerLink="/admin/convocatorias">
-                        Convocatorias
-                    </a>
+                        <a routerLink="/admin/dashboard">
+                            Mi panel
+                        </a>
 
-                    <a routerLink="/admin/postulaciones">
-                        Postulaciones
-                    </a>
-                }
+                        <a routerLink="/admin/convocatorias">
+                            Convocatorias
+                        </a>
 
-                @if (authService.isAlumno()) {
-                    <a routerLink="/alumno/dashboard">
-                        Mi panel
-                    </a>
-                    <a routerLink="/alumno/mis-postulaciones">
-                        Mis postulaciones
-                    </a>
-                    <a routerLink="/alumno/perfil">
-                        Mi perfil
-                    </a>
-                }
+                        <a routerLink="/admin/Postulaciones">
+                            Postulaciones
+                        </a>
 
-                <button type="button" (click)="logout()">
-                    Cerrar sesión
-                </button>
+                    }
+
+                    @if (authService.isAlumno()) {
+
+                        <a routerLink="/alumno/dashboard">
+                            Mi panel
+                        </a>
+                        
+                        <a routerLink="/alumno/mis-postulaciones">
+                            Mis postulaciones
+                        </a>
+                        
+                        <a routerLink="/alumno/perfil">
+                            Mi perfil
+                        </a>
+
+                    }
+
+                    <button type="button" (click)="logout()">
+                        Cerrar sesión
+                    </button>
+
+                </div>
 
             }
 

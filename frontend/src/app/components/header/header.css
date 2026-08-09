@@ -1,11 +1,21 @@
+/* =========================
+   HEADER
+   ========================= */
+
 .header {
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 0;
   z-index: 100;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
+
+
+/* =========================
+   CONTENEDOR
+   ========================= */
 
 .container {
   width: 100%;
@@ -14,9 +24,10 @@
   padding: 12px 24px;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 24px;
+  justify-content: space-between;
+
+  gap: 30px;
 
   box-sizing: border-box;
 }
@@ -29,20 +40,26 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+
+  gap: 11px;
 
   color: #1e3a8a;
   text-decoration: none;
-  font-size: 1.35rem;
+
+  font-size: 1.25rem;
   font-weight: 700;
 
   white-space: nowrap;
+
+  flex-shrink: 0;
 }
 
 .LogoUTN {
   display: block;
-  width: 48px;
-  height: 48px;
+
+  width: 46px;
+  height: 46px;
+
   object-fit: contain;
 }
 
@@ -55,26 +72,29 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  gap: 22px;
+
+  flex: 1;
+}
+
+
+/* =========================
+   BLOQUES DE NAVEGACIÓN
+   ========================= */
+
+.nav-left,
+.nav-center,
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+
+/* Inicio público */
+
+.nav-left {
   gap: 18px;
-
-  flex-wrap: wrap;
-}
-
-.nav a {
-  color: #374151;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-
-  padding: 8px 2px;
-
-  transition:
-    color 0.2s ease,
-    opacity 0.2s ease;
-}
-
-.nav a:hover {
-  color: #1e3a8a;
 }
 
 
@@ -82,11 +102,72 @@
    USUARIO
    ========================= */
 
+.nav-center {
+  padding-left: 20px;
+  border-left: 1px solid #e5e7eb;
+}
+
 .welcome {
   color: #1e3a8a;
-  font-size: 0.95rem;
+
+  font-size: 0.9rem;
   font-weight: 600;
+
   white-space: nowrap;
+}
+
+
+/* =========================
+   OPCIONES
+   ========================= */
+
+.nav-right {
+  gap: 18px;
+}
+
+
+/* =========================
+   LINKS
+   ========================= */
+
+.nav a {
+  position: relative;
+
+  color: #374151;
+  text-decoration: none;
+
+  font-size: 0.92rem;
+  font-weight: 500;
+
+  padding: 7px 0;
+
+  transition: color 0.2s ease;
+}
+
+.nav a:hover {
+  color: #1e3a8a;
+}
+
+
+/* Pequeño detalle debajo del link */
+
+.nav a::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+
+  width: 0;
+  height: 2px;
+
+  background: #1e3a8a;
+
+  transition: width 0.2s ease;
+}
+
+.nav a:hover::after {
+  width: 100%;
 }
 
 
@@ -96,17 +177,21 @@
 
 .nav button {
   border: none;
+
   background: #2563eb;
   color: #ffffff;
 
-  padding: 9px 15px;
-  border-radius: 7px;
+  padding: 8px 14px;
+
+  border-radius: 6px;
 
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
 
   cursor: pointer;
+
+  white-space: nowrap;
 
   transition:
     background 0.2s ease,
@@ -126,22 +211,60 @@
    TABLET
    ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
 
   .container {
-    padding: 12px 18px;
+    gap: 20px;
+  }
+
+  .nav {
+    gap: 15px;
+  }
+
+  .nav-right {
+    gap: 14px;
+  }
+
+  .nav a {
+    font-size: 0.88rem;
+  }
+
+  .welcome {
+    font-size: 0.85rem;
+  }
+
+}
+
+
+/* =========================
+   TABLET PEQUEÑA
+   ========================= */
+
+@media (max-width: 800px) {
+
+  .container {
+    padding: 10px 18px;
+  }
+
+  .logo {
+    font-size: 1.15rem;
+  }
+
+  .LogoUTN {
+    width: 42px;
+    height: 42px;
   }
 
   .nav {
     gap: 12px;
   }
 
-  .nav a {
-    font-size: 0.9rem;
+  .nav-center {
+    padding-left: 12px;
   }
 
-  .welcome {
-    display: none;
+  .nav-right {
+    gap: 11px;
   }
 
 }
@@ -155,30 +278,63 @@
 
   .container {
     flex-direction: column;
+
     align-items: stretch;
-    gap: 12px;
+
+    gap: 10px;
+
+    padding: 10px 14px;
   }
+
 
   .logo {
     justify-content: center;
   }
 
+
   .LogoUTN {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
   }
 
+
   .nav {
+    flex-wrap: wrap;
+
     justify-content: center;
+
+    gap: 8px 16px;
+  }
+
+
+  .nav-left,
+  .nav-center,
+  .nav-right {
+    justify-content: center;
+  }
+
+
+  .nav-center {
+    padding-left: 12px;
+  }
+
+
+  .nav-right {
+    flex-wrap: wrap;
+
     gap: 8px 14px;
   }
 
+
   .nav a {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
   }
 
+
   .nav button {
-    padding: 8px 13px;
+    padding: 7px 12px;
+
+    font-size: 0.84rem;
   }
 
 }
@@ -191,25 +347,39 @@
 @media (max-width: 450px) {
 
   .container {
-    padding: 10px 14px;
+    padding: 9px 12px;
   }
+
 
   .logo {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
+
 
   .LogoUTN {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
   }
 
+
   .nav {
-    gap: 6px 12px;
+    gap: 7px 12px;
   }
+
+
+  .nav-center {
+    padding-left: 9px;
+  }
+
+
+  .nav-right {
+    gap: 7px 11px;
+  }
+
 
   .nav a,
   .nav button {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
   }
 
 }
