@@ -23,13 +23,12 @@ public class PostulacionMapper {
         PostulacionResponse response = toResponse(postulacion);
         if (baseBis != null) {
             PostulacionBecaBaseBisResponse baseBisResponse = new PostulacionBecaBaseBisResponse();
-            baseBisResponse.setIngresoFamiliar(baseBis.getIngresoFamiliar());
             baseBisResponse.setTipoVivienda(baseBis.getTipoVivienda());
             baseBisResponse.setCondicionLaboral(baseBis.getCondicionLaboral());
             baseBisResponse.setCarrera(baseBis.getCarrera());
             baseBisResponse.setSalud(baseBis.getSalud());
-            baseBisResponse.setTieneDiscapacidad(baseBis.isTieneDiscapacidad());
-            baseBisResponse.setDetalleDiscapacidad(baseBis.getDetalleDiscapacidad());
+            baseBisResponse.setTieneCondicionSalud(baseBis.isTieneCondicionSalud());
+            baseBisResponse.setDetalleCondicionSalud(baseBis.getDetalleCondicionSalud());
             response.setBecaBaseBis(baseBisResponse);
         }
         return response;

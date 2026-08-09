@@ -100,10 +100,6 @@ public class PostulacionBecaBaseBis {
         this.salud = salud;
     }
 
-    public void setTieneDiscapacidad(boolean tieneCondicionSalud) {
-        this.tieneCondicionSalud = tieneCondicionSalud;
-    }
-
     public String getDetalleCondicionSalud() {
         return detalleCondicionSalud;
     }
@@ -114,6 +110,10 @@ public class PostulacionBecaBaseBis {
 
     public boolean isTieneCondicionSalud() {
         return tieneCondicionSalud;
+    }
+
+    public void setTieneCondicionSalud(boolean tieneCondicionSalud) {
+        this.tieneCondicionSalud = tieneCondicionSalud;
     }
 
     @Override

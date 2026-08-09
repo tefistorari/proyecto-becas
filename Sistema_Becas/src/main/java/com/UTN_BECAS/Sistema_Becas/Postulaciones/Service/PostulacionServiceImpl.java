@@ -104,13 +104,12 @@ public class PostulacionServiceImpl implements PostulacionService {
         // 3.Datos especificos BASE-BIS
         PostulacionBecaBaseBis baseBis = new PostulacionBecaBaseBis();
         baseBis.setPostulacion(postulacion);
-        baseBis.setIngresoFamiliar(request.getIngresoFamiliar());
         baseBis.setTipoVivienda(request.getTipoVivienda());
         baseBis.setCondicionLaboral(request.getCondicionLaboral());
         baseBis.setCarrera(request.getCarrera());
         baseBis.setSalud(request.getSalud());
-        baseBis.setTieneDiscapacidad(request.getTieneDiscapacidad());
-        baseBis.setDetalleDiscapacidad(request.getDetalleDiscapacidad());
+        baseBis.setTieneCondicionSalud(request.getTieneCondicionSalud());
+        baseBis.setDetalleCondicionSalud(request.getDetalleCondicionSalud());
         baseBisRepository.save(baseBis);
 
         // 4.grupo familiar
