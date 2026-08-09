@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO;
 
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CarreraBaseBis;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CondicionLaboral;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.Salud;
 import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.DatosPersonalesRequest;
@@ -24,25 +25,22 @@ public class PostulacionBaseBisUnificadoRequest {
     private DatosPersonalesRequest datosPersonales;
 
     //Datos especificos de BASE/BIS
-    @NotNull(message = "El ingreso familiar es obligatorio")
-    private BigDecimal ingresoFamiliar;
-
     @NotBlank(message = "El tipo de vivienda es obligatorio")
     private String tipoVivienda;
 
     @NotNull(message = "La condicion laboral es obligatoria")
     private CondicionLaboral condicionLaboral;
 
-    @NotBlank(message = "La carrera  es obligatoria")
-    private String carrera;
+    @NotNull(message = "La carrera de grado es obligatoria")
+    private CarreraBaseBis carrera;
 
     @NotNull(message = "La salud es obligatoria")
     private Salud salud;
 
-    @NotNull(message = "El campo tiene discapacidad es obligatorio")
-    private Boolean tieneDiscapacidad;
+    @NotNull(message = "El campo tiene condicion de salud es obligatorio")
+    private Boolean tieneCondicionSalud;
 
-    private String detalleDiscapacidad;
+    private String detalleCondicionSalud;
 
     //Listas
     @NotNull(message = "El grupo familiar es obligatorio")
@@ -77,14 +75,6 @@ public class PostulacionBaseBisUnificadoRequest {
         this.datosPersonales = datosPersonales;
     }
 
-    public BigDecimal getIngresoFamiliar() {
-        return ingresoFamiliar;
-    }
-
-    public void setIngresoFamiliar(BigDecimal ingresoFamiliar) {
-        this.ingresoFamiliar = ingresoFamiliar;
-    }
-
     public String getTipoVivienda() {
         return tipoVivienda;
     }
@@ -101,11 +91,11 @@ public class PostulacionBaseBisUnificadoRequest {
         this.condicionLaboral = condicionLaboral;
     }
 
-    public String getCarrera() {
+    public CarreraBaseBis getCarrera() {
         return carrera;
     }
 
-    public void setCarrera(String carrera) {
+    public void setCarrera(CarreraBaseBis carrera) {
         this.carrera = carrera;
     }
 
@@ -117,20 +107,20 @@ public class PostulacionBaseBisUnificadoRequest {
         this.salud = salud;
     }
 
-    public Boolean getTieneDiscapacidad() {
-        return tieneDiscapacidad;
+    public Boolean getTieneCondicionSalud() {
+        return tieneCondicionSalud;
     }
 
-    public void setTieneDiscapacidad(Boolean tieneDiscapacidad) {
-        this.tieneDiscapacidad = tieneDiscapacidad;
+    public void setTieneCondicionSalud(Boolean tieneCondicionSalud) {
+        this.tieneCondicionSalud = tieneCondicionSalud;
     }
 
-    public String getDetalleDiscapacidad() {
-        return detalleDiscapacidad;
+    public String getDetalleCondicionSalud() {
+        return detalleCondicionSalud;
     }
 
-    public void setDetalleDiscapacidad(String detalleDiscapacidad) {
-        this.detalleDiscapacidad = detalleDiscapacidad;
+    public void setDetalleCondicionSalud(String detalleCondicionSalud) {
+        this.detalleCondicionSalud = detalleCondicionSalud;
     }
 
     public List<GrupoFamiliarRequest> getGrupoFamiliar() {

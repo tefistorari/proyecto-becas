@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO;
 
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CarreraGrado;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CategoriaBinid;
 
 import java.math.BigDecimal;
@@ -7,7 +8,7 @@ import java.math.BigDecimal;
 public class PostulacionBecaBinidResponse {
 
     private CategoriaBinid categoriaBinid;
-    private String carreraGrado;
+    private CarreraGrado carreraGrado;
     private Integer anioIngreso;
     private Integer anioEgreso;
     private Integer materiasCursadas;
@@ -16,14 +17,23 @@ public class PostulacionBecaBinidResponse {
     private String pregunta;
     private String nombreDirectorProyecto;
     private String apellidoDirectorProyecto;
+    private Boolean accedioABecaBinidAnterior;
 
     public PostulacionBecaBinidResponse() {}
 
     public CategoriaBinid getCategoriaBinid() { return categoriaBinid; }
     public void setCategoriaBinid(CategoriaBinid categoriaBinid) { this.categoriaBinid = categoriaBinid; }
 
-    public String getCarreraGrado() { return carreraGrado; }
-    public void setCarreraGrado(String carreraGrado) { this.carreraGrado = carreraGrado; }
+    public CarreraGrado getCarreraGrado() { return carreraGrado; }
+    public void setCarreraGrado(CarreraGrado carreraGrado) { this.carreraGrado = carreraGrado; }
+
+    public Boolean getAccedioABecaBinidAnterior() {
+        return accedioABecaBinidAnterior;
+    }
+
+    public void setAccedioABecaBinidAnterior(Boolean accedioABecaBinidAnterior) {
+        this.accedioABecaBinidAnterior = accedioABecaBinidAnterior;
+    }
 
     public Integer getAnioIngreso() { return anioIngreso; }
     public void setAnioIngreso(Integer anioIngreso) { this.anioIngreso = anioIngreso; }

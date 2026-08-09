@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Convocatorias.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
 import com.UTN_BECAS.Sistema_Becas.Becas.Model.Beca;
 import jakarta.persistence.*;
 
@@ -33,15 +34,25 @@ public class Convocatoria {
     @Column(nullable = false)
     private EstadoConvocatoria estado;
 
+    @Column(nullable = false)
+    private Integer cupoMaximo;
+
+    @ManyToOne
+    @JoinColumn(name = "creado_por", nullable = false)
+    private Usuario creadoPor;
+
     public Convocatoria(){
     }
 
-    public Convocatoria(Beca beca, Integer anio, LocalDateTime fechaApertura, LocalDateTime fechaCierre, EstadoConvocatoria estado) {
+    public Convocatoria(Beca beca, Integer anio, LocalDateTime fechaApertura, LocalDateTime fechaCierre,
+                        EstadoConvocatoria estado, Integer cupoMaximo, Usuario creadoPor) {
         this.beca = beca;
         this.anio = anio;
         this.fechaApertura = fechaApertura;
         this.fechaCierre = fechaCierre;
         this.estado = estado;
+        this.cupoMaximo = cupoMaximo;
+        this.creadoPor = creadoPor;
     }
 
     public Long getId() {
@@ -98,6 +109,22 @@ public class Convocatoria {
 
     public void setEstado(EstadoConvocatoria estado) {
         this.estado = estado;
+    }
+
+    public Integer getCupoMaximo() {
+        return cupoMaximo;
+    }
+
+    public void setCupoMaximo(Integer cupoMaximo) {
+        this.cupoMaximo = cupoMaximo;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
     @Override

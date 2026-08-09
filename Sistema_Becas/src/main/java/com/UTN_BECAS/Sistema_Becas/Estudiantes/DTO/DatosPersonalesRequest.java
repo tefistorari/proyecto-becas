@@ -42,6 +42,16 @@ public class DatosPersonalesRequest {
     @NotBlank(message = "La nacionalidad es obligatoria")
     private String nacionalidad;
 
+    @NotNull(message = "Debe indicar si el domicilio familiar es distinto")
+    private Boolean domicilioFamiliarDistinto = false;
+
+    private String domicilioFamiliarCalle;
+    private Integer domicilioFamiliarNumero;
+    private String domicilioFamiliarPisoDepto;
+    private String domicilioFamiliarCodigoPostal;
+    private String domicilioFamiliarLocalidad;
+    private String domicilioFamiliarProvincia;
+
     public DatosPersonalesRequest(){
 
     }
@@ -132,5 +142,61 @@ public class DatosPersonalesRequest {
 
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
+    }
+
+    public Boolean getDomicilioFamiliarDistinto() {
+        return domicilioFamiliarDistinto;
+    }
+
+    public void setDomicilioFamiliarDistinto(Boolean domicilioFamiliarDistinto) {
+        this.domicilioFamiliarDistinto = domicilioFamiliarDistinto;
+    }
+
+    public String getDomicilioFamiliarCalle() {
+        return domicilioFamiliarCalle;
+    }
+
+    public void setDomicilioFamiliarCalle(String domicilioFamiliarCalle) {
+        this.domicilioFamiliarCalle = domicilioFamiliarCalle;
+    }
+
+    public Integer getDomicilioFamiliarNumero() {
+        return domicilioFamiliarNumero;
+    }
+
+    public void setDomicilioFamiliarNumero(Integer domicilioFamiliarNumero) {
+        this.domicilioFamiliarNumero = domicilioFamiliarNumero;
+    }
+
+    public String getDomicilioFamiliarPisoDepto() {
+        return domicilioFamiliarPisoDepto;
+    }
+
+    public void setDomicilioFamiliarPisoDepto(String domicilioFamiliarPisoDepto) {
+        this.domicilioFamiliarPisoDepto = domicilioFamiliarPisoDepto;
+    }
+
+    public String getDomicilioFamiliarCodigoPostal() {
+        return domicilioFamiliarCodigoPostal;
+    }
+
+    public void setDomicilioFamiliarCodigoPostal(String domicilioFamiliarCodigoPostal) {
+        this.domicilioFamiliarCodigoPostal = domicilioFamiliarCodigoPostal;
+    }
+
+    public String getDomicilioFamiliarLocalidad() {
+        return domicilioFamiliarLocalidad;
+    }
+
+    public void setDomicilioFamiliarLocalidad(String domicilioFamiliarLocalidad) {
+        this.domicilioFamiliarLocalidad = domicilioFamiliarLocalidad;
+    }
+
+    public String getDomicilioFamiliarProvincia() {
+        return domicilioFamiliarProvincia;
+    }
+
+    public void setDomicilioFamiliarProvincia(String domicilioFamiliarProvincia) {
+        this.domicilioFamiliarProvincia = domicilioFamiliarProvincia;
     }
 }

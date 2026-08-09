@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO;
 
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CarreraBaseBis;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CondicionLaboral;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.Salud;
 
@@ -7,18 +8,14 @@ import java.math.BigDecimal;
 
 public class PostulacionBecaBaseBisResponse {
 
-    private BigDecimal ingresoFamiliar;
     private String tipoVivienda;
     private CondicionLaboral condicionLaboral;
-    private String carrera;
+    private CarreraBaseBis carrera;
     private Salud salud;
-    private boolean tieneDiscapacidad;
-    private String detalleDiscapacidad;
+    private boolean tieneCondicionSalud;
+    private String detalleCondicionSalud;
 
     public PostulacionBecaBaseBisResponse() {}
-
-    public BigDecimal getIngresoFamiliar() { return ingresoFamiliar; }
-    public void setIngresoFamiliar(BigDecimal ingresoFamiliar) { this.ingresoFamiliar = ingresoFamiliar; }
 
     public String getTipoVivienda() { return tipoVivienda; }
     public void setTipoVivienda(String tipoVivienda) { this.tipoVivienda = tipoVivienda; }
@@ -26,15 +23,25 @@ public class PostulacionBecaBaseBisResponse {
     public CondicionLaboral getCondicionLaboral() { return condicionLaboral; }
     public void setCondicionLaboral(CondicionLaboral condicionLaboral) { this.condicionLaboral = condicionLaboral; }
 
-    public String getCarrera() { return carrera; }
-    public void setCarrera(String carrera) { this.carrera = carrera; }
+    public CarreraBaseBis getCarrera() { return carrera; }
+    public void setCarrera(CarreraBaseBis carrera) { this.carrera = carrera; }
 
     public Salud getSalud() { return salud; }
     public void setSalud(Salud salud) { this.salud = salud; }
 
-    public boolean isTieneDiscapacidad() { return tieneDiscapacidad; }
-    public void setTieneDiscapacidad(boolean tieneDiscapacidad) { this.tieneDiscapacidad = tieneDiscapacidad; }
+    public boolean isTieneCondicionSalud() {
+        return tieneCondicionSalud;
+    }
 
-    public String getDetalleDiscapacidad() { return detalleDiscapacidad; }
-    public void setDetalleDiscapacidad(String detalleDiscapacidad) { this.detalleDiscapacidad = detalleDiscapacidad; }
+    public void setTieneCondicionSalud(boolean tieneCondicionSalud) {
+        this.tieneCondicionSalud = tieneCondicionSalud;
+    }
+
+    public String getDetalleCondicionSalud() {
+        return detalleCondicionSalud;
+    }
+
+    public void setDetalleCondicionSalud(String detalleCondicionSalud) {
+        this.detalleCondicionSalud = detalleCondicionSalud;
+    }
 }

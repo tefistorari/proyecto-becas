@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Postulaciones.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CarreraBaseBis;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CondicionLaboral;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.Salud;
 import jakarta.persistence.*;
@@ -19,9 +20,6 @@ public class PostulacionBecaBaseBis {
     @JoinColumn(name = "postulacion_id", nullable = false, unique = true)
     private Postulacion postulacion;
 
-    @Column(name = "ingreso_familiar", precision = 10, scale = 2)
-    private BigDecimal ingresoFamiliar;
-
     @Column(name = "tipo_vivienda", nullable = false, length = 500)
     private String tipoVivienda;
 
@@ -30,28 +28,28 @@ public class PostulacionBecaBaseBis {
     private CondicionLaboral condicionLaboral;
 
     @Column(nullable = false, length = 150)
-    private String carrera;
+    private CarreraBaseBis carrera;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Salud salud;
 
-    @Column(name = "tiene_discapacidad", nullable = false)
-    private boolean tieneDiscapacidad;
+    @Column(name = "tiene_condicion_salud", nullable = false)
+    private boolean tieneCondicionSalud;
 
-    @Column(name = "detalle_discapacidad", columnDefinition = "TEXT")
-    private String detalleDiscapacidad;
+    @Column(name = "detalle_condicion_salud", columnDefinition = "TEXT")
+    private String detalleCondicionSalud;
 
     public PostulacionBecaBaseBis() {
     }
 
-    public PostulacionBecaBaseBis(Postulacion postulacion, String tipoVivienda, CondicionLaboral condicionLaboral, String carrera, Salud salud, boolean tieneDiscapacidad) {
+    public PostulacionBecaBaseBis(Postulacion postulacion, String tipoVivienda, CondicionLaboral condicionLaboral, CarreraBaseBis carrera, Salud salud, boolean tieneCondicionSalud) {
         this.postulacion = postulacion;
         this.tipoVivienda = tipoVivienda;
         this.condicionLaboral = condicionLaboral;
         this.carrera = carrera;
         this.salud = salud;
-        this.tieneDiscapacidad = tieneDiscapacidad;
+        this.tieneCondicionSalud = tieneCondicionSalud;
     }
 
     public Long getId() {
@@ -70,14 +68,6 @@ public class PostulacionBecaBaseBis {
         this.postulacion = postulacion;
     }
 
-    public BigDecimal getIngresoFamiliar() {
-        return ingresoFamiliar;
-    }
-
-    public void setIngresoFamiliar(BigDecimal ingresoFamiliar) {
-        this.ingresoFamiliar = ingresoFamiliar;
-    }
-
     public String getTipoVivienda() {
         return tipoVivienda;
     }
@@ -94,11 +84,11 @@ public class PostulacionBecaBaseBis {
         this.condicionLaboral = condicionLaboral;
     }
 
-    public String getCarrera() {
+    public CarreraBaseBis getCarrera() {
         return carrera;
     }
 
-    public void setCarrera(String carrera) {
+    public void setCarrera(CarreraBaseBis carrera) {
         this.carrera = carrera;
     }
 
@@ -110,20 +100,20 @@ public class PostulacionBecaBaseBis {
         this.salud = salud;
     }
 
-    public void setTieneDiscapacidad(boolean tieneDiscapacidad) {
-        this.tieneDiscapacidad = tieneDiscapacidad;
+    public void setTieneDiscapacidad(boolean tieneCondicionSalud) {
+        this.tieneCondicionSalud = tieneCondicionSalud;
     }
 
-    public String getDetalleDiscapacidad() {
-        return detalleDiscapacidad;
+    public String getDetalleCondicionSalud() {
+        return detalleCondicionSalud;
     }
 
-    public void setDetalleDiscapacidad(String detalleDiscapacidad) {
-        this.detalleDiscapacidad = detalleDiscapacidad;
+    public void setDetalleCondicionSalud(String detalleCondicionSalud) {
+        this.detalleCondicionSalud = detalleCondicionSalud;
     }
 
-    public boolean isTieneDiscapacidad() {
-        return tieneDiscapacidad;
+    public boolean isTieneCondicionSalud() {
+        return tieneCondicionSalud;
     }
 
     @Override

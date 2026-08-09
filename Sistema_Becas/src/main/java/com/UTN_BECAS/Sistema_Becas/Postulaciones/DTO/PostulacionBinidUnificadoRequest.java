@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO;
 
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CarreraGrado;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CategoriaBinid;
 import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.DatosPersonalesRequest;
 import jakarta.validation.Valid;
@@ -21,7 +22,10 @@ public class PostulacionBinidUnificadoRequest {
     private CategoriaBinid categoriaBinid;
 
     @NotBlank(message = "La carrera de grado es obligatoria")
-    private String carreraGrado;
+    private CarreraGrado carreraGrado;
+
+    @NotNull(message = "Debe indicar si accedio a una beca BINID anterior")
+    private Boolean accedioABecaBinidAnterior;
 
     @NotNull(message = "El año de ingreso es obligatorio")
     private Integer anioIngreso;
@@ -57,8 +61,16 @@ public class PostulacionBinidUnificadoRequest {
     public CategoriaBinid getCategoriaBinid() { return categoriaBinid; }
     public void setCategoriaBinid(CategoriaBinid categoriaBinid) { this.categoriaBinid = categoriaBinid; }
 
-    public String getCarreraGrado() { return carreraGrado; }
-    public void setCarreraGrado(String carreraGrado) { this.carreraGrado = carreraGrado; }
+    public CarreraGrado getCarreraGrado() { return carreraGrado; }
+    public void setCarreraGrado(CarreraGrado carreraGrado) { this.carreraGrado = carreraGrado; }
+
+    public Boolean getAccedioABecaBinidAnterior() {
+        return accedioABecaBinidAnterior;
+    }
+
+    public void setAccedioABecaBinidAnterior(Boolean accedioABecaBinidAnterior) {
+        this.accedioABecaBinidAnterior = accedioABecaBinidAnterior;
+    }
 
     public Integer getAnioIngreso() { return anioIngreso; }
     public void setAnioIngreso(Integer anioIngreso) { this.anioIngreso = anioIngreso; }

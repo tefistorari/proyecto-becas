@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Postulaciones.Model;
 
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CarreraGrado;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.CategoriaBinid;
 import jakarta.persistence.*;
 
@@ -21,8 +22,12 @@ public class PostulacionBecaBinid {
     @Enumerated(EnumType.STRING)
     private CategoriaBinid categoriaBinid;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String carreraGrado;
+    private CarreraGrado carreraGrado;
+
+    @Column(name = "accedio_a_beca_binid_anterior", nullable = false)
+    private boolean accedioABecaBinidAnterior = false;
 
     @Column(nullable = false)
     private Integer anioIngreso;
@@ -51,7 +56,10 @@ public class PostulacionBecaBinid {
     public PostulacionBecaBinid() {
     }
 
-    public PostulacionBecaBinid(Postulacion postulacion, CategoriaBinid categoriaBinid, String carreraGrado, Integer anioIngreso, BigDecimal promedioConAplazos, String pregunta, String nombreDirectorProyecto, String apellidoDirectorProyecto) {
+    public PostulacionBecaBinid(Postulacion postulacion, CategoriaBinid categoriaBinid,
+                                CarreraGrado carreraGrado, Integer anioIngreso, BigDecimal promedioConAplazos,
+                                String pregunta, String nombreDirectorProyecto, String apellidoDirectorProyecto,
+                                boolean accedioABecaBinidAnterior) {
         this.postulacion = postulacion;
         this.categoriaBinid = categoriaBinid;
         this.carreraGrado = carreraGrado;
@@ -60,6 +68,7 @@ public class PostulacionBecaBinid {
         this.pregunta = pregunta;
         this.nombreDirectorProyecto = nombreDirectorProyecto;
         this.apellidoDirectorProyecto = apellidoDirectorProyecto;
+        this.accedioABecaBinidAnterior = accedioABecaBinidAnterior;
     }
 
     public Long getId() {
@@ -78,12 +87,20 @@ public class PostulacionBecaBinid {
         this.categoriaBinid = categoriaBinid;
     }
 
-    public String getCarreraGrado() {
+    public CarreraGrado getCarreraGrado() {
         return carreraGrado;
     }
 
-    public void setCarreraGrado(String carreraGrado) {
+    public void setCarreraGrado(CarreraGrado carreraGrado) {
         this.carreraGrado = carreraGrado;
+    }
+
+    public boolean isAccedioABecaBinidAnterior() {
+        return accedioABecaBinidAnterior;
+    }
+
+    public void setAccedioABecaBinidAnterior(boolean accedioABecaBinidAnterior) {
+        this.accedioABecaBinidAnterior = accedioABecaBinidAnterior;
     }
 
     public Integer getAnioIngreso() {

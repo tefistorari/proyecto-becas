@@ -4,5 +4,7 @@ public enum NivelMateria {
     PRIMER,
     SEGUNDO,
     TERCER,
-    CUARTO
+    CUARTO,
+    QUINTO,
+    SEXTO
 }
