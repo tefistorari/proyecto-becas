@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,6 +15,9 @@ export class Login {
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
+  errorMessage = signal('');
+  
+  
   loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
@@ -22,13 +25,17 @@ export class Login {
 
   ingresar(): void {
 
+    this.errorMessage.set('');
+
     if(this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
 
     const request = this.loginForm.getRawValue();
+
     this.authService.login(request).subscribe({
+
       next: (response) => {
         
         if(response.rol === 'ADMIN' ) {
@@ -43,8 +50,14 @@ export class Login {
 
         console.error("Error al iniciar sesión", err);
 
+        this.errorMessage.set(
+          err.error?.error ??
+          'El correo o la contraseña son incorrectos.'
+        );
+
       }
-    })
+
+    });
     
   }
 }
