@@ -31,7 +31,7 @@ export class Login {
     this.authService.login(request).subscribe({
       next: (response) => {
         
-        if(response.rol === 'ADMINISTRADOR' ) {
+        if(response.rol === 'ADMIN' ) {
           this.router.navigate(['/admin/dashboard']);
         }
         else{

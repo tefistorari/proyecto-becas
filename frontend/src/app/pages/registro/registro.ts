@@ -45,7 +45,7 @@ export class Registro {
 
     this.authService.register(request).subscribe({
       next: (response) => {
-        if(response.rol === 'ADMINISTRADOR') {
+        if(response.rol === 'ADMIN') {
 
           this.router.navigate(['/admin/dashboard']);
 
