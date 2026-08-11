@@ -4,6 +4,8 @@ import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaRequest;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Model.EstadoConvocatoria;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Mapper.ConvocatoriaMapper;
+import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
+import com.UTN_BECAS.Sistema_Becas.Auth.Repository.UsuarioRepository;
 import com.UTN_BECAS.Sistema_Becas.Becas.Model.Beca;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Model.Convocatoria;
 import com.UTN_BECAS.Sistema_Becas.Becas.Repository.BecaRepository;
@@ -12,6 +14,9 @@ import com.UTN_BECAS.Sistema_Becas.Core.Exception.RecursoNoEncontradoException;
 import com.UTN_BECAS.Sistema_Becas.Core.Exception.ReglaDeNegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +30,9 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
     @Autowired
     private BecaRepository becaRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @Override
     public ConvocatoriaResponse crear(ConvocatoriaRequest request) {
         Beca beca = becaRepository.findById(request.getBecaId())
@@ -34,13 +42,24 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
             throw new ReglaDeNegocioException("La fecha de cierre debe ser posterior a la fecha de apertura");
         }
 
+        Authentication authentication =
+        SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        Usuario usuario = usuarioRepository.findByEmail(email)
+            .orElseThrow(() -> 
+                        new RecursoNoEncontradoException("Usuario no encontrado"));
+
         Convocatoria convocatoria = new Convocatoria();
         convocatoria.setBeca(beca);
         convocatoria.setAnio(request.getAnio());
         convocatoria.setFechaApertura(request.getFechaApertura());
         convocatoria.setFechaCierre(request.getFechaCierre());
         convocatoria.setDescripcion(request.getDescripcion());
+        convocatoria.setCupoMaximo(request.getCupoMaximo());
         convocatoria.setEstado(EstadoConvocatoria.ABIERTA);
+        convocatoria.setCreadoPor(usuario);
 
         convocatoriaRepository.save(convocatoria);
         return ConvocatoriaMapper.toResponse(convocatoria);
@@ -86,6 +105,7 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
         convocatoria.setFechaApertura(request.getFechaApertura());
         convocatoria.setFechaCierre(request.getFechaCierre());
         convocatoria.setDescripcion(request.getDescripcion());
+        convocatoria.setCupoMaximo(request.getCupoMaximo());
 
         convocatoriaRepository.save(convocatoria);
         return ConvocatoriaMapper.toResponse(convocatoria);
