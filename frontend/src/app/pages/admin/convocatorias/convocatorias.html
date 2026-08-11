@@ -1,0 +1,39 @@
+<div class="convocatorias-page">
+    <div class="header">
+        <h2>Convocatorias</h2>
+        <button (click)="nuevaConvocatoria()">+ Nueva convocatoria</button>
+    </div>
+
+    @if (cargando()) {
+        <p>Cargando...</p>
+    } @else if (error()) {
+        <p class="error-message">{{ error() }}</p>
+    } @else if (convocatorias().length === 0) {
+        <p>No hay convocatorias todavía.</p>
+    } @else {
+        <table>
+            <thead>
+                <tr>
+                    <th>Beca</th>
+                    <th>Año</th>
+                    <th>Apertura</th>
+                    <th>Cierre</th>
+                    <th>Cupo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (c of convocatorias(); track c.id) {
+                    <tr>
+                        <td>{{ c.beca.nombre }}</td>
+                        <td>{{ c.anio }}</td>
+                        <td>{{ c.fechaApertura | date:'short' }}</td>
+                        <td>{{ c.fechaCierre | date:'short' }}</td>
+                        <td>{{ c.cupoMaximo }}</td>
+                        <td>{{ c.estado }}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
