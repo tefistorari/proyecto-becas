@@ -1,0 +1,44 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="convocatoria-form">
+    <div class="form-field">
+        <label>Beca</label>
+        <select formControlName="becaId">
+            <option [ngValue]="null">Seleccioná una beca</option>
+            @for (beca of becas(); track beca.id) {
+                <option [ngValue]="beca.id">{{ beca.nombre }}</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-field">
+        <label>Año</label>
+        <input type="number" formControlName="anio">
+    </div>
+
+    <div class="form-field">
+        <label>Fecha de apertura</label>
+        <input type="datetime-local" formControlName="fechaApertura">
+    </div>
+
+    <div class="form-field">
+        <label>Fecha de cierre</label>
+        <input type="datetime-local" formControlName="fechaCierre">
+    </div>
+
+    <div class="form-field">
+        <label>Descripción</label>
+        <textarea formControlName="descripcion"></textarea>
+    </div>
+
+    <div class="form-field">
+        <label>Cupo máximo</label>
+        <input type="number" formControlName="cupoMaximo">
+    </div>
+
+    @if (error()) {
+        <p class="error-message">{{ error() }}</p>
+    }
+
+    <button type="submit" class="submit-btn" [disabled]="guardando()">
+        {{ guardando() ? 'Guardando...' : 'Crear convocatoria' }}
+    </button>
+</form>
