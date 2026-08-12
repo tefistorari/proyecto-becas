@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
+import { passwordsMatchValidator } from '../../validators/auth.validator';
 
 @Component({
   selector: 'app-registro',
@@ -20,21 +21,10 @@ export class Registro {
 
     nombre: ['', Validators.required],
     apellido: ['', Validators.required],
-    email: [
-      '',
-      [
-        Validators.required,
-        Validators.email
-      ]
-    ],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(8)
-      ]
-    ]
-  });
+    email: ['',[Validators.required, Validators.email]],
+    password: ['',[Validators.required,Validators.minLength(8)]],
+    confirmarPassword: ['', Validators.required]
+  }, {validators: passwordsMatchValidator()});
 
   registrarse(): void {
 
@@ -45,7 +35,8 @@ export class Registro {
       return;
     }
 
-    const request = this.registerForm.getRawValue();
+    // el backend no espera "confirmarPassword", así que lo sacamos antes de mandar
+    const {confirmarPassword, ...request } = this.registerForm.getRawValue();
 
     this.authService.register(request).subscribe({
       next: (response) => {
@@ -56,6 +47,7 @@ export class Registro {
         } else {
 
           this.router.navigate(['/alumno/dashboard']);
+          
         }
       }, 
       error: (err) => {

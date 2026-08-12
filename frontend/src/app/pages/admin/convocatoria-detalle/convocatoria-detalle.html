@@ -1,0 +1,27 @@
+<!-- convocatoria-detalle.component.html -->
+<div class="detalle-page">
+    @if (cargando()) {
+        <p>Cargando...</p>
+    } @else if (error()) {
+        <p class="error-message">{{ error() }}</p>
+    } @else if (convocatoria(); as c) {
+        <button class="volver-btn" (click)="volver()">← Volver</button>
+
+        <h2>{{ c.beca.nombre }} — {{ c.anio }}</h2>
+
+        <span class="badge" [class]="c.estado.toLowerCase()">{{ c.estado }}</span>
+
+        <div class="info">
+            <p><strong>Apertura:</strong> {{ c.fechaApertura | date:'short' }}</p>
+            <p><strong>Cierre:</strong> {{ c.fechaCierre | date:'short' }}</p>
+            <p><strong>Cupo máximo:</strong> {{ c.cupoMaximo }}</p>
+            <p><strong>Descripción:</strong> {{ c.descripcion || '—' }}</p>
+        </div>
+
+        @if (c.estado === EstadoConvocatoria.ABIERTA) {
+            <button class="cancelar-btn" (click)="cancelar()" [disabled]="cancelando()">
+                {{ cancelando() ? 'Cancelando...' : 'Cancelar convocatoria' }}
+            </button>
+        }
+    }
+</div>

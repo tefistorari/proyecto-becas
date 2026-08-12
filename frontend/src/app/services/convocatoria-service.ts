@@ -3,6 +3,7 @@ import { inject, Service } from '@angular/core';
 import { ConvocatoriaRequest } from '../models/convocatoria-request';
 import { Observable } from 'rxjs';
 import { ConvocatoriaResponse } from '../models/convocatoria-response';
+import { EstadoConvocatoria } from '../models/estado-convocatoria';
 
 @Service()
 export class ConvocatoriaService {
@@ -15,5 +16,18 @@ export class ConvocatoriaService {
 
     listarTodas(): Observable<ConvocatoriaResponse[]> {
         return this.http.get<ConvocatoriaResponse[]>(this.API_URL);
+    }
+
+    buscarPorId(id: number): Observable<ConvocatoriaResponse> {
+        return this.http.get<ConvocatoriaResponse>(`${this.API_URL}/${id}`);
+    }
+
+    //Backend espera RequestParam por eso se manda null y se pasa estado como query param
+    cambiarEstado(id: number, estado: EstadoConvocatoria): Observable<ConvocatoriaResponse> {
+        return this.http.put<ConvocatoriaResponse>(
+            `${this.API_URL}/${id}/estado`,
+            null,
+            {params: {estado}}
+        )
     }
 }

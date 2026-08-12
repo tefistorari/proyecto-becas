@@ -12,6 +12,7 @@ import { Postulaciones } from './pages/admin/postulaciones/postulaciones';
 import { Convocatorias } from './pages/admin/convocatorias/convocatorias';
 import { DashboardAlumno } from './pages/alumno/dashboard-alumno/dashboard-alumno';
 import { ConvocatoriaForm } from './pages/admin/convocatoria-form/convocatoria-form';
+import { ConvocatoriaDetalle } from './pages/admin/convocatoria-detalle/convocatoria-detalle';
 
 
 export const routes: Routes = [
@@ -30,6 +31,7 @@ export const routes: Routes = [
     {path: 'admin/postulaciones', component: Postulaciones},
     {path: 'admin/convocatorias', component: Convocatorias},
     {path: 'admin/convocatorias/nueva', component: ConvocatoriaForm},
+    {path: 'admin/convocatorias/:id', component: ConvocatoriaDetalle},
 
     {path: '**', redirectTo: ''}
 ];
