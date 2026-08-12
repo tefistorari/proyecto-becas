@@ -1,0 +1,66 @@
+/* convocatoria-detalle.component.css */
+.detalle-page {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.volver-btn {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    margin: 0 0 0.5rem 0;
+    color: #1f2937;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.badge.abierta { background: #dcfce7; color: #16a34a; }
+.badge.cerrada { background: #f3f4f6; color: #6b7280; }
+.badge.cancelada { background: #fee2e2; color: #dc2626; }
+
+.info p {
+    margin: 0.5rem 0;
+    color: #374151;
+}
+
+.cancelar-btn {
+    margin-top: 1.5rem;
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancelar-btn:hover:not(:disabled) {
+    background: #b91c1c;
+}
+
+.cancelar-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: #dc2626;
+}

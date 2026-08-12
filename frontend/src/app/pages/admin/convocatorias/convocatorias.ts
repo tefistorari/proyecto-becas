@@ -39,4 +39,7 @@ export class Convocatorias implements OnInit {
     this.router.navigate(['admin/convocatorias/nueva']);
   }
   
+  verDetalle(id: number): void {
+    this.router.navigate(['/admin/convocatorias', id]);
+  }
 }

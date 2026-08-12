@@ -81,6 +81,29 @@
             
         </div>
 
+        <div class="form-field">
+
+            <input type="password"
+            id="confirmarPassword"
+            placeholder="Repetir contraseña"
+            formControlName="confirmarPassword">
+
+            @if (registerForm.controls.confirmarPassword.touched &&
+            registerForm.controls.confirmarPassword.hasError('required')) {
+                <small class="field-error">
+                    Repetí la contraseña.
+                </small>
+            }
+
+            @if (registerForm.controls.confirmarPassword.touched &&
+            registerForm.hasError('passwordsNoCoinciden')) {
+                <small class="field-error">
+                    Las contraseñas no coinciden.
+                </small>
+            }
+            
+        </div>
+
         @if(errorMessage()) {
             <div class="error-message">
                 {{errorMessage()}}

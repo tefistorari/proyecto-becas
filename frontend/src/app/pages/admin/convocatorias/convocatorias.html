@@ -24,7 +24,7 @@
             </thead>
             <tbody>
                 @for (c of convocatorias(); track c.id) {
-                    <tr>
+                    <tr (click)="verDetalle(c.id)" style="cursor: pointer;">
                         <td>{{ c.beca.nombre }}</td>
                         <td>{{ c.anio }}</td>
                         <td>{{ c.fechaApertura | date:'short' }}</td>
