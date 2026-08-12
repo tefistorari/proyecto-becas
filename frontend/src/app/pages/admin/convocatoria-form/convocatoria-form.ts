@@ -5,6 +5,7 @@ import { ConvocatoriaService } from '../../../services/convocatoria-service';
 import { BecaService } from '../../../services/beca-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { fechaNoPasadaValidator } from '../../../validators/convocatoria-validators';
 
 @Component({
   selector: 'app-convocatoria-form',
@@ -13,10 +14,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './convocatoria-form.css',
 })
 export class ConvocatoriaForm {
-   private fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
   private convocatoriaService = inject(ConvocatoriaService);
   private becaService = inject(BecaService);
   private router = inject(Router);
+
+  private readonly anioActual = new Date().getFullYear();
 
   becas = signal<BecaResponse[]>([]);
   error = signal<string | null>(null);
@@ -24,9 +27,9 @@ export class ConvocatoriaForm {
 
   form = this.fb.group({
     becaId: [null as number | null, Validators.required],
-    anio: [null as number | null, [Validators.required, Validators.min(1)]],
-    fechaApertura: ['', Validators.required],
-    fechaCierre: ['', Validators.required],
+    anio: [this.anioActual, [Validators.required, Validators.min(this.anioActual)]],
+    fechaApertura: ['', [Validators.required, fechaNoPasadaValidator()]],
+    fechaCierre: ['', [Validators.required, fechaNoPasadaValidator()]],
     descripcion: [''],
     cupoMaximo: [null as number | null, [Validators.required, Validators.min(1)]]
   });
@@ -48,7 +51,7 @@ export class ConvocatoriaForm {
     
     //Validacion extra que backend no chequea sola: cierre > apertura
     if(new Date(raw.fechaCierre!) <= new Date(raw.fechaApertura!)) {
-      this.error.set('La fecha de cierre debve ser posterior a la apertura');
+      this.error.set('La fecha de cierre debe ser posterior a la apertura');
       return;
     }
 
@@ -70,4 +73,22 @@ export class ConvocatoriaForm {
       }
     });
   }
+
+  // helper para el HTML: ¿mostrar error en este campo?
+    invalido(campo: string): boolean {
+        const control = this.form.get(campo);
+        return !!control && control.invalid && (control.touched || control.dirty);
+    }
+
+    mensajeError(campo: string): string {
+      const control = this.form.get(campo);
+      if(!control?.errors) return '';
+
+      if(control.errors['required']) return 'Este campo es obligatorio';
+      if(control.errors['min'] && campo === 'anio') return `El año no puede ser menor a ${this.anioActual}`;
+      if(control.errors['min']) return 'Debe ser mayor a cero';
+      if(control.errors['fechaPasada']) return 'La fecha no puede ser anterior a hoy';
+
+      return 'Valor invalido';
+    }
 }

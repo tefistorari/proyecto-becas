@@ -68,7 +68,7 @@ public class DataInitializer implements CommandLineRunner {
 
         if(becaRepository.findByTipoBeca(TipoBeca.BASE).isEmpty()) {
             Beca base = new Beca(
-                "Beca de Ayuda Social Economica",
+                "Beca de Ayuda Social Economica - BASE",
                 TipoBeca.BASE,
                 false
             );
@@ -83,7 +83,7 @@ public class DataInitializer implements CommandLineRunner {
 
         if (becaRepository.findByTipoBeca(TipoBeca.BIS).isEmpty()) {
             Beca bis = new Beca(
-                "Beca de Investigación/Servicio",
+                "Beca de Investigación/Servicio - BIS",
                 TipoBeca.BIS,
                 false
             );
@@ -98,7 +98,7 @@ public class DataInitializer implements CommandLineRunner {
 
         if (becaRepository.findByTipoBeca(TipoBeca.BINID).isEmpty()) {
             Beca binid = new Beca(
-                "Beca Binid",
+                "Beca de Iniciación en Investigación y Desarrollo - BINID",
                 TipoBeca.BINID,
                 true
             );

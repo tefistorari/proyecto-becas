@@ -1,5 +1,5 @@
 .convocatoria-form {
-    max-width: 480px;
+    max-width: 520px;
     margin: 2rem auto;
     padding: 2rem;
     background: #ffffff;
@@ -8,6 +8,20 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+}
+
+.convocatoria-form h2 {
+    margin: 0 0 0.5rem 0;
+    color: #1f2937;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-row .form-field {
+    flex: 1;
 }
 
 .form-field {
@@ -40,9 +54,19 @@
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
 }
 
+.form-field input.invalid,
+.form-field select.invalid {
+    border-color: #dc2626;
+}
+
 .form-field textarea {
     resize: vertical;
     min-height: 80px;
+}
+
+.field-error {
+    color: #dc2626;
+    font-size: 0.8rem;
 }
 
 .error-message {
