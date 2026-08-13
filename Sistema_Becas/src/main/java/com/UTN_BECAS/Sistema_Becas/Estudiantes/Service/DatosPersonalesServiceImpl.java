@@ -47,6 +47,15 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         datosPersonales.setLocalidad(request.getLocalidad());
         datosPersonales.setProvincia(request.getProvincia());
         datosPersonales.setNacionalidad(request.getNacionalidad());
+        datosPersonales.setDomicilioFamiliarDistinto(request.getDomicilioFamiliarDistinto());
+        if (Boolean.TRUE.equals(request.getDomicilioFamiliarDistinto())) {
+            datosPersonales.setDomicilioFamiliarCalle(request.getDomicilioFamiliarCalle());
+            datosPersonales.setDomicilioFamiliarNumero(request.getDomicilioFamiliarNumero());
+            datosPersonales.setDomicilioFamiliarPisoDepto(request.getDomicilioFamiliarPisoDepto());
+            datosPersonales.setDomicilioFamiliarCodigoPostal(request.getDomicilioFamiliarCodigoPostal());
+            datosPersonales.setDomicilioFamiliarLocalidad(request.getDomicilioFamiliarLocalidad());
+            datosPersonales.setDomicilioFamiliarProvincia(request.getDomicilioFamiliarProvincia());
+        }
 
         datosPersonalesRepository.save(datosPersonales);
         return DatosPersonalesMapper.toResponse(datosPersonales);
@@ -75,6 +84,15 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         datosPersonales.setLocalidad(request.getLocalidad());
         datosPersonales.setProvincia(request.getProvincia());
         datosPersonales.setNacionalidad(request.getNacionalidad());
+        datosPersonales.setDomicilioFamiliarDistinto(request.getDomicilioFamiliarDistinto());
+        if (Boolean.TRUE.equals(request.getDomicilioFamiliarDistinto())) {
+            datosPersonales.setDomicilioFamiliarCalle(request.getDomicilioFamiliarCalle());
+            datosPersonales.setDomicilioFamiliarNumero(request.getDomicilioFamiliarNumero());
+            datosPersonales.setDomicilioFamiliarPisoDepto(request.getDomicilioFamiliarPisoDepto());
+            datosPersonales.setDomicilioFamiliarCodigoPostal(request.getDomicilioFamiliarCodigoPostal());
+            datosPersonales.setDomicilioFamiliarLocalidad(request.getDomicilioFamiliarLocalidad());
+            datosPersonales.setDomicilioFamiliarProvincia(request.getDomicilioFamiliarProvincia());
+        }
 
         datosPersonalesRepository.save(datosPersonales);
         return DatosPersonalesMapper.toResponse(datosPersonales);

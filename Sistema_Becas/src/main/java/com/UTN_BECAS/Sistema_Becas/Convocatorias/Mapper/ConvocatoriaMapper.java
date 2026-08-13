@@ -15,6 +15,10 @@ public class ConvocatoriaMapper {
         response.setDescripcion(convocatoria.getDescripcion());
         response.setEstado(convocatoria.getEstado());
         response.setBeca(BecaMapper.toResponse(convocatoria.getBeca()));
+        response.setCupoMaximo(convocatoria.getCupoMaximo());
+        if (convocatoria.getInforme() != null){
+            response.setInforme(InformeConvocatoriaMapper.toResponse(convocatoria.getInforme()));
+        }
         return response;
     }
 }

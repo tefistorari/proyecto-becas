@@ -19,6 +19,13 @@ public class DatosPersonalesMapper {
         response.setLocalidad(datosPersonales.getLocalidad());
         response.setProvincia(datosPersonales.getProvincia());
         response.setNacionalidad(datosPersonales.getNacionalidad());
+        response.setDomicilioFamiliarDistinto(datosPersonales.isDomicilioFamiliarDistinto());
+        response.setDomicilioFamiliarCalle(datosPersonales.getDomicilioFamiliarCalle());
+        response.setDomicilioFamiliarNumero(datosPersonales.getDomicilioFamiliarNumero());
+        response.setDomicilioFamiliarPisoDepto(datosPersonales.getDomicilioFamiliarPisoDepto());
+        response.setDomicilioFamiliarCodigoPostal(datosPersonales.getDomicilioFamiliarCodigoPostal());
+        response.setDomicilioFamiliarLocalidad(datosPersonales.getDomicilioFamiliarLocalidad());
+        response.setDomicilioFamiliarProvincia(datosPersonales.getDomicilioFamiliarProvincia());
         return response;
     }
 }

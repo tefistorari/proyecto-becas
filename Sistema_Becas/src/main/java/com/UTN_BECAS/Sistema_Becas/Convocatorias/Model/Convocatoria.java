@@ -41,6 +41,9 @@ public class Convocatoria {
     @JoinColumn(name = "creado_por", nullable = false)
     private Usuario creadoPor;
 
+    @OneToOne(mappedBy = "convocatoria", cascade = CascadeType.ALL)
+    private InformeConvocatoria informe;
+
     public Convocatoria(){
     }
 
@@ -125,6 +128,14 @@ public class Convocatoria {
 
     public void setCreadoPor(Usuario creadoPor) {
         this.creadoPor = creadoPor;
+    }
+
+    public InformeConvocatoria getInforme() {
+        return informe;
+    }
+
+    public void setInforme(InformeConvocatoria informe) {
+        this.informe = informe;
     }
 
     @Override

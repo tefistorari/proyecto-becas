@@ -48,6 +48,7 @@ public class PostulacionMapper {
             binidResponse.setPregunta(binid.getPregunta());
             binidResponse.setNombreDirectorProyecto(binid.getNombreDirectorProyecto());
             binidResponse.setApellidoDirectorProyecto(binid.getApellidoDirectorProyecto());
+            binidResponse.setAccedioABecaBinidAnterior(binid.isAccedioABecaBinidAnterior());
             response.setBecaBinid(binidResponse);
         }
         return response;
@@ -79,6 +80,13 @@ public class PostulacionMapper {
             dpResponse.setLocalidad(dp.getLocalidad());
             dpResponse.setProvincia(dp.getProvincia());
             dpResponse.setNacionalidad(dp.getNacionalidad());
+            dpResponse.setDomicilioFamiliarDistinto(dp.isDomicilioFamiliarDistinto());
+            dpResponse.setDomicilioFamiliarCalle(dp.getDomicilioFamiliarCalle());
+            dpResponse.setDomicilioFamiliarNumero(dp.getDomicilioFamiliarNumero());
+            dpResponse.setDomicilioFamiliarPisoDepto(dp.getDomicilioFamiliarPisoDepto());
+            dpResponse.setDomicilioFamiliarCodigoPostal(dp.getDomicilioFamiliarCodigoPostal());
+            dpResponse.setDomicilioFamiliarLocalidad(dp.getDomicilioFamiliarLocalidad());
+            dpResponse.setDomicilioFamiliarProvincia(dp.getDomicilioFamiliarProvincia());
             response.setDatosPersonalesHistorial(dpResponse);
         }
 
@@ -137,7 +145,4 @@ public class PostulacionMapper {
 
         return response;
     }
-
 }
-
-

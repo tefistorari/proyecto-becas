@@ -1,5 +1,7 @@
 package com.UTN_BECAS.Sistema_Becas.Postulaciones.Service;
 
+import com.UTN_BECAS.Sistema_Becas.Archivos.Model.TipoArchivo;
+import com.UTN_BECAS.Sistema_Becas.Archivos.Repository.ArchivoRepository;
 import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
 import com.UTN_BECAS.Sistema_Becas.Auth.Repository.UsuarioRepository;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Model.Convocatoria;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +60,12 @@ public class PostulacionServiceImpl implements PostulacionService {
     @Autowired
     private MateriasARendirRepository materiasARendirRepository;
 
+    @Autowired
+    private HistorialBecaBinidRepository historialBecaBinidRepository;
+
+    @Autowired
+    private ArchivoRepository archivoRepository;
+
     @Override
     @Transactional
     public PostulacionResponse postularBaseBis(Long usuarioId, PostulacionBaseBisUnificadoRequest request) {
@@ -78,7 +87,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         Postulacion postulacion = new Postulacion();
         postulacion.setUsuario(usuario);
         postulacion.setConvocatoria(convocatoria);
-        postulacion.setEstado(EstadoPostulacion.PENDIENTE);
+        postulacion.setEstado(EstadoPostulacion.BORRADOR);
         postulacionRepository.save(postulacion);
 
         // 2.Datos personales historial
@@ -176,22 +185,36 @@ public class PostulacionServiceImpl implements PostulacionService {
             throw new ConflictoException("Ya te postulaste a esta convocatoria");
         }
 
-        if(request.getCategoriaBinid() == CategoriaBinid.GRADUADO && request.getAnioEgreso() == null) {
-            throw new ReglaDeNegocioException("El año del egreso es obligatorio para graduados");
+        if((request.getCategoriaBinid() == CategoriaBinid.GRADUADO ||
+                request.getCategoriaBinid() == CategoriaBinid.EGRESADO) &&
+                request.getAnioEgreso() == null) {
+            throw new ReglaDeNegocioException("El año del egreso es obligatorio para egresados y graduados");
+        }
+
+        if(request.getAnioEgreso() != null) {
+            int anioActual = LocalDate.now().getYear();
+            if (request.getAnioEgreso() < anioActual - 3) {
+                throw new ReglaDeNegocioException("Solo pueden postularse hasta 3 años después de recibido el título");
+            }
         }
 
         if(request.getCategoriaBinid() == CategoriaBinid.ESTUDIANTE_AVANZADO && request.getMateriasCursadas() == null) {
             throw new ReglaDeNegocioException("Las materias cursadas son obligatorias para estudiantes avanzados");
         }
 
-        // 1.Crear postulacion
+        long renovaciones = historialBecaBinidRepository.countByUsuarioId(usuarioId);
+        if(renovaciones >= 2) {
+            throw new ReglaDeNegocioException("Superaste el límite de renovaciones BINID");
+        }
+
+        // 1. Crear postulacion
         Postulacion postulacion = new Postulacion();
         postulacion.setUsuario(usuario);
         postulacion.setConvocatoria(convocatoria);
-        postulacion.setEstado(EstadoPostulacion.PENDIENTE);
+        postulacion.setEstado(EstadoPostulacion.BORRADOR);
         postulacionRepository.save(postulacion);
 
-        // 2.Datos personales historai
+        // 2. Datos personales historial
         DatosPersonalesRequest dp = request.getDatosPersonales();
         DatosPersonalesHistorial historial = new DatosPersonalesHistorial();
         historial.setPostulacion(postulacion);
@@ -208,10 +231,19 @@ public class PostulacionServiceImpl implements PostulacionService {
         historial.setLocalidad(dp.getLocalidad());
         historial.setProvincia(dp.getProvincia());
         historial.setNacionalidad(dp.getNacionalidad());
+        historial.setDomicilioFamiliarDistinto(dp.getDomicilioFamiliarDistinto());
+        if(Boolean.TRUE.equals(dp.getDomicilioFamiliarDistinto())) {
+            historial.setDomicilioFamiliarCalle(dp.getDomicilioFamiliarCalle());
+            historial.setDomicilioFamiliarNumero(dp.getDomicilioFamiliarNumero());
+            historial.setDomicilioFamiliarPisoDepto(dp.getDomicilioFamiliarPisoDepto());
+            historial.setDomicilioFamiliarCodigoPostal(dp.getDomicilioFamiliarCodigoPostal());
+            historial.setDomicilioFamiliarLocalidad(dp.getDomicilioFamiliarLocalidad());
+            historial.setDomicilioFamiliarProvincia(dp.getDomicilioFamiliarProvincia());
+        }
         datosPersonalesHistorialRepository.save(historial);
         postulacion.setDatosPersonalesHistorial(historial);
 
-        // 3.Datos especificos BINID
+        // 3. Datos especificos BINID
         PostulacionBecaBinid binid = new PostulacionBecaBinid();
         binid.setPostulacion(postulacion);
         binid.setCategoriaBinid(request.getCategoriaBinid());
@@ -224,7 +256,12 @@ public class PostulacionServiceImpl implements PostulacionService {
         binid.setPregunta(request.getPregunta());
         binid.setNombreDirectorProyecto(request.getNombreDirectorProyecto());
         binid.setApellidoDirectorProyecto(request.getApellidoDirectorProyecto());
+        binid.setAccedioABecaBinidAnterior(request.getAccedioABecaBinidAnterior());
         binidRepository.save(binid);
+
+        // 4. Guardar historial BINID
+        HistorialBecaBinid historialBinid = new HistorialBecaBinid(usuario, postulacion);
+        historialBecaBinidRepository.save(historialBinid);
 
         return PostulacionMapper.toResponse(postulacion, binid);
     }
@@ -279,6 +316,10 @@ public class PostulacionServiceImpl implements PostulacionService {
     public PostulacionResponse buscarPorId(Long id) {
         Postulacion postulacion = postulacionRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
+        PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(id).orElse(null);
+        PostulacionBecaBinid binid = binidRepository.findByPostulacionId(id).orElse(null);
+        if (baseBis != null) return PostulacionMapper.toResponse(postulacion, baseBis);
+        if (binid != null) return PostulacionMapper.toResponse(postulacion, binid);
         return PostulacionMapper.toResponse(postulacion);
     }
 
@@ -290,4 +331,62 @@ public class PostulacionServiceImpl implements PostulacionService {
         postulacionRepository.save(postulacion);
         return PostulacionMapper.toResponse(postulacion);
     }
+
+        @Override
+        @Transactional
+        public PostulacionResponse finalizar(Long postulacionId) {
+            Postulacion postulacion = postulacionRepository.findById(postulacionId)
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
+
+            if(postulacion.getEstado() != EstadoPostulacion.BORRADOR) {
+                throw new ReglaDeNegocioException("Solo se pueden finalizar postulaciones en estado BORRADOR");
+            }
+
+            List<TipoArchivo> archivosSubidos = archivoRepository.findByPostulacionId(postulacionId)
+                    .stream()
+                    .map(a -> a.getTipoArchivo())
+                    .collect(Collectors.toList());
+
+            boolean esBaseBis = baseBisRepository.findByPostulacionId(postulacionId).isPresent();
+            boolean esBinid = binidRepository.findByPostulacionId(postulacionId).isPresent();
+
+            if(esBaseBis) {
+                if(!archivosSubidos.contains(TipoArchivo.DNI)) {
+                    throw new ReglaDeNegocioException("Falta el archivo DNI obligatorio");
+                }
+            }
+
+            if(esBinid) {
+                List<TipoArchivo> obligatoriosBinid = List.of(
+                        TipoArchivo.DNI,
+                        TipoArchivo.NOTA_AVAL_DIRECTOR,
+                        TipoArchivo.CARTA_MOTIVACION,
+                        TipoArchivo.ANALITICO,
+                        TipoArchivo.CERTIFICADO_ALUMNO_REGULAR
+                );
+
+                List<TipoArchivo> faltantes = obligatoriosBinid.stream()
+                        .filter(tipo -> !archivosSubidos.contains(tipo))
+                        .collect(Collectors.toList());
+
+                if(!faltantes.isEmpty()) {
+                    throw new ReglaDeNegocioException("Faltan los siguientes archivos obligatorios: " + faltantes);
+                }
+            }
+
+            postulacion.setEstado(EstadoPostulacion.PENDIENTE);
+            postulacionRepository.save(postulacion);
+
+            if(esBaseBis) {
+                PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(postulacionId).orElse(null);
+                return PostulacionMapper.toResponse(postulacion, baseBis);
+            }
+
+            if(esBinid) {
+                PostulacionBecaBinid binid = binidRepository.findByPostulacionId(postulacionId).orElse(null);
+                return PostulacionMapper.toResponse(postulacion, binid);
+            }
+
+            return PostulacionMapper.toResponse(postulacion);
+        }
 }

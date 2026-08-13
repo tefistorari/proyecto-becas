@@ -50,6 +50,13 @@ public class PostulacionController {
         return ResponseEntity.ok(postulacionService.listarPorUsuario(usuarioId));
     }
 
+    @PreAuthorize("hasRole('ALUMNO')")
+    @PostMapping("/{postulacionId}/finalizar")
+    public ResponseEntity<PostulacionResponse> finalizar(
+            @PathVariable Long postulacionId) {
+        return ResponseEntity.ok(postulacionService.finalizar(postulacionId));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<PostulacionResponse>> listarTodas() {

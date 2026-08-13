@@ -10,6 +10,7 @@ import java.util.List;
 public interface PostulacionService {
     PostulacionResponse postularBaseBis(Long usuarioId, PostulacionBaseBisUnificadoRequest request);
     PostulacionResponse postularBinid(Long usuarioId, PostulacionBinidUnificadoRequest request);
+    PostulacionResponse finalizar(Long postulacionId);
     List<PostulacionResponse> listarPorUsuario(Long usuarioId);
     List<PostulacionResponse> listarTodas();
     List<PostulacionResponse> listarPorEstado(EstadoPostulacion estado);

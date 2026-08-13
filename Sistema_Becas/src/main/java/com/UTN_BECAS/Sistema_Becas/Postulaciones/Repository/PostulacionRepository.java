@@ -20,4 +20,8 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, Long> 
     Optional<Postulacion> findByUsuarioIdAndConvocatoriaId(Long usuarioId, Long convocatoriaId);
 
     boolean existsByUsuarioIdAndConvocatoriaId(Long usuarioId, Long convocatoriaId);
+
+    long countByConvocatoriaId(Long convocatoriaId);
+
+    long countByConvocatoriaIdAndEstado(Long convocatoriaId, EstadoPostulacion estado);
 }
