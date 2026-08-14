@@ -18,7 +18,7 @@
             <p><strong>Descripción:</strong> {{ c.descripcion || '—' }}</p>
         </div>
 
-        @if (c.estado === EstadoConvocatoria.ABIERTA) {
+        @if (c.estado === EstadoConvocatoria.ABIERTA || c.estado === EstadoConvocatoria.PROGRAMADA) {
             <button class="cancelar-btn" (click)="cancelar()" [disabled]="cancelando()">
                 {{ cancelando() ? 'Cancelando...' : 'Cancelar convocatoria' }}
             </button>

@@ -20,7 +20,13 @@ public class ConvocatoriaScheduler {
     @Autowired
     private NotificacionServiceImpl notificacionService;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    // Corre cada minuto (en vez de una vez al día) para soportar convocatorias
+    // con ventanas de apertura/cierre acotadas a horas dentro del mismo día
+    // (ej: abre 13hs, cierra 23hs). Con un cron diario a medianoche, el cambio
+    // de estado quedaría desfasado hasta un día entero. El costo de correr
+    // cada minuto es despreciable: son dos SELECT simples por estado sobre
+    // una tabla chica, con UPDATE solo cuando efectivamente hay algo que cambiar.
+    @Scheduled(cron = "0 * * * * *")
     public void cerrarConvocatoriasVencidas() {
         List<Convocatoria> convocatorias = convocatoriaRepository
                 .findByEstado(EstadoConvocatoria.ABIERTA);
@@ -41,4 +47,26 @@ public class ConvocatoriaScheduler {
             }
         }
     }
+
+    // Ídem: corre cada minuto por la misma razón (ventanas de apertura acotadas a horas)
+    @Scheduled(cron = "0 * * * * *")
+    public void abrirConvocatoriasProgramadas() {
+        List<Convocatoria> programadas = convocatoriaRepository
+                .findByEstado(EstadoConvocatoria.PROGRAMADA);
+
+        LocalDateTime ahora = LocalDateTime.now();
+
+        for(Convocatoria convocatoria : programadas) {
+          if(!convocatoria.getFechaApertura().isAfter(ahora)) {
+            convocatoria.setEstado(EstadoConvocatoria.ABIERTA);
+            convocatoriaRepository.save(convocatoria);
+
+            notificacionService.crearNotificacion(
+                convocatoria.getCreadoPor().getId(), 
+                "La convocatoria de " + convocatoria.getBeca().getNombre() + 
+                " del año " + convocatoria.getAnio() + " ha abierto.");
+          }
+        }
+    }
+
 }

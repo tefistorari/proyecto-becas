@@ -6,6 +6,7 @@
 
     <div class="filtros">
         <button [class.activo]="filtroEstado() ==='TODAS'" (click)="setFiltro('TODAS')">Todas</button>
+        <button [class.activo]="filtroEstado() === EstadoConvocatoria.PROGRAMADA" (click)="setFiltro(EstadoConvocatoria.PROGRAMADA)">Programadas</button>
         <button [class.activo]="filtroEstado() === EstadoConvocatoria.ABIERTA" (click)="setFiltro(EstadoConvocatoria.ABIERTA)">Abiertas</button>
         <button [class.activo]="filtroEstado() === EstadoConvocatoria.CERRADA" (click)="setFiltro(EstadoConvocatoria.CERRADA)">Cerradas</button>
         <button [class.activo]="filtroEstado() === EstadoConvocatoria.CANCELADA" (click)="setFiltro(EstadoConvocatoria.CANCELADA)">Canceladas</button>
