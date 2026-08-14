@@ -4,12 +4,20 @@
         <button (click)="nuevaConvocatoria()">+ Nueva convocatoria</button>
     </div>
 
+    <div class="filtros">
+        <button [class.activo]="filtroEstado() ==='TODAS'" (click)="setFiltro('TODAS')">Todas</button>
+        <button [class.activo]="filtroEstado() === EstadoConvocatoria.PROGRAMADA" (click)="setFiltro(EstadoConvocatoria.PROGRAMADA)">Programadas</button>
+        <button [class.activo]="filtroEstado() === EstadoConvocatoria.ABIERTA" (click)="setFiltro(EstadoConvocatoria.ABIERTA)">Abiertas</button>
+        <button [class.activo]="filtroEstado() === EstadoConvocatoria.CERRADA" (click)="setFiltro(EstadoConvocatoria.CERRADA)">Cerradas</button>
+        <button [class.activo]="filtroEstado() === EstadoConvocatoria.CANCELADA" (click)="setFiltro(EstadoConvocatoria.CANCELADA)">Canceladas</button>
+    </div>
+
     @if (cargando()) {
         <p>Cargando...</p>
     } @else if (error()) {
         <p class="error-message">{{ error() }}</p>
-    } @else if (convocatorias().length === 0) {
-        <p>No hay convocatorias todavía.</p>
+    } @else if (convocatoriasFiltradas().length === 0) {
+        <p>No hay convocatorias para mostrar.</p>
     } @else {
         <table>
             <thead>
@@ -23,12 +31,12 @@
                 </tr>
             </thead>
             <tbody>
-                @for (c of convocatorias(); track c.id) {
+                @for (c of convocatoriasFiltradas(); track c.id) {
                     <tr (click)="verDetalle(c.id)" style="cursor: pointer;">
                         <td>{{ c.beca.nombre }}</td>
                         <td>{{ c.anio }}</td>
                         <td>{{ c.fechaApertura | date:'short' }}</td>
-                        <td>{{ c.fechaCierre | date:'short' }}</td>
+                        <td>{{ c.fechaCierre | date: 'short'}}</td>
                         <td>{{ c.cupoMaximo }}</td>
                         <td>{{ c.estado }}</td>
                     </tr>

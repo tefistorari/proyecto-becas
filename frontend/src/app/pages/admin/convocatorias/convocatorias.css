@@ -77,3 +77,30 @@ tbody tr:last-child td {
 tbody tr:hover {
     background: #f9fafb;
 }
+
+.filtros {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.filtros button {
+    padding: 0.4rem 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.15s;
+}
+
+.filtros button:hover {
+    border-color: #3b82f6;
+}
+
+.filtros button.activo {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+}

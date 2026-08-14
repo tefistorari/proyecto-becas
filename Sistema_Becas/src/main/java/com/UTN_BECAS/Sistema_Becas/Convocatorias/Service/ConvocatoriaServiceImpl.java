@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -72,7 +73,11 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
         convocatoria.setFechaApertura(request.getFechaApertura());
         convocatoria.setFechaCierre(request.getFechaCierre());
         convocatoria.setDescripcion(request.getDescripcion());
-        convocatoria.setEstado(EstadoConvocatoria.ABIERTA);
+        convocatoria.setEstado(
+            request.getFechaApertura().isAfter(LocalDateTime.now())
+            ? EstadoConvocatoria.PROGRAMADA
+            : EstadoConvocatoria.ABIERTA
+        );
         convocatoria.setCupoMaximo(request.getCupoMaximo());
         convocatoria.setCreadoPor(admin);
 

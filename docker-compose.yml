@@ -23,6 +23,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       UPLOAD_DIR: /app/uploads
+      TZ: America/Argentina/Buenos_Aires
     ports:
       - "8080:8080"
     volumes:
