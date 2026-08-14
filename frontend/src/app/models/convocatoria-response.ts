@@ -1,5 +1,6 @@
 import { BecaResponse } from "./beca-response";
 import { EstadoConvocatoria } from "./estado-convocatoria";
+import { InformeConvocatoriaResponse } from "./informe-convocatoria-response";
 
 export interface ConvocatoriaResponse {
     id: number;
@@ -10,4 +11,5 @@ export interface ConvocatoriaResponse {
     estado: EstadoConvocatoria;
     beca: BecaResponse;
     cupoMaximo: number;
+    informe?: InformeConvocatoriaResponse;
 }
