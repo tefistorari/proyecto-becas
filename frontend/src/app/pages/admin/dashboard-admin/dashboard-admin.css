@@ -201,16 +201,6 @@
     text-align: center;
 }
 
-.modal-label {
-    display: block;
-    margin-bottom: 0.75rem;
-
-    color: #68768a;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-}
-
 .modal h2 {
     margin: 0 0 0.6rem;
 
