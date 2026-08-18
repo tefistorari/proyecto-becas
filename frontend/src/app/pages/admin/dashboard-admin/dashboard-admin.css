@@ -1,0 +1,298 @@
+/* =========================
+   PÁGINA
+   ========================= */
+
+.dashboard-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+}
+
+
+/* =========================
+   ENCABEZADO
+   ========================= */
+
+.dashboard-header {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid #d9dee7;
+    padding-bottom: 1.5rem;
+    text-align: center;
+}
+
+.eyebrow {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: #52627a;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    color: #172b4d;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.dashboard-header p {
+    margin: 0.5rem 0 0;
+    color: #68768a;
+    font-size: 0.95rem;
+}
+
+
+/* =========================
+   OPCIONES DEL PANEL
+   ========================= */
+
+.links-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dashboard-link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 100%;
+    max-width: 500px;
+    min-height: 100px;
+
+    padding: 1.25rem 1.5rem;
+
+    background: #ffffff;
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+
+    text-decoration: none;
+    color: #172b4d;
+
+    transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease;
+}
+
+.dashboard-link:hover {
+    border-color: #8c9bb0;
+    background: #f8fafc;
+}
+
+
+/* =========================
+   ICONO
+   ========================= */
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 42px;
+    height: 42px;
+    margin-right: 1.25rem;
+
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+
+    background: #f5f7fa;
+}
+
+.icon {
+    color: #274c77;
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+
+/* =========================
+   TEXTO DE LAS OPCIONES
+   ========================= */
+
+.link-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.link-title {
+    color: #172b4d;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.link-description {
+    color: #68768a;
+    font-size: 0.85rem;
+    line-height: 1.45;
+}
+
+
+/* =========================
+   CERRAR SESIÓN
+   ========================= */
+
+.logout-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.logout-btn {
+    padding: 8px 16px;
+
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #46566d;
+
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.logout-btn:hover {
+    background: #f5f7fa;
+    border-color: #9aa8ba;
+}
+
+
+/* =========================
+   MODAL
+   ========================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(15, 23, 42, 0.45);
+
+    z-index: 1000;
+}
+
+.modal {
+    width: min(400px, calc(100% - 32px));
+
+    padding: 2rem;
+
+    background: #ffffff;
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.15);
+
+    text-align: center;
+}
+
+.modal-label {
+    display: block;
+    margin-bottom: 0.75rem;
+
+    color: #68768a;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.modal h2 {
+    margin: 0 0 0.6rem;
+
+    color: #172b4d;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.modal p {
+    margin: 0;
+
+    color: #68768a;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+
+    margin-top: 1.75rem;
+}
+
+.modal-actions button {
+    padding: 9px 18px;
+
+    border-radius: 5px;
+
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   BOTÓN CANCELAR
+   ========================= */
+
+.btn-cancel {
+    border: 1px solid #cbd4df;
+    background: #ffffff;
+    color: #46566d;
+}
+
+.btn-cancel:hover {
+    background: #f5f7fa;
+}
+
+
+/* =========================
+   BOTÓN CONFIRMAR
+   ========================= */
+
+.btn-confirm {
+    border: 1px solid #274c77;
+    background: #274c77;
+    color: #ffffff;
+}
+
+.btn-confirm:hover {
+    background: #1e3a5f;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 700px) {
+
+    .dashboard-page {
+        padding: 2.5rem 1.25rem;
+    }
+
+    .dashboard-link {
+        min-height: auto;
+    }
+
+    .logout-container {
+        justify-content: center;
+    }
+}

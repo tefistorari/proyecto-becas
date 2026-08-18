@@ -1,1 +1,100 @@
-<p>dashboard-admin works!</p>
+<main class="dashboard-page">
+
+    <div class="dashboard-header">
+        <span class="eyebrow">ADMINISTRACIÓN</span>
+
+        <h1>Panel de administración</h1>
+
+        <p>Sistema de gestión de becas</p>
+    </div>
+
+    <div class="links-grid">
+
+        <a routerLink="/admin/convocatorias" class="dashboard-link">
+            <div class="icon-container">
+                <span class="icon">▤</span>
+            </div>
+
+            <div class="link-content">
+                <span class="link-title">Convocatorias</span>
+
+                <span class="link-description">
+                    Gestionar convocatorias de becas
+                </span>
+            </div>
+        </a>
+
+        <a routerLink="/admin/postulaciones" class="dashboard-link">
+            <div class="icon-container">
+                <span class="icon">☷</span>
+            </div>
+
+            <div class="link-content">
+                <span class="link-title">Postulaciones</span>
+                
+                <span class="link-description">
+                    Consultar y gestionar postulaciones
+                </span>
+            </div>
+        </a>
+
+        <a routerLink="/admin/cambioPassword" class="dashboard-link">
+            <div class="icon-container">
+                <span class="icon">♙</span>
+            </div>
+
+            <div class="link-content">
+                <span class="link-title">Seguridad</span>
+
+                <span class="link-description">
+                    Cambiar constraseña de acceso
+                </span>
+            </div>
+        </a>
+    </div>
+
+    <div class="logout-container">
+
+        <button
+            type="button"
+            class="logout-btn"
+            (click)="confirmLogout()">
+            Cerrar sesión
+        </button>
+    </div>
+
+    @if (showLogoutModal()) {
+        <div class="modal-overlay">
+
+            <div class="modal">
+
+                <span class="modal-label">Confirmación</span>
+
+                <h2>¿Cerrar sesión?</h2>
+
+                <p>
+                    ¿Estas seguro de que querés cerrar tu sesión?
+                </p>
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        (click)="cancelLogout()">
+                        Cancelar
+                    </button>
+                    
+                    <button
+                        type="button"
+                        class="btn-confirm"
+                        (click)="logout()">
+                        Cerrar sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    }
+
+</main>
