@@ -3,6 +3,7 @@ package com.UTN_BECAS.Sistema_Becas.Auth.Service;
 import com.UTN_BECAS.Sistema_Becas.Auth.DTO.LoginRequest;
 import com.UTN_BECAS.Sistema_Becas.Auth.DTO.RegisterRequest;
 import com.UTN_BECAS.Sistema_Becas.Auth.DTO.AuthResponse;
+import com.UTN_BECAS.Sistema_Becas.Auth.DTO.ChangePasswordRequest;
 import com.UTN_BECAS.Sistema_Becas.Auth.Model.NombreRol;
 import com.UTN_BECAS.Sistema_Becas.Auth.Model.Rol;
 import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
@@ -11,6 +12,8 @@ import com.UTN_BECAS.Sistema_Becas.Auth.Repository.UsuarioRepository;
 import com.UTN_BECAS.Sistema_Becas.Auth.Security.JwtUtil;
 import com.UTN_BECAS.Sistema_Becas.Core.Exception.ConflictoException;
 import com.UTN_BECAS.Sistema_Becas.Core.Exception.RecursoNoEncontradoException;
+import com.UTN_BECAS.Sistema_Becas.Core.Exception.ReglaDeNegocioException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -92,4 +95,22 @@ public class AuthServiceImpl implements AuthService {
 
         return response;
     }
+
+    @Override
+    public void changePassword(Long usuarioId, ChangePasswordRequest request) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        if(!passwordEncoder.matches(request.getPasswordActual(), usuario.getPasswordHash())) {
+            throw new ReglaDeNegocioException("La contraseña actual es incorrecta");
+        }          
+        
+        if(passwordEncoder.matches(request.getPasswordNueva(), usuario.getPasswordHash())) {
+            throw new ReglaDeNegocioException("La nueva contraseña debe ser distinta a la actual");
+        }
+
+        usuario.setPasswordHash(passwordEncoder.encode(request.getPasswordNueva()));
+        usuarioRepository.save(usuario);
+    }
+
 }

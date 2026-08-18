@@ -1,19 +1,110 @@
+/* =========================
+   PÁGINA
+   ========================= */
+
+.convocatoria-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem;
+}
+
+
+/* =========================
+   FORMULARIO
+   ========================= */
+
 .convocatoria-form {
-    max-width: 520px;
-    margin: 2rem auto;
+    width: 100%;
+    box-sizing: border-box;
+
     padding: 2rem;
+
     background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
 }
 
+
+/* =========================
+   TÍTULO
+   ========================= */
+
 .convocatoria-form h2 {
-    margin: 0 0 0.5rem 0;
-    color: #1f2937;
+    margin: 0 0 0.5rem;
+
+    color: #172b4d;
+
+    font-size: 1.7rem;
+    font-weight: 600;
+
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #d9dee7;
 }
+
+
+/* =========================
+   CAMPOS
+   ========================= */
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-field label {
+    color: #46566d;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+
+/* =========================
+   INPUTS
+   ========================= */
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 0.65rem 0.75rem;
+
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #37475b;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    outline: none;
+
+    border-color: #274c77;
+
+    box-shadow: 0 0 0 2px rgba(39, 76, 119, 0.1);
+}
+
+
+/* =========================
+   FILA DE FECHAS
+   ========================= */
 
 .form-row {
     display: flex;
@@ -24,77 +115,109 @@
     flex: 1;
 }
 
-.form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
 
-.form-field label {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #333;
-}
-
-.form-field input,
-.form-field select,
-.form-field textarea {
-    padding: 0.6rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    font-family: inherit;
-}
-
-.form-field input:focus,
-.form-field select:focus,
-.form-field textarea:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
-}
-
-.form-field input.invalid,
-.form-field select.invalid {
-    border-color: #dc2626;
-}
+/* =========================
+   TEXTAREA
+   ========================= */
 
 .form-field textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 100px;
+}
+
+
+/* =========================
+   CAMPOS INVÁLIDOS
+   ========================= */
+
+.form-field input.invalid,
+.form-field select.invalid {
+    border-color: #b45353;
 }
 
 .field-error {
-    color: #dc2626;
-    font-size: 0.8rem;
+    color: #8b3a3a;
+    font-size: 0.78rem;
 }
 
+
+/* =========================
+   ERROR GENERAL
+   ========================= */
+
 .error-message {
-    color: #dc2626;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    padding: 0.6rem 0.75rem;
-    border-radius: 6px;
+    margin: 0;
+
+    padding: 0.75rem 1rem;
+
+    border: 1px solid #e3b8b8;
+    border-radius: 5px;
+
+    background: #fdf5f5;
+    color: #8b3a3a;
+
     font-size: 0.85rem;
 }
 
+
+/* =========================
+   BOTÓN
+   ========================= */
+
 .submit-btn {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    padding: 0.75rem;
-    border-radius: 6px;
-    font-size: 1rem;
+    width: 100%;
+
+    padding: 10px 16px;
+
+    border: 1px solid #274c77;
+    border-radius: 5px;
+
+    background: #274c77;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.9rem;
     font-weight: 600;
+
     cursor: pointer;
-    transition: background 0.15s;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .submit-btn:hover:not(:disabled) {
-    background: #2563eb;
+    background: #1e3a5f;
+    border-color: #1e3a5f;
 }
 
 .submit-btn:disabled {
-    background: #93c5fd;
+    background: #9aa8ba;
+    border-color: #9aa8ba;
     cursor: not-allowed;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .convocatoria-page {
+        padding: 2.5rem 1.25rem;
+    }
+
+    .convocatoria-form {
+        padding: 1.5rem;
+    }
+
+    .convocatoria-form h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
 }

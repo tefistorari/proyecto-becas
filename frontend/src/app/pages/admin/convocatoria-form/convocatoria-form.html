@@ -1,64 +1,66 @@
 <!-- convocatoria-form.component.html -->
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="convocatoria-form">
-    <h2>Nueva convocatoria</h2>
+<main class="convocatoria-page">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="convocatoria-form">
+        <h2>Nueva convocatoria</h2>
 
-    <div class="form-field">
-        <label for="becaId">Beca</label>
-        <select id="becaId" formControlName="becaId" [class.invalid]="invalido('becaId')">
-            <option [ngValue]="null">Seleccioná una beca</option>
-            @for (beca of becas(); track beca.id) {
-                <option [ngValue]="beca.id">{{ beca.nombre }}</option>
+        <div class="form-field">
+            <label for="becaId">Beca</label>
+            <select id="becaId" formControlName="becaId" [class.invalid]="invalido('becaId')">
+                <option [ngValue]="null">Seleccioná una beca</option>
+                @for (beca of becas(); track beca.id) {
+                    <option [ngValue]="beca.id">{{ beca.nombre }}</option>
+                }
+            </select>
+            @if (invalido('becaId')) {
+                <span class="field-error">La beca es obligatoria</span>
             }
-        </select>
-        @if (invalido('becaId')) {
-            <span class="field-error">La beca es obligatoria</span>
+        </div>
+
+        <div class="form-field">
+        <label for="anio">Año</label>
+        <input id="anio" type="number" formControlName="anio" [class.invalid]="invalido('anio')">
+        @if (invalido('anio')) {
+            <span class="field-error">{{ mensajeError('anio') }}</span>
         }
     </div>
 
-    <div class="form-field">
-    <label for="anio">Año</label>
-    <input id="anio" type="number" formControlName="anio" [class.invalid]="invalido('anio')">
-    @if (invalido('anio')) {
-        <span class="field-error">{{ mensajeError('anio') }}</span>
-    }
-    </div>
+        <div class="form-row">
+        <div class="form-field">
+            <label for="fechaApertura">Fecha de apertura</label>
+            <input id="fechaApertura" type="datetime-local" formControlName="fechaApertura" [class.invalid]="invalido('fechaApertura')">
+            @if (invalido('fechaApertura')) {
+                <span class="field-error">{{ mensajeError('fechaApertura') }}</span>
+            }
+        </div>
 
-    <div class="form-row">
-    <div class="form-field">
-        <label for="fechaApertura">Fecha de apertura</label>
-        <input id="fechaApertura" type="datetime-local" formControlName="fechaApertura" [class.invalid]="invalido('fechaApertura')">
-        @if (invalido('fechaApertura')) {
-            <span class="field-error">{{ mensajeError('fechaApertura') }}</span>
+        <div class="form-field">
+            <label for="fechaCierre">Fecha de cierre</label>
+            <input id="fechaCierre" type="datetime-local" formControlName="fechaCierre" [class.invalid]="invalido('fechaCierre')">
+            @if (invalido('fechaCierre')) {
+                <span class="field-error">{{ mensajeError('fechaCierre')}}</span>
+            }
+        </div>
+        </div>
+
+        <div class="form-field">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" formControlName="descripcion"></textarea>
+        </div>
+
+        <div class="form-field">
+            <label for="cupoMaximo">Cupo máximo</label>
+            <input id="cupoMaximo" type="number" formControlName="cupoMaximo" [class.invalid]="invalido('cupoMaximo')">
+            @if (invalido('cupoMaximo')) {
+                <span class="field-error">El cupo máximo debe ser mayor a cero</span>
+            }
+        </div>
+
+        @if (error()) {
+            <p class="error-message">{{ error() }}</p>
         }
-    </div>
 
-    <div class="form-field">
-        <label for="fechaCierre">Fecha de cierre</label>
-        <input id="fechaCierre" type="datetime-local" formControlName="fechaCierre" [class.invalid]="invalido('fechaCierre')">
-        @if (invalido('fechaCierre')) {
-            <span class="field-error">{{ mensajeError('fechaCierre')}}</span>
-        }
-    </div>
-    </div>
-
-    <div class="form-field">
-        <label for="descripcion">Descripción</label>
-        <textarea id="descripcion" formControlName="descripcion"></textarea>
-    </div>
-
-    <div class="form-field">
-        <label for="cupoMaximo">Cupo máximo</label>
-        <input id="cupoMaximo" type="number" formControlName="cupoMaximo" [class.invalid]="invalido('cupoMaximo')">
-        @if (invalido('cupoMaximo')) {
-            <span class="field-error">El cupo máximo debe ser mayor a cero</span>
-        }
-    </div>
-
-    @if (error()) {
-        <p class="error-message">{{ error() }}</p>
-    }
-
-    <button type="submit" class="submit-btn" [disabled]="guardando()">
-        {{ guardando() ? 'Guardando...' : 'Crear convocatoria' }}
-    </button>
-</form>
+        <button type="submit" class="submit-btn" [disabled]="guardando()">
+            {{ guardando() ? 'Guardando...' : 'Crear convocatoria' }}
+        </button>
+    </form>
+</main>

@@ -69,7 +69,7 @@ export class ConvocatoriaForm {
       next: () => this.router.navigate(['admin/convocatorias']),
       error: (err) => {
         this.guardando.set(false);
-        this.error.set(err.error?.message ?? 'Error al crear la convocatoria');
+        this.error.set(err.error?.error ?? 'Error al crear la convocatoria');
       }
     });
   }

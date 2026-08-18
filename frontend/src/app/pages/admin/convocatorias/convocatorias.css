@@ -1,106 +1,261 @@
+/* =========================
+   PÁGINA
+   ========================= */
+
 .convocatorias-page {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem;
 }
+
+
+/* =========================
+   ENCABEZADO
+   ========================= */
 
 .header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    justify-content: space-between;
+
+    margin-bottom: 1.75rem;
+
+    border-bottom: 1px solid #d9dee7;
+    padding-bottom: 1.25rem;
 }
 
 .header h2 {
     margin: 0;
-    color: #1f2937;
+
+    color: #172b4d;
+
+    font-size: 1.7rem;
+    font-weight: 600;
 }
 
+
+/* =========================
+   NUEVA CONVOCATORIA
+   ========================= */
+
 .header button {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.1rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    padding: 9px 16px;
+
+    border: 1px solid #274c77;
+    border-radius: 5px;
+
+    background: #274c77;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.85rem;
     font-weight: 600;
+
     cursor: pointer;
-    transition: background 0.15s;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .header button:hover {
-    background: #2563eb;
+    background: #1e3a5f;
+    border-color: #1e3a5f;
 }
 
-.error-message {
-    color: #dc2626;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    padding: 0.6rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
+
+/* =========================
+   FILTROS
+   ========================= */
+
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    margin-bottom: 1.25rem;
 }
+
+.filtros button {
+    padding: 7px 14px;
+
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #52627a;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.filtros button:hover {
+    background: #f5f7fa;
+    border-color: #9aa8ba;
+}
+
+.filtros button.activo {
+    background: #274c77;
+    border-color: #274c77;
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+
+/* =========================
+   TABLA
+   ========================= */
 
 table {
     width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    background: #ffffff;
+
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
+
+/* =========================
+   ENCABEZADO DE TABLA
+   ========================= */
+
 thead {
-    background: #f3f4f6;
+    background: #f5f7fa;
 }
 
 th {
+    padding: 0.85rem 1rem;
+
     text-align: left;
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #4b5563;
-    border-bottom: 1px solid #e5e7eb;
+
+    color: #52627a;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+
+    border-bottom: 1px solid #dce2ea;
 }
 
+
+/* =========================
+   FILAS
+   ========================= */
+
 td {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-    color: #1f2937;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 0.85rem 1rem;
+
+    color: #37475b;
+
+    font-size: 0.87rem;
+
+    border-bottom: 1px solid #edf0f4;
 }
 
 tbody tr:last-child td {
     border-bottom: none;
 }
 
+tbody tr {
+    transition: background-color 0.12s ease;
+}
+
 tbody tr:hover {
-    background: #f9fafb;
+    background: #f8fafc;
 }
 
-.filtros {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
 
-.filtros button {
-    padding: 0.4rem 0.9rem;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    background: white;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.15s;
-}
+/* =========================
+   ESTADOS
+   ========================= */
 
-.filtros button:hover {
-    border-color: #3b82f6;
-}
-
-.filtros button.activo {
-    background: #3b82f6;
-    border-color: #3b82f6;
-    color: white;
+td:last-child {
+    color: #52627a;
     font-weight: 600;
+}
+
+
+/* =========================
+   MENSAJE DE ERROR
+   ========================= */
+
+.error-message {
+    margin: 1rem 0;
+
+    padding: 0.75rem 1rem;
+
+    border: 1px solid #e3b8b8;
+    border-radius: 5px;
+
+    background: #fdf5f5;
+    color: #8b3a3a;
+
+    font-size: 0.85rem;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 800px) {
+
+    .convocatorias-page {
+        padding: 2.5rem 1.25rem;
+    }
+
+    .header {
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header h2 {
+        font-size: 1.5rem;
+    }
+
+    /*
+     * Permite desplazar la tabla horizontalmente
+     * en pantallas pequeñas.
+     */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .header {
+        flex-direction: column;
+    }
+
+    .header button {
+        width: 100%;
+    }
+
+    .filtros {
+        gap: 0.4rem;
+    }
+
+    .filtros button {
+        font-size: 0.8rem;
+        padding: 7px 11px;
+    }
 }
