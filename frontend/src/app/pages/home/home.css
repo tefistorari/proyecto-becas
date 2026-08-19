@@ -1,86 +1,222 @@
-.hero{
-    background:#eff6ff;
-    padding:80px 20px;
+/* =========================
+   HERO
+   ========================= */
+
+.hero {
+    background: #f8fafc;
+
+    padding: 5rem 1.5rem 4.5rem;
+
+    border-bottom: 1px solid #dce2ea;
 }
 
-.hero-content{
-    max-width:900px;
-    margin:auto;
-    text-align:center;
+.hero-content {
+    max-width: 850px;
+
+    margin: 0 auto;
+
+    text-align: center;
 }
 
-.hero h1{
-    font-size:3rem;
-    color:#1e3a8a;
-    margin-bottom:10px;
+
+/* =========================
+   TÍTULOS
+   ========================= */
+
+.hero h1 {
+    margin: 0 0 0.6rem;
+
+    color: #172b4d;
+
+    font-size: 2.6rem;
+    font-weight: 600;
+
+    letter-spacing: -0.02em;
 }
 
-.hero h2{
-    font-size:1.5rem;
-    color:#334155;
-    font-weight:600;
+.hero h2 {
+    margin: 0;
+
+    color: #52627a;
+
+    font-size: 1.25rem;
+    font-weight: 500;
 }
 
-.hero h3{
-    font-size:1.2rem;
-    color:#64748b;
-    font-weight:500;
-    margin-bottom:28px;
+.hero h3 {
+    margin: 0.5rem 0 2rem;
+
+    color: #68768a;
+
+    font-size: 1rem;
+    font-weight: 500;
 }
 
-.hero p{
-    max-width:750px;
-    margin:auto;
-    font-size:1.1rem;
-    line-height:1.8;
-    color:#475569;
-}
 
-.becas{
-    max-width:1200px;
-    margin:70px auto;
-    padding:0 20px;
-}
-
-.becas h2{
-    text-align:center;
-    color:#1e3a8a;
-    margin-bottom:40px;
-    font-size:2rem;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:24px;
-}
-
-.card{
-    background:white;
-    border-radius:16px;
-    padding:28px;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-    transition:.25s;
-}
-
-.card:hover{
-    transform:translateY(-5px);
-}
-
-.card h3{
-    color:#2563eb;
-    margin-bottom:16px;
-    font-size:1.4rem;
-}
-
-.card p{
-    color:#64748b;
-    line-height:1.7;
-}
-
-/* Sujeto a cambios para que quede bonito*/
+/* =========================
+   LOGO UTN
+   ========================= */
 
 .UTNlogoPP {
-    max-width: 180px;
+    display: block;
+
     width: auto;
+    max-width: 180px;
+    max-height: 85px;
+
+    margin: 2rem auto 1.75rem;
+}
+
+
+/* =========================
+   DESCRIPCIÓN
+   ========================= */
+
+.hero p {
+    max-width: 720px;
+
+    margin: 0 auto;
+
+    color: #52627a;
+
+    font-size: 0.95rem;
+    line-height: 1.75;
+}
+
+
+/* =========================
+   SECCIÓN DE BECAS
+   ========================= */
+
+.becas {
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 4rem 1.5rem 5rem;
+}
+
+.becas h2 {
+    margin: 0 0 2rem;
+
+    color: #172b4d;
+
+    text-align: center;
+
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+
+/* =========================
+   TARJETAS
+   ========================= */
+
+.cards {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 1rem;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 175px;
+
+    padding: 1.5rem;
+
+    background: #ffffff;
+
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+
+    transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease;
+}
+
+.card:hover {
+    border-color: #9aa8ba;
+    background: #f8fafc;
+}
+
+
+/* =========================
+   TÍTULO DE CADA BECA
+   ========================= */
+
+.card h3 {
+    margin: 0 0 1rem;
+
+    color: #274c77;
+
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    letter-spacing: 0.05em;
+}
+
+
+/* =========================
+   DESCRIPCIÓN DE CADA BECA
+   ========================= */
+
+.card p {
+    margin: 0;
+
+    color: #68768a;
+
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 750px) {
+
+    .hero {
+        padding: 4rem 1.25rem;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero h2 {
+        font-size: 1.1rem;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        min-height: auto;
+    }
+}
+
+
+@media (max-width: 450px) {
+
+    .hero {
+        padding: 3rem 1.25rem;
+    }
+
+    .hero h1 {
+        font-size: 1.9rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    .becas {
+        padding: 3rem 1.25rem 4rem;
+    }
 }

@@ -1,94 +1,203 @@
-.auth-container{
-  min-height: calc(100vh - 140px);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:40px 20px;
-  background:#f8fafc;
+/* =========================
+   CONTENEDOR
+   ========================= */
+
+.auth-container {
+    min-height: calc(100vh - 140px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4rem 1.5rem;
+
+    background: #f8fafc;
 }
 
-form{
-  width:100%;
-  max-width:430px;
-  background:white;
-  padding:40px;
-  border-radius:18px;
-  box-shadow:0 12px 30px rgba(0,0,0,.08);
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
 
-h1{
-  text-align:center;
-  margin-bottom:10px;
-  color:#1e3a8a;
-  font-size:2rem;
-}
+/* =========================
+   FORMULARIO
+   ========================= */
 
-input{
-  padding:14px 16px;
-  border:1px solid #d1d5db;
-  border-radius:10px;
-  font-size:1rem;
-  outline:none;
-  transition:.2s;
-}
+.auth-container form {
+    width: 100%;
+    max-width: 430px;
+    box-sizing: border-box;
 
-input:focus{
-  border-color:#2563eb;
-  box-shadow:0 0 0 3px rgba(37,99,235,.15);
-}
+    padding: 2.25rem;
 
-button{
-  margin-top:10px;
-  padding:14px;
-  border:none;
-  border-radius:10px;
-  background:#2563eb;
-  color:white;
-  font-size:1rem;
-  font-weight:600;
-  cursor:pointer;
-  transition:.2s;
-}
+    background: #ffffff;
 
-button:hover{
-  background:#1d4ed8;
-  transform:translateY(-2px);
-}
-
-.secondary-link{
-  display:block;
-  text-align:center;
-  text-decoration:none;
-  margin-top:6px;
-  padding:12px;
-  border-radius:10px;
-  font-weight:600;
-  color:#2563eb;
-  transition:.2s;
-}
-
-.secondary-link:hover{
-  background:#eff6ff;
-}
-
-.error{
-  color:#dc2626;
-  font-size:.85rem;
-  margin-top:-10px;
-}
-
-.error-message {
-    margin-top: 14px;
-    padding: 10px 12px;
-
-    border: 1px solid #fca5a5;
+    border: 1px solid #dce2ea;
     border-radius: 6px;
 
-    background: #fef2f2;
-    color: #b91c1c;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
+
+/* =========================
+   TÍTULO
+   ========================= */
+
+.auth-container h1 {
+    margin: 0 0 0.75rem;
+
+    color: #172b4d;
+
+    text-align: center;
+
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+
+/* =========================
+   INPUTS
+   ========================= */
+
+.auth-container input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 0.7rem 0.75rem;
+
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #37475b;
+
+    font-family: inherit;
     font-size: 0.9rem;
+
+    outline: none;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.auth-container input::placeholder {
+    color: #8a96a6;
+}
+
+.auth-container input:focus {
+    border-color: #274c77;
+
+    box-shadow: 0 0 0 2px rgba(39, 76, 119, 0.1);
+}
+
+
+/* =========================
+   BOTÓN
+   ========================= */
+
+.auth-container button {
+    width: 100%;
+
+    margin-top: 0.5rem;
+
+    padding: 10px 16px;
+
+    border: 1px solid #274c77;
+    border-radius: 5px;
+
+    background: #274c77;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.auth-container button:hover {
+    background: #1e3a5f;
+    border-color: #1e3a5f;
+}
+
+
+/* =========================
+   ENLACE REGISTRO
+   ========================= */
+
+.secondary-link {
+    display: block;
+
+    margin-top: 0.25rem;
+    padding: 0.5rem;
+
+    color: #52627a;
+
+    text-align: center;
+    text-decoration: none;
+
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    transition: color 0.15s ease;
+}
+
+.secondary-link:hover {
+    color: #274c77;
+}
+
+
+/* =========================
+   ERRORES DE CAMPOS
+   ========================= */
+
+.error {
+    margin-top: -0.6rem;
+
+    color: #8b3a3a;
+
+    font-size: 0.78rem;
+}
+
+
+/* =========================
+   ERROR GENERAL
+   ========================= */
+
+.error-message {
+    margin: 0;
+
+    padding: 0.75rem 1rem;
+
+    border: 1px solid #e3b8b8;
+    border-radius: 5px;
+
+    background: #fdf5f5;
+    color: #8b3a3a;
+
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 500px) {
+
+    .auth-container {
+        padding: 2.5rem 1.25rem;
+    }
+
+    .auth-container form {
+        padding: 1.75rem;
+    }
+
+    .auth-container h1 {
+        font-size: 1.5rem;
+    }
 }
