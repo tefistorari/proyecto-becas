@@ -5,6 +5,7 @@ import { AuthRequest } from '../models/auth-request';
 import { Observable, tap } from 'rxjs';
 import { Rol } from '../models/rol';
 import { RegisterRequest } from '../models/register-request';
+import { ChangePasswordRequest } from '../models/change-password-request';
 
 @Service()
 export class AuthService {
@@ -93,5 +94,11 @@ export class AuthService {
 
         this.authenticated.set(false);
         this.currentUser.set(null);
+    }
+
+    changePassword(request: ChangePasswordRequest): Observable<void> {
+        return this.http.put<void>(
+            `${this.API_URL}/change-password`, request
+        );
     }
 }

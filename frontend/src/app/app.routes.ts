@@ -13,13 +13,19 @@ import { Convocatorias } from './pages/admin/convocatorias/convocatorias';
 import { DashboardAlumno } from './pages/alumno/dashboard-alumno/dashboard-alumno';
 import { ConvocatoriaForm } from './pages/admin/convocatoria-form/convocatoria-form';
 import { ConvocatoriaDetalle } from './pages/admin/convocatoria-detalle/convocatoria-detalle';
+import { CambioPassword } from './pages/cambio-password/cambio-password';
 
 
 export const routes: Routes = [
+    //No auth
     {path: '', component: Home},
     {path: 'login', component: Login},
     {path: 'registro', component: Registro},
 
+    //auth
+    {path: 'cambio-password', component: CambioPassword},
+
+    //auth y alumno
     {path: 'alumno/dashboard', component: DashboardAlumno},
     {path: 'alumno/perfil', component: Perfil},
     {path: 'alumno/mis-postulaciones', component: MisPostulaciones},
@@ -27,6 +33,7 @@ export const routes: Routes = [
     {path: 'alumno/postular/bis', component: FormularioBis},
     {path: 'alumno/postular/binid', component: FormularioBinid},
 
+    //auth y admin
     {path: 'admin/dashboard', component: DashboardAdmin},
     {path: 'admin/postulaciones', component: Postulaciones},
     {path: 'admin/convocatorias', component: Convocatorias},
