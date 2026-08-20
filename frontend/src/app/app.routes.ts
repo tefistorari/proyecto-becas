@@ -29,9 +29,9 @@ export const routes: Routes = [
     {path: 'alumno/dashboard', component: DashboardAlumno},
     {path: 'alumno/perfil', component: Perfil},
     {path: 'alumno/mis-postulaciones', component: MisPostulaciones},
-    {path: 'alumno/postular/base', component: FormularioBase},
-    {path: 'alumno/postular/bis', component: FormularioBis},
-    {path: 'alumno/postular/binid', component: FormularioBinid},
+    {path: 'alumno/postular/base/:convocatoriaId', component: FormularioBase},
+    {path: 'alumno/postular/bis/:convocatoriaId', component: FormularioBis},
+    {path: 'alumno/postular/binid/:convocatoriaId', component: FormularioBinid},
 
     //auth y admin
     {path: 'admin/dashboard', component: DashboardAdmin},

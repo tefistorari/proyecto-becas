@@ -1,1 +1,222 @@
-<p>dashboard-alumno works!</p>
+<main class="dashboard-page">
+
+    <div class="dashboard-header">
+        <span class="eyebrow">ALUMNO</span>
+
+        <h1>Panel del alumno</h1>
+
+        <p>
+            Consultá las convocatorias disponibles y gestioná tus postulaciones.
+        </p>
+    </div>
+
+
+    <!-- =========================
+         CONVOCATORIAS ABIERTAS
+         ========================= -->
+
+    <section class="convocatorias-section">
+
+        <div class="section-header">
+            <h2>Convocatorias abiertas</h2>
+
+            <p>
+                Estas son las convocatorias a las que podés postularte actualmente.
+            </p>
+        </div>
+
+
+        @if (convocatoriasAbiertas().length > 0) {
+
+            <div class="convocatorias-list">
+
+                @for (convocatoria of convocatoriasAbiertas(); track convocatoria.id) {
+
+                    <article class="convocatoria-card">
+
+                        <div class="convocatoria-info">
+
+                            <span class="convocatoria-badge">
+                                ABIERTA
+                            </span>
+
+                            <h3>
+                                {{ convocatoria.beca.nombre }}
+                            </h3>
+
+                            <p class="convocatoria-year">
+                                Convocatoria {{ convocatoria.anio }}
+                            </p>
+
+                            <p class="convocatoria-description">
+                                {{ convocatoria.beca.descripcion }}
+                            </p>
+
+                            <div class="convocatoria-date">
+
+                                <span>
+                                    Cierra el
+                                    <strong>
+                                        {{ convocatoria.fechaCierre | date:'dd/MM/yyyy' }}
+                                    </strong>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="convocatoria-action">
+
+                            <button
+                                type="button"
+                                class="postular-btn"
+                                (click)="irAFormulario(convocatoria)">
+
+                                Postularme
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                }
+
+            </div>
+
+        } @else {
+
+            <div class="empty-state">
+
+                <span class="empty-icon">○</span>
+
+                <h3>No hay convocatorias abiertas</h3>
+
+                <p>
+                    Actualmente no hay convocatorias disponibles para postularse.
+                    Volvé a consultar más adelante.
+                </p>
+
+            </div>
+
+        }
+
+    </section>
+
+
+    <!-- =========================
+         ACCESOS DEL ALUMNO 
+         ========================= -->
+
+    <div class="links-grid">
+
+        <a
+            routerLink="/alumno/mis-postulaciones"
+            class="dashboard-link">
+
+            <div class="icon-container">
+                <span class="icon">☷</span>
+            </div>
+
+            <div class="link-content">
+
+                <span class="link-title">
+                    Mis postulaciones
+                </span>
+
+                <span class="link-description">
+                    Consultar el estado de tus postulaciones.
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <a
+            routerLink="/cambio-password"
+            class="dashboard-link">
+
+            <div class="icon-container">
+                <span class="icon">♙</span>
+            </div>
+
+            <div class="link-content">
+
+                <span class="link-title">
+                    Seguridad
+                </span>
+
+                <span class="link-description">
+                    Cambiar contraseña de acceso.
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         CERRAR SESIÓN
+         ========================= -->
+
+    <div class="logout-container">
+
+        <button
+            type="button"
+            class="logout-btn"
+            (click)="confirmLogout()">
+
+            Cerrar sesión
+
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         MODAL LOGOUT
+         ========================= -->
+
+    @if (showLogoutModal()) {
+
+        <div class="modal-overlay">
+
+            <div class="modal">
+
+                <h2>¿Cerrar sesión?</h2>
+
+                <p>
+                    ¿Estás seguro de que querés cerrar tu sesión?
+                </p>
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        (click)="cancelLogout()">
+
+                        Cancelar
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn-confirm"
+                        (click)="logout()">
+
+                        Cerrar sesión
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    }
+
+</main>
