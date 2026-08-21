@@ -107,6 +107,15 @@ public class PostulacionServiceImpl implements PostulacionService {
         historial.setLocalidad(dp.getLocalidad());
         historial.setProvincia(dp.getProvincia());
         historial.setNacionalidad(dp.getNacionalidad());
+        historial.setDomicilioFamiliarDistinto(dp.getDomicilioFamiliarDistinto());
+        if(Boolean.TRUE.equals(dp.getDomicilioFamiliarDistinto())) {
+            historial.setDomicilioFamiliarCalle(dp.getDomicilioFamiliarCalle());
+            historial.setDomicilioFamiliarNumero(dp.getDomicilioFamiliarNumero());
+            historial.setDomicilioFamiliarPisoDepto(dp.getDomicilioFamiliarPisoDepto());
+            historial.setDomicilioFamiliarCodigoPostal(dp.getDomicilioFamiliarCodigoPostal());
+            historial.setDomicilioFamiliarLocalidad(dp.getDomicilioFamiliarLocalidad());
+            historial.setDomicilioFamiliarProvincia(dp.getDomicilioFamiliarProvincia());
+        }
         datosPersonalesHistorialRepository.save(historial);
         postulacion.setDatosPersonalesHistorial(historial);
 
