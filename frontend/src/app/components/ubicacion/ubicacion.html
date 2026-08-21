@@ -1,0 +1,54 @@
+<div class="grid-campos">
+
+    <!-- NACIONALIDAD -->
+    <div class="campo">
+        <label>Nacionalidad</label>
+
+        <select>
+            <option value="" disabled selected>
+                Seleccioná una nacionalidad
+            </option>
+
+            @for (nacionalidad of nacionalidades(); track nacionalidad.iso2) {
+                <option [value]="nacionalidad.iso2">{{nacionalidad.name}}</option>
+            }
+        </select>
+    </div>
+
+
+    <!-- PROVINCIA -->
+    <div class="campo">
+        <label>Provincia</label>
+
+        <select #provinciaSelect (change)="cargarLocalidades(provinciaSelect.value)">
+            <option value="" disabled selected>
+                Seleccioná una provincia
+            </option>
+
+            @for (provincia of provincias(); track provincia.iso2) {
+                <option [value]="provincia.iso2">
+                    {{ provincia.name }}
+                </option>
+            }
+        </select>
+    </div>
+
+
+    <!-- LOCALIDAD -->
+    <div class="campo">
+        <label>Localidad</label>
+
+        <select>
+            <option value="" disabled selected>
+                Seleccioná una localidad
+            </option>
+
+            @for (localidad of localidades(); track localidad.iso2) {
+                <option [value]="localidad.id">
+                    {{ localidad.name }}
+                </option>
+            }
+        </select>
+    </div>
+
+</div>

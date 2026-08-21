@@ -5,11 +5,11 @@ import { getTranslation } from '@countrystatecity/translations';
 @Service()
 export class UbicacionService {
 
-    getNacionalidad() {
+    getNacionalidades() {
         return getCountries();
     }
 
-    getProvincias(codigoPais: string) {
+    getProvincias() {
         return getStatesOfCountry('AR');
     }
 
