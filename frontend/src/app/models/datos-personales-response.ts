@@ -1,6 +1,7 @@
 import { Genero } from "./genero";
 
-export interface DatosPersonalesRequest {
+export interface DatosPersonalesResponse {
+    id: number;
     dni: string;
     fechaNacimiento: string;
     genero: Genero;
