@@ -2,59 +2,147 @@
 
     <div class="dashboard-header">
         <span class="eyebrow">ADMINISTRACIÓN</span>
-
         <h1>Panel de administración</h1>
-
         <p>Sistema de gestión de becas</p>
     </div>
 
-    <div class="links-grid">
+    <div class="dashboard-content">
 
-        <a routerLink="/admin/convocatorias" class="dashboard-link">
-            <div class="icon-container">
-                <span class="icon">▤</span>
-            </div>
+        <!-- OPCIONES DEL ADMIN -->
+        <div class="links-grid">
 
-            <div class="link-content">
-                <span class="link-title">Convocatorias</span>
+            <a routerLink="/admin/convocatorias" class="dashboard-link">
+                <div class="icon-container">
+                    <span class="icon">▤</span>
+                </div>
 
-                <span class="link-description">
-                    Gestionar convocatorias de becas
+                <div class="link-content">
+                    <span class="link-title">Convocatorias</span>
+                    <span class="link-description">
+                        Gestionar convocatorias de becas
+                    </span>
+                </div>
+            </a>
+
+            <a routerLink="/admin/postulaciones" class="dashboard-link">
+                <div class="icon-container">
+                    <span class="icon">☷</span>
+                </div>
+
+                <div class="link-content">
+                    <span class="link-title">Postulaciones</span>
+                    <span class="link-description">
+                        Consultar y gestionar postulaciones
+                    </span>
+                </div>
+            </a>
+
+            <a routerLink="/cambio-password" class="dashboard-link">
+                <div class="icon-container">
+                    <span class="icon">♙</span>
+                </div>
+
+                <div class="link-content">
+                    <span class="link-title">Seguridad</span>
+                    <span class="link-description">
+                        Cambiar contraseña de acceso
+                    </span>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- BUSCADOR DE ALUMNOS -->
+        <div class="search-section">
+
+            <div class="search-header">
+                <span class="search-title">Buscar alumno</span>
+
+                <span class="search-description">
+                    Buscá por nombre o apellido
                 </span>
             </div>
-        </a>
 
-        <a routerLink="/admin/postulaciones" class="dashboard-link">
-            <div class="icon-container">
-                <span class="icon">☷</span>
+            <div class="search-form">
+
+                <input
+                    type="text"
+                    [(ngModel)]="textoBusqueda"
+                    placeholder="Nombre o apellido..."
+                    (keyup.enter)="buscarAlumnos()"
+                />
+
+                <button
+                    type="button"
+                    (click)="buscarAlumnos()">
+                    Buscar
+                </button>
+
             </div>
 
-            <div class="link-content">
-                <span class="link-title">Postulaciones</span>
-                
-                <span class="link-description">
-                    Consultar y gestionar postulaciones
-                </span>
-            </div>
-        </a>
+            @if (buscando()) {
+                <p class="search-status">
+                    Buscando...
+                </p>
+            }
 
-        <a routerLink="/cambio-password" class="dashboard-link">
-            <div class="icon-container">
-                <span class="icon">♙</span>
-            </div>
+            @if (!buscando() && alumnosEncontrados().length > 0) {
 
-            <div class="link-content">
-                <span class="link-title">Seguridad</span>
+                <div class="search-results">
 
-                <span class="link-description">
-                    Cambiar constraseña de acceso
-                </span>
-            </div>
-        </a>
+                    <span class="results-title">
+                        Resultados
+                    </span>
+
+                    @for (alumno of alumnosEncontrados(); track alumno.id) {
+
+                        <button
+                            type="button"
+                            class="student-result"
+                            (click)="verPerfil(alumno)">
+
+                            <div class="student-info">
+
+                                <span class="student-name">
+                                    {{ alumno.nombre }} {{ alumno.apellido }}
+                                </span>
+
+                                <span class="student-email">
+                                    {{ alumno.email }}
+                                </span>
+
+                            </div>
+
+                            <span class="view-profile">
+                                Ver perfil →
+                            </span>
+
+                        </button>
+
+                    }
+
+                </div>
+
+            }
+
+            @if (
+                !buscando() &&
+                textoBusqueda.trim() &&
+                alumnosEncontrados().length === 0
+            ) {
+
+                <p class="search-status">
+                    No se encontraron alumnos.
+                </p>
+
+            }
+
+        </div>
+
     </div>
 
+    <!-- CERRAR SESIÓN -->
     <div class="logout-container">
-
         <button
             type="button"
             class="logout-btn"
@@ -64,6 +152,7 @@
     </div>
 
     @if (showLogoutModal()) {
+
         <div class="modal-overlay">
 
             <div class="modal">
@@ -82,15 +171,18 @@
                         (click)="cancelLogout()">
                         Cancelar
                     </button>
-                    
+
                     <button
                         type="button"
                         class="btn-confirm"
                         (click)="logout()">
                         Cerrar sesión
                     </button>
+
                 </div>
+
             </div>
+
         </div>
 
     }

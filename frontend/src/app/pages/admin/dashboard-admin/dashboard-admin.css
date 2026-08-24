@@ -3,7 +3,7 @@
    ========================= */
 
 .dashboard-page {
-    max-width: 700px;
+    max-width: 950px;
     margin: 0 auto;
     padding: 4rem 1.5rem;
 }
@@ -44,6 +44,18 @@
 
 
 /* =========================
+   CONTENIDO DEL DASHBOARD
+   ========================= */
+
+.dashboard-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    align-items: start;
+    gap: 2rem;
+}
+
+
+/* =========================
    OPCIONES DEL PANEL
    ========================= */
 
@@ -60,7 +72,6 @@
     align-items: center;
 
     width: 100%;
-    max-width: 500px;
     min-height: 100px;
 
     padding: 1.25rem 1.5rem;
@@ -96,6 +107,7 @@
 
     width: 42px;
     height: 42px;
+
     margin-right: 1.25rem;
 
     border: 1px solid #cbd4df;
@@ -135,12 +147,196 @@
 
 
 /* =========================
+   BUSCADOR DE ALUMNOS
+   ========================= */
+
+.search-section {
+    width: 100%;
+
+    padding: 1.25rem;
+
+    background: #ffffff;
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+
+    box-sizing: border-box;
+}
+
+.search-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    margin-bottom: 1rem;
+}
+
+.search-title {
+    color: #172b4d;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.search-description {
+    color: #68768a;
+    font-size: 0.82rem;
+}
+
+
+/* =========================
+   FORMULARIO DE BÚSQUEDA
+   ========================= */
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.search-form input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 9px 11px;
+
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #172b4d;
+
+    font-family: inherit;
+    font-size: 0.85rem;
+
+    outline: none;
+}
+
+.search-form input:focus {
+    border-color: #274c77;
+}
+
+.search-form button {
+    padding: 9px 16px;
+
+    border: 1px solid #274c77;
+    border-radius: 5px;
+
+    background: #274c77;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background: #1e3a5f;
+}
+
+
+/* =========================
+   ESTADO DE BÚSQUEDA
+   ========================= */
+
+.search-status {
+    margin: 1rem 0 0;
+
+    color: #68768a;
+
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+
+/* =========================
+   RESULTADOS
+   ========================= */
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+
+    border-top: 1px solid #d9dee7;
+}
+
+.results-title {
+    margin-bottom: 0.25rem;
+
+    color: #52627a;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.student-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    padding: 0.7rem;
+
+    border: 1px solid #dce2ea;
+    border-radius: 5px;
+
+    background: #ffffff;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.student-result:hover {
+    border-color: #8c9bb0;
+    background: #f8fafc;
+}
+
+.student-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.student-name {
+    color: #172b4d;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.student-email {
+    color: #68768a;
+
+    font-size: 0.75rem;
+}
+
+.view-profile {
+    flex-shrink: 0;
+
+    color: #274c77;
+
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+
+/* =========================
    CERRAR SESIÓN
    ========================= */
 
 .logout-container {
     display: flex;
     justify-content: center;
+
     margin-top: 2rem;
 }
 
@@ -193,6 +389,7 @@
     padding: 2rem;
 
     background: #ffffff;
+
     border: 1px solid #dce2ea;
     border-radius: 6px;
 
@@ -205,6 +402,7 @@
     margin: 0 0 0.6rem;
 
     color: #172b4d;
+
     font-size: 1.3rem;
     font-weight: 600;
 }
@@ -213,6 +411,7 @@
     margin: 0;
 
     color: #68768a;
+
     font-size: 0.9rem;
     line-height: 1.5;
 }
@@ -220,6 +419,7 @@
 .modal-actions {
     display: flex;
     justify-content: center;
+
     gap: 0.75rem;
 
     margin-top: 1.75rem;
@@ -244,6 +444,7 @@
 
 .btn-cancel {
     border: 1px solid #cbd4df;
+
     background: #ffffff;
     color: #46566d;
 }
@@ -259,6 +460,7 @@
 
 .btn-confirm {
     border: 1px solid #274c77;
+
     background: #274c77;
     color: #ffffff;
 }
@@ -272,10 +474,18 @@
    RESPONSIVE
    ========================= */
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
 
     .dashboard-page {
         padding: 2.5rem 1.25rem;
+    }
+
+    .dashboard-content {
+        grid-template-columns: 1fr;
+    }
+
+    .search-section {
+        order: -1;
     }
 
     .dashboard-link {
