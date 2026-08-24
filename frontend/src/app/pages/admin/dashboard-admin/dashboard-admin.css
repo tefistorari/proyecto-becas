@@ -3,7 +3,7 @@
    ========================= */
 
 .dashboard-page {
-    max-width: 700px;
+    max-width: 950px;
     margin: 0 auto;
     padding: 4rem 1.5rem;
 }
@@ -44,6 +44,18 @@
 
 
 /* =========================
+   CONTENIDO DEL DASHBOARD
+   ========================= */
+
+.dashboard-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    align-items: start;
+    gap: 2rem;
+}
+
+
+/* =========================
    OPCIONES DEL PANEL
    ========================= */
 
@@ -58,12 +70,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-
     width: 100%;
-    max-width: 500px;
     min-height: 100px;
-
     padding: 1.25rem 1.5rem;
+    box-sizing: border-box;
 
     background: #ffffff;
     border: 1px solid #dce2ea;
@@ -84,14 +94,13 @@
 
 
 /* =========================
-   ICONO
+   ICONOS
    ========================= */
 
 .icon-container {
     display: flex;
     align-items: center;
     justify-content: center;
-
     flex-shrink: 0;
 
     width: 42px;
@@ -100,7 +109,6 @@
 
     border: 1px solid #cbd4df;
     border-radius: 5px;
-
     background: #f5f7fa;
 }
 
@@ -131,6 +139,174 @@
     color: #68768a;
     font-size: 0.85rem;
     line-height: 1.45;
+}
+
+
+/* =========================
+   BUSCADOR DE ALUMNOS
+   ========================= */
+
+.search-section {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.25rem;
+
+    background: #ffffff;
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+}
+
+.search-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.search-title {
+    color: #172b4d;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.search-description {
+    color: #68768a;
+    font-size: 0.82rem;
+}
+
+
+/* =========================
+   FORMULARIO DE BÚSQUEDA
+   ========================= */
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.search-form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 11px;
+
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #172b4d;
+
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.search-form input:focus {
+    border-color: #274c77;
+}
+
+.search-form button {
+    padding: 9px 16px;
+
+    border: 1px solid #274c77;
+    border-radius: 5px;
+
+    background: #274c77;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background: #1e3a5f;
+}
+
+
+/* =========================
+   ESTADO DE BÚSQUEDA
+   ========================= */
+
+.search-status {
+    margin: 1rem 0 0;
+    color: #68768a;
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+
+/* =========================
+   RESULTADOS DE BÚSQUEDA
+   ========================= */
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+
+    border-top: 1px solid #d9dee7;
+}
+
+.results-title {
+    margin-bottom: 0.25rem;
+    color: #52627a;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.student-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: 0.7rem;
+    box-sizing: border-box;
+
+    border: 1px solid #dce2ea;
+    border-radius: 5px;
+
+    background: #ffffff;
+
+    text-align: left;
+    cursor: pointer;
+}
+
+.student-result:hover {
+    border-color: #8c9bb0;
+    background: #f8fafc;
+}
+
+.student-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.student-name {
+    color: #172b4d;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.student-email {
+    color: #68768a;
+    font-size: 0.75rem;
+}
+
+.view-profile {
+    flex-shrink: 0;
+    color: #274c77;
+    font-size: 0.78rem;
+    font-weight: 600;
 }
 
 
@@ -171,7 +347,7 @@
 
 
 /* =========================
-   MODAL
+   MODAL DE CERRAR SESIÓN
    ========================= */
 
 .modal-overlay {
@@ -183,13 +359,11 @@
     justify-content: center;
 
     background: rgba(15, 23, 42, 0.45);
-
     z-index: 1000;
 }
 
 .modal {
     width: min(400px, calc(100% - 32px));
-
     padding: 2rem;
 
     background: #ffffff;
@@ -203,7 +377,6 @@
 
 .modal h2 {
     margin: 0 0 0.6rem;
-
     color: #172b4d;
     font-size: 1.3rem;
     font-weight: 600;
@@ -211,7 +384,6 @@
 
 .modal p {
     margin: 0;
-
     color: #68768a;
     font-size: 0.9rem;
     line-height: 1.5;
@@ -221,7 +393,6 @@
     display: flex;
     justify-content: center;
     gap: 0.75rem;
-
     margin-top: 1.75rem;
 }
 
@@ -269,13 +440,209 @@
 
 
 /* =========================
+   MODAL PERFIL DEL ALUMNO
+   ========================= */
+
+.profile-modal {
+    width: min(750px, calc(100% - 32px));
+    max-height: 85vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.18);
+
+    overflow: hidden;
+}
+
+.profile-close-btn {
+    padding: 9px 18px;
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #46566d;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.profile-close-btn:hover {
+    background: #f5f7fa;
+}
+
+/* =========================
+   ENCABEZADO DEL PERFIL
+   ========================= */
+
+.profile-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    padding: 1.5rem 1.75rem;
+
+    border-bottom: 1px solid #d9dee7;
+}
+
+.profile-modal-header .eyebrow {
+    margin-bottom: 0.4rem;
+}
+
+.profile-modal-header h2 {
+    margin: 0;
+    color: #172b4d;
+    font-size: 1.35rem;
+    font-weight: 600;
+}
+
+.modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #52627a;
+
+    font-size: 1.3rem;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    background: #f5f7fa;
+    border-color: #9aa8ba;
+}
+
+
+/* =========================
+   CONTENIDO DEL PERFIL
+   ========================= */
+
+.profile-content {
+    padding: 1.5rem 1.75rem;
+    overflow-y: auto;
+}
+
+
+/* =========================
+   SECCIONES DEL PERFIL
+   ========================= */
+
+.profile-section {
+    margin-bottom: 1.75rem;
+}
+
+.profile-section:last-child {
+    margin-bottom: 0;
+}
+
+.profile-section h3 {
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+
+    border-bottom: 1px solid #e5e9ef;
+
+    color: #274c77;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+
+/* =========================
+   CAMPOS DEL PERFIL
+   ========================= */
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.field-label {
+    color: #68768a;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.field-value {
+    color: #172b4d;
+    font-size: 0.88rem;
+    word-break: break-word;
+}
+
+
+/* =========================
+   MENSAJE SIN PERFIL
+   ========================= */
+
+.empty-profile {
+    padding: 2rem 1rem;
+
+    border: 1px dashed #cbd4df;
+    border-radius: 5px;
+
+    background: #f8fafc;
+    color: #68768a;
+
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+
+/* =========================
+   PIE DEL MODAL DE PERFIL
+   ========================= */
+
+.profile-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+
+    padding: 1rem 1.75rem;
+
+    border-top: 1px solid #d9dee7;
+
+    background: #fafbfc;
+}
+
+
+/* =========================
    RESPONSIVE
    ========================= */
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
 
     .dashboard-page {
         padding: 2.5rem 1.25rem;
+    }
+
+    .dashboard-content {
+        grid-template-columns: 1fr;
+    }
+
+    .search-section {
+        order: -1;
     }
 
     .dashboard-link {
@@ -284,5 +651,37 @@
 
     .logout-container {
         justify-content: center;
+    }
+
+    .profile-modal {
+        max-height: 90vh;
+    }
+
+    .profile-modal-header {
+        padding: 1.25rem;
+    }
+
+    .profile-content {
+        padding: 1.25rem;
+    }
+
+    .profile-modal-footer {
+        padding: 1rem 1.25rem;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .modal-actions button {
+        width: 100%;
     }
 }
