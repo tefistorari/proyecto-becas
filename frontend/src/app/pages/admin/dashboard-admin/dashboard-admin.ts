@@ -4,6 +4,7 @@ import { AuthService } from '../../../services/auth-service';
 import { FormsModule } from '@angular/forms';
 import { PerfilService } from '../../../services/perfil-service';
 import { UsuarioResponse } from '../../../models/usuario-response';
+import { DatosPersonalesResponse } from '../../../models/datos-personales-response';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -23,8 +24,9 @@ export class DashboardAdmin {
   textoBusqueda = '';
 
   alumnosEncontrados = signal<UsuarioResponse[]>([]);
-
   buscando = signal(false);
+  perfilSeleccionado = signal<DatosPersonalesResponse | null>(null);
+  alumnoSeleccionado = signal<UsuarioResponse | null>(null);
 
   buscarAlumnos(): void {
     
@@ -53,12 +55,23 @@ export class DashboardAdmin {
   verPerfil(alumno: UsuarioResponse): void {
     this.perfilService.buscarPorUsuarioId(alumno.id).subscribe({
       next: (perfil) => {
-        console.log('Perfil del alumno:', perfil);
+        this.alumnoSeleccionado.set(alumno);
+        this.perfilSeleccionado.set(perfil);
       },
       error: (error) => {
         console.error('Error al obtener el perfil:', error);
+
+        if(error.status === 404) {
+          this.alumnoSeleccionado.set(alumno);
+          this.perfilSeleccionado.set(null);
+        }
       }
     })
+  }
+
+  cerrarPerfil(): void {
+    this.perfilSeleccionado.set(null);
+    this.alumnoSeleccionado.set(null);
   }
 
   // CERRAR SESION

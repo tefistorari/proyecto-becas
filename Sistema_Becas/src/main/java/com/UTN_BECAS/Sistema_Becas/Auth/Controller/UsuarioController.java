@@ -21,9 +21,7 @@ public class UsuarioController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/buscar")
-    public ResponseEntity<List<UsuarioResponse>> buscarAlumnos(
-        @RequestParam String texto
-    ) {
+    public ResponseEntity<List<UsuarioResponse>> buscarAlumnos(@RequestParam String texto) {
         return ResponseEntity.ok(usuarioService.buscarAlumnos(texto));
     }
 }

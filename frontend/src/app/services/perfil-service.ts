@@ -36,7 +36,7 @@ export class PerfilService {
 
     buscarAlumnos(texto: string): Observable<UsuarioResponse[]> {
         return this.http.get<UsuarioResponse[]>(
-            `${this.API_USUARIOS_URL}/buscar?texto=${texto}`
+            `${this.API_USUARIOS_URL}/buscar?texto=${encodeURIComponent(texto)}`
         );
     }
 }

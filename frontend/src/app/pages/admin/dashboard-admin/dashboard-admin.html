@@ -187,4 +187,267 @@
 
     }
 
+    
+    @if (alumnoSeleccionado(); as alumno) {
+
+    <div class="modal-overlay">
+
+        <div class="profile-modal">
+
+            <!-- ENCABEZADO -->
+            <div class="profile-modal-header">
+
+                <div>
+                    <span class="eyebrow">
+                        PERFIL DEL ALUMNO
+                    </span>
+
+                    <h2>
+                        {{ alumno.nombre }} {{ alumno.apellido }}
+                    </h2>
+
+                    <span class="student-email">
+                        {{ alumno.email }}
+                    </span>
+                </div>
+
+                <button
+                    type="button"
+                    class="modal-close"
+                    (click)="cerrarPerfil()">
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- CONTENIDO DEL PERFIL -->
+            @if (perfilSeleccionado(); as perfil) {
+
+                <div class="profile-content">
+
+                    <!-- DATOS PERSONALES -->
+                    <div class="profile-section">
+
+                        <h3>Datos personales</h3>
+
+                        <div class="profile-grid">
+
+                            <div class="profile-field">
+                                <span class="field-label">DNI</span>
+                                <span class="field-value">
+                                    {{ perfil.dni }}
+                                </span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="field-label">
+                                    Fecha de nacimiento
+                                </span>
+                                <span class="field-value">
+                                    {{ perfil.fechaNacimiento }}
+                                </span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="field-label">Género</span>
+                                <span class="field-value">
+                                    {{ perfil.genero }}
+                                </span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="field-label">Celular</span>
+                                <span class="field-value">
+                                    {{ perfil.celular }}
+                                </span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="field-label">Nacionalidad</span>
+                                <span class="field-value">
+                                    {{ perfil.nacionalidad }}
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DOMICILIO -->
+                    <div class="profile-section">
+
+                        <h3>Domicilio</h3>
+
+                        <div class="profile-grid">
+
+                            <div class="profile-field">
+                                <span class="field-label">Calle</span>
+                                <span class="field-value">
+                                    {{ perfil.domicilioCalle }}
+                                </span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="field-label">
+                                    Número
+                                </span>
+                                <span class="field-value">
+                                    {{ perfil.domicilioNumero }}
+                                </span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="field-label">
+                                    Piso / Depto.
+                                </span>
+                                <span class="field-value">
+                                    {{ perfil.domicilioPisoDepto || '-' }}
+                                </span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="field-label">
+                                    Código postal
+                                </span>
+                                <span class="field-value">
+                                    {{ perfil.codigoPostal }}
+                                </span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="field-label">
+                                    Localidad
+                                </span>
+                                <span class="field-value">
+                                    {{ perfil.localidad }}
+                                </span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="field-label">
+                                    Provincia
+                                </span>
+                                <span class="field-value">
+                                    {{ perfil.provincia }}
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DOMICILIO FAMILIAR -->
+                    <div class="profile-section">
+
+                        <h3>Domicilio familiar</h3>
+
+                        @if (perfil.domicilioFamiliarDistinto) {
+
+                            <div class="profile-grid">
+
+                                <div class="profile-field">
+                                    <span class="field-label">
+                                        Calle
+                                    </span>
+                                    <span class="field-value">
+                                        {{ perfil.domicilioFamiliarCalle || '-' }}
+                                    </span>
+                                </div>
+
+                                <div class="profile-field">
+                                    <span class="field-label">
+                                        Número
+                                    </span>
+                                    <span class="field-value">
+                                        {{ perfil.domicilioFamiliarNumero || '-' }}
+                                    </span>
+                                </div>
+
+                                <div class="profile-field">
+                                    <span class="field-label">
+                                        Piso / Depto.
+                                    </span>
+                                    <span class="field-value">
+                                        {{ perfil.domicilioFamiliarPisoDepto || '-' }}
+                                    </span>
+                                </div>
+
+                                <div class="profile-field">
+                                    <span class="field-label">
+                                        Código postal
+                                    </span>
+                                    <span class="field-value">
+                                        {{ perfil.domicilioFamiliarCodigoPostal || '-' }}
+                                    </span>
+                                </div>
+
+                                <div class="profile-field">
+                                    <span class="field-label">
+                                        Localidad
+                                    </span>
+                                    <span class="field-value">
+                                        {{ perfil.domicilioFamiliarLocalidad || '-' }}
+                                    </span>
+                                </div>
+
+                                <div class="profile-field">
+                                    <span class="field-label">
+                                        Provincia
+                                    </span>
+                                    <span class="field-value">
+                                        {{ perfil.domicilioFamiliarProvincia || '-' }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        } @else {
+
+                            <div class="empty-profile">
+                                El domicilio familiar coincide con el
+                                domicilio declarado.
+                            </div>
+
+                        }
+
+                    </div>
+
+                </div>
+
+            } @else {
+
+                <!-- ALUMNO SIN PERFIL -->
+                <div class="profile-content">
+
+                    <div class="empty-profile">
+                        Este alumno todavía no tiene sus datos
+                        personales cargados.
+                    </div>
+
+                </div>
+
+            }
+
+
+            <!-- PIE DEL MODAL -->
+            <div class="profile-modal-footer">
+
+                <button
+                    type="button"
+                    class="profile-close-btn"
+                    (click)="cerrarPerfil()">
+                    Cerrar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+}
+
 </main>
