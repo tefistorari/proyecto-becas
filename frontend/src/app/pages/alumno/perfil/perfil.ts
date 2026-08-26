@@ -32,7 +32,7 @@ export class Perfil implements OnInit{
     dni: ['', Validators.required],
     fechaNacimiento: ['', Validators.required],
     genero: [null as Genero | null, Validators.required],
-    celular: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]], //solo numeros- pattern cambia si permito espacio y guiones
+    celular: ['', [Validators.required, Validators.pattern(/^[1-9][0-9]{9,10}$/)]], //solo numeros- pattern cambia si permito espacio y guiones
 
     domicilioCalle: ['', Validators.required],
     domicilioNumero: [null as number | null, Validators.required],
@@ -110,7 +110,11 @@ export class Perfil implements OnInit{
 
   guardar(): void {
     if(this.form.invalid) {
-      this.form.markAllAsTouched();
+      console.log('form inválido:', this.form.value, this.form.errors);
+        Object.entries(this.form.controls).forEach(([k, c]) => {
+        if (c.invalid) console.log(k, c.errors);
+        });
+        this.form.markAllAsTouched();
       return;
     }
 
@@ -128,7 +132,7 @@ export class Perfil implements OnInit{
       },
       error: (err) => {
         this.guardando.set(false);
-        console.error(err);
+        console.error('Detalle:', err.error?.error ?? err.error);
       }
     })
   }

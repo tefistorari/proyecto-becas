@@ -28,6 +28,9 @@
         <div class="campo">
             <label for="celular">Celular</label>
             <input type="text" id="celular" formControlName="celular">
+            @if (form.get('celular')?.invalid && form.get('celular')?.touched) {
+                <small class="error">Ingresa el celular sin 0 ni 15, con código de área (10 u 11 dígitos)</small>
+            }
         </div>
 
         <div class="campo">
@@ -74,7 +77,7 @@
             <label for="localidad">Localidad</label>
             <select id="localidad" formControlName="localidad">
                 <option value="" disabled selected>Seleccioná una localidad</option>
-                @for (localidad of localidades(); track localidad.iso2) {
+                @for (localidad of localidades(); track localidad.id) {
                     <option [value]="localidad.id"> {{localidad.name}} </option>
                 }
             </select>
@@ -122,14 +125,14 @@
                 <label for="domicilioFamiliarLocalidad">Localidad (familiar)</label>
                 <select id="domicilioFamiliarLocalidad" formControlName="domicilioFamiliarLocalidad">
                     <option value="" disabled selected>Seleccioná una localidad</option>
-                    @for (localidad of localidadesFamiliar(); track localidad.iso2) {
+                    @for (localidad of localidadesFamiliar(); track localidad.id) {
                         <option [value]="localidad.id">{{ localidad.name }}</option>
                     }
                 </select>
             </div>
         }
         
-        <button type="submit" [disabled]="guardando()">
+        <button type="submit" [disabled]="guardando() || form.invalid">
             {{ guardando() ? 'Guardando...' : (modo() === 'crear' ? 'Crear' : 'Actualizar') }}
         </button>
 
