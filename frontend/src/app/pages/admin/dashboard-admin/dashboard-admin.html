@@ -266,7 +266,7 @@
                             <div class="profile-field">
                                 <span class="field-label">Nacionalidad</span>
                                 <span class="field-value">
-                                    {{ perfil.nacionalidad }}
+                                    {{ nacionalidadNombre() }}
                                 </span>
                             </div>
 
@@ -321,7 +321,7 @@
                                     Localidad
                                 </span>
                                 <span class="field-value">
-                                    {{ perfil.localidad }}
+                                    {{ localidadNombre() }}
                                 </span>
                             </div>
 
@@ -330,7 +330,7 @@
                                     Provincia
                                 </span>
                                 <span class="field-value">
-                                    {{ perfil.provincia }}
+                                    {{ provinciaNombre() }}
                                 </span>
                             </div>
 
@@ -389,7 +389,7 @@
                                         Localidad
                                     </span>
                                     <span class="field-value">
-                                        {{ perfil.domicilioFamiliarLocalidad || '-' }}
+                                        {{ localidadFamiliarNombre() || '-' }}
                                     </span>
                                 </div>
 
@@ -398,7 +398,7 @@
                                         Provincia
                                     </span>
                                     <span class="field-value">
-                                        {{ perfil.domicilioFamiliarProvincia || '-' }}
+                                        {{ provinciaFamiliarNombre() || '-' }}
                                     </span>
                                 </div>
 
