@@ -418,6 +418,7 @@ public class PostulacionServiceImpl implements PostulacionService {
     }
 
     @Override
+    @Transactional
     public PostulacionResponse cambiarEstado(Long id, EstadoPostulacion estado) {
         Postulacion postulacion = postulacionRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
