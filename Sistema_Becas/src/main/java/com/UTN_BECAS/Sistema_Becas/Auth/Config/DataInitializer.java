@@ -110,5 +110,18 @@ public class DataInitializer implements CommandLineRunner {
 
             becaRepository.save(binid);
         }
+
+        if (becaRepository.findByTipoBeca(TipoBeca.CARRERA_INVESTIGADOR).isEmpty()) {
+            Beca carreraInvestigador = new Beca(
+                    "Carrera del Investigador UTN",
+                    TipoBeca.CARRERA_INVESTIGADOR,
+                    true
+            );
+            carreraInvestigador.setDescripcion("Beca destinada a docentes e investigadores de la UTN que solicitan " +
+                    "categorización en la Carrera del Investigador, permitiendo el reconocimiento formal " +
+                    "de su actividad científica y tecnológica."
+            );
+            becaRepository.save(carreraInvestigador);
+        }
     }
 }

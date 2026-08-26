@@ -4,6 +4,7 @@ import com.UTN_BECAS.Sistema_Becas.Estudiantes.Model.Genero;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
 
@@ -20,6 +21,10 @@ public class DatosPersonalesRequest {
     private Genero genero;
 
     @NotBlank(message = "El celular es obligatorio")
+    @Pattern(
+            regexp = "^[1-9][0-9]{9,10}$",
+            message = "El celular no debe comenzar con 0 ni con 15, e ingresar solo números"
+    )
     private String celular;
 
     @NotBlank(message = "La calle es obligatoria")

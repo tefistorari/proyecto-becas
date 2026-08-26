@@ -6,10 +6,8 @@ import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.DatosPersonalesHistorialRespo
 import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.GrupoFamiliarResponse;
 import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.MateriasACursarResponse;
 import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.MateriasARendirResponse;
-import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.DatosPersonalesHistorial;
-import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.Postulacion;
-import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.PostulacionBecaBaseBis;
-import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.PostulacionBecaBinid;
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionCarreraInvestigadorResponse;
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.*;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionBecaBaseBisResponse;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionBecaBinidResponse;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionResponse;
@@ -50,6 +48,19 @@ public class PostulacionMapper {
             binidResponse.setApellidoDirectorProyecto(binid.getApellidoDirectorProyecto());
             binidResponse.setAccedioABecaBinidAnterior(binid.isAccedioABecaBinidAnterior());
             response.setBecaBinid(binidResponse);
+        }
+        return response;
+    }
+
+    public static PostulacionResponse toResponse(Postulacion postulacion, PostulacionCarreraInvestigador carreraInvestigador) {
+        PostulacionResponse response = toResponse(postulacion);
+        if (carreraInvestigador != null) {
+            PostulacionCarreraInvestigadorResponse carreraResponse = new PostulacionCarreraInvestigadorResponse();
+            carreraResponse.setCategoriaActual(carreraInvestigador.getCategoriaActual());
+            carreraResponse.setCategoriaSolicitada(carreraInvestigador.getCategoriaSolicitada());
+            carreraResponse.setMateria(carreraInvestigador.getMateria());
+            carreraResponse.setCarreraGrado(carreraInvestigador.getCarreraGrado());
+            response.setBecaCarreraInvestigador(carreraResponse);
         }
         return response;
     }

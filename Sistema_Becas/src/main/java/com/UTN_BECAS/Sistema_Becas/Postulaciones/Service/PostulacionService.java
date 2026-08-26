@@ -2,6 +2,7 @@ package com.UTN_BECAS.Sistema_Becas.Postulaciones.Service;
 
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionBaseBisUnificadoRequest;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionBinidUnificadoRequest;
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionCarreraInvestigadorUnificadoRequest;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionResponse;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.EstadoPostulacion;
 
@@ -10,6 +11,7 @@ import java.util.List;
 public interface PostulacionService {
     PostulacionResponse postularBaseBis(Long usuarioId, PostulacionBaseBisUnificadoRequest request);
     PostulacionResponse postularBinid(Long usuarioId, PostulacionBinidUnificadoRequest request);
+    PostulacionResponse postularCarreraInvestigador(Long usuarioId, PostulacionCarreraInvestigadorUnificadoRequest request);
     PostulacionResponse finalizar(Long postulacionId);
     List<PostulacionResponse> listarPorUsuario(Long usuarioId);
     List<PostulacionResponse> listarTodas();

@@ -2,6 +2,7 @@ package com.UTN_BECAS.Sistema_Becas.Postulaciones.Controller;
 
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionBaseBisUnificadoRequest;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionBinidUnificadoRequest;
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionCarreraInvestigadorUnificadoRequest;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.DTO.PostulacionResponse;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.EstadoPostulacion;
 import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
@@ -40,6 +41,15 @@ public class PostulacionController {
             @Valid @RequestBody PostulacionBinidUnificadoRequest request) {
         Long usuarioId = ((Usuario) userDetails).getId();
         return ResponseEntity.ok(postulacionService.postularBinid(usuarioId, request));
+    }
+
+    @PreAuthorize("hasRole('ALUMNO')")
+    @PostMapping("/carrera-investigador")
+    public ResponseEntity<PostulacionResponse> postularCarreraInvestigador(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody PostulacionCarreraInvestigadorUnificadoRequest request) {
+        Long usuarioId = ((Usuario) userDetails).getId();
+        return ResponseEntity.ok(postulacionService.postularCarreraInvestigador(usuarioId, request));
     }
 
     @PreAuthorize("hasRole('ALUMNO')")

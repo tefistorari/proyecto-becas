@@ -7,6 +7,7 @@ import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.DatosPersonalesHistorialRespo
 import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.GrupoFamiliarResponse;
 import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.MateriasACursarResponse;
 import com.UTN_BECAS.Sistema_Becas.Estudiantes.DTO.MateriasARendirResponse;
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.PostulacionCarreraInvestigador;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +21,7 @@ public class PostulacionResponse {
     private UsuarioResponse usuario;
     private PostulacionBecaBaseBisResponse becaBaseBis;
     private PostulacionBecaBinidResponse becaBinid;
+    private PostulacionCarreraInvestigadorResponse becaCarreraInvestigador;
     private DatosPersonalesHistorialResponse datosPersonalesHistorial;
     private List<GrupoFamiliarResponse> grupoFamiliar;
     private List<MateriasACursarResponse> materiasACursar;
@@ -87,4 +89,11 @@ public class PostulacionResponse {
     public PostulacionBecaBinidResponse getBecaBinid() { return becaBinid; }
     public void setBecaBinid(PostulacionBecaBinidResponse becaBinid) { this.becaBinid = becaBinid; }
 
+    public PostulacionCarreraInvestigadorResponse getBecaCarreraInvestigador() {
+        return becaCarreraInvestigador;
+    }
+
+    public void setBecaCarreraInvestigador(PostulacionCarreraInvestigadorResponse becaCarreraInvestigador) {
+        this.becaCarreraInvestigador = becaCarreraInvestigador;
+    }
 }
