@@ -27,6 +27,7 @@ public class PostulacionBecaBaseBis {
     @Column(name = "condicion_laboral", nullable = false)
     private CondicionLaboral condicionLaboral;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 150)
     private CarreraBaseBis carrera;
 
