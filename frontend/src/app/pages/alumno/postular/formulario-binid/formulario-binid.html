@@ -1,1 +1,397 @@
-<p>formulario-binid works!</p>
+<div class="contenedor-principal">
+  <div class="header-beca">
+    <div class="header-badge">Beca BINID · UTN FRMDP</div>
+    <h1>Formulario de Postulación - Beca BINID</h1>
+    <p>Completá todos los campos con información verídica. Los datos tienen carácter de Declaración Jurada.</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="formulario-binid">
+
+    <!-- SECCIÓN 00: DATOS PERSONALES -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">00</span>
+        <h2 class="titulo-seccion">Datos Personales</h2>
+      </div>
+
+      @if (cargandoDatos()) {
+        <div class="loading-datos">
+          <span>Cargando tus datos...</span>
+        </div>
+      } @else {
+        <div class="aviso-autocompletado">
+          <span class="aviso-icono">ℹ</span>
+          <p>Estos datos se completaron desde tu perfil. Revisalos y corregí cualquier error antes de enviar.</p>
+        </div>
+
+        <div class="grid-campos">
+
+          <div class="campo">
+            <label>Nombre/s</label>
+            <input type="text" formControlName="dpNombre">
+            @if (campoInvalido('dpNombre')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Apellido/s</label>
+            <input type="text" formControlName="dpApellido">
+            @if (campoInvalido('dpApellido')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>DNI</label>
+            <input type="text" formControlName="dpDni" maxlength="8">
+            @if (campoInvalido('dpDni')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" formControlName="dpFechaNacimiento">
+            @if (campoInvalido('dpFechaNacimiento')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Género</label>
+            <select formControlName="dpGenero">
+              <option value="" disabled>Seleccioná...</option>
+              @for (g of generos; track g) {
+                <option [value]="g">{{ g | labelEnum }}</option>
+              }
+            </select>
+            @if (campoInvalido('dpGenero')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Celular</label>
+            <input type="tel" formControlName="dpCelular" placeholder="Ej: 2234123456">
+            @if (campoInvalido('dpCelular')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Calle</label>
+            <input type="text" formControlName="dpDomicilioCalle" placeholder="Ej: San Martín">
+            @if (campoInvalido('dpDomicilioCalle')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Número</label>
+            <input type="number" formControlName="dpDomicilioNumero" placeholder="Ej: 1234">
+            @if (campoInvalido('dpDomicilioNumero')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Piso / Depto <span class="campo-opcional">(opcional)</span></label>
+            <input type="text" formControlName="dpDomicilioPisoDepto" placeholder="Ej: 2° B">
+          </div>
+
+          <div class="campo">
+            <label>Código Postal</label>
+            <input type="text" formControlName="dpCodigoPostal" placeholder="Ej: 7600">
+            @if (campoInvalido('dpCodigoPostal')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Localidad</label>
+            <input type="text" formControlName="dpLocalidad" placeholder="Ej: Mar del Plata">
+            @if (campoInvalido('dpLocalidad')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Provincia</label>
+            <input type="text" formControlName="dpProvincia" placeholder="Ej: Buenos Aires">
+            @if (campoInvalido('dpProvincia')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Nacionalidad</label>
+            <input type="text" formControlName="dpNacionalidad" placeholder="Ej: Argentina">
+            @if (campoInvalido('dpNacionalidad')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+        </div>
+      }
+    </div>
+
+    <!-- SECCIÓN 01: INFORMACIÓN ACADÉMICA -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">01</span>
+        <h2 class="titulo-seccion">Información Académica</h2>
+      </div>
+      <div class="grid-campos">
+
+        <div class="campo">
+          <label>Categoría</label>
+          <select formControlName="categoriaBinid">
+            <option value="" disabled>Seleccioná tu categoría...</option>
+            <option value="ESTUDIANTE_AVANZADO">Estudiante Avanzado</option>
+            <option value="EGRESADO">Egresado</option>
+            <option value="GRADUADO">Graduado</option>
+          </select>
+          @if (campoInvalido('categoriaBinid')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Carrera de Grado</label>
+          <select formControlName="carreraGrado">
+            <option value="" disabled>Seleccioná tu carrera...</option>
+            <option value="INGENIERIA_NAVAL">Ingeniería Naval</option>
+            <option value="INGENIERIA_PESQUERA">Ingeniería Pesquera</option>
+          </select>
+          @if (campoInvalido('carreraGrado')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Año de Ingreso</label>
+          <input type="number" formControlName="anioIngreso" placeholder="Ej: 2018" min="1990" [max]="anioActual">
+          @if (campoInvalido('anioIngreso')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <!-- Solo para EGRESADO y GRADUADO -->
+        @if (esGraduadoOEgresado) {
+          <div class="campo">
+            <label>Año de Egreso</label>
+            <input type="number" formControlName="anioEgreso" placeholder="Ej: 2022" min="1990" [max]="anioActual">
+            @if (campoInvalido('anioEgreso')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+        }
+
+        <!-- Solo para ESTUDIANTE_AVANZADO -->
+        @if (esEstudianteAvanzado) {
+          <div class="campo">
+            <label>Materias Cursadas</label>
+            <input type="number" formControlName="materiasCursadas" placeholder="Ej: 20" min="0">
+            @if (campoInvalido('materiasCursadas')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+        }
+
+        <div class="campo">
+          <label>Promedio con Aplazos</label>
+          <input type="number" formControlName="promedioConAplazos" placeholder="Ej: 7.50" min="0" max="10" step="0.01">
+          @if (campoInvalido('promedioConAplazos')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Promedio sin Aplazos <span class="campo-opcional">(opcional)</span></label>
+          <input type="number" formControlName="promedioSinAplazos" placeholder="Ej: 8.00" min="0" max="10" step="0.01">
+        </div>
+
+        <div class="campo">
+          <label>¿Accediste a una Beca BINID anteriormente?</label>
+          <select formControlName="accedioABecaBinidAnterior">
+            <option value="" disabled>Seleccioná...</option>
+            <option [value]="true">Sí</option>
+            <option [value]="false">No</option>
+          </select>
+          @if (campoInvalido('accedioABecaBinidAnterior')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECCIÓN 02: DATOS DEL PROYECTO -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">02</span>
+        <h2 class="titulo-seccion">Datos del Proyecto</h2>
+      </div>
+      <div class="grid-campos">
+
+        <div class="campo">
+          <label>Nombre del Director del Proyecto</label>
+          <input type="text" formControlName="nombreDirectorProyecto" placeholder="Ej: Juan">
+          @if (campoInvalido('nombreDirectorProyecto')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Apellido del Director del Proyecto</label>
+          <input type="text" formControlName="apellidoDirectorProyecto" placeholder="Ej: García">
+          @if (campoInvalido('apellidoDirectorProyecto')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo full-width">
+          <label>¿Por qué querés participar en este proyecto?</label>
+          <textarea formControlName="pregunta" rows="5"
+            placeholder="Contanos tus motivaciones, experiencias previas y expectativas..."></textarea>
+          @if (campoInvalido('pregunta')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECCIÓN 03: DOCUMENTACIÓN -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">03</span>
+        <h2 class="titulo-seccion">Documentación Requerida</h2>
+      </div>
+      <p class="seccion-nota">
+        Todos los documentos son <strong>obligatorios</strong>. Adjuntá los archivos en formato <strong>PDF o imagen</strong>. Peso máximo: 5 MB por archivo.
+      </p>
+
+      <div class="lista-docs">
+
+        <div class="doc-item" [class.doc-cargado]="archivos['dni']?.length">
+          <div class="doc-info">
+            <span class="doc-icono">🪪</span>
+            <div>
+              <p class="doc-nombre">DNI <span class="badge-obligatorio">Obligatorio</span></p>
+              <p class="doc-desc">Frente y dorso</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos['dni']?.length">
+              <input type="file" accept=".pdf,image/*" multiple (change)="onArchivoSeleccionado($event, 'DNI')" hidden>
+              {{ archivos['dni']?.length ? archivos['dni'].length + ' archivo(s)' : 'Adjuntar' }}
+            </label>
+          </div>
+        </div>
+
+        <div class="doc-item" [class.doc-cargado]="archivos['nota_aval']?.length">
+          <div class="doc-info">
+            <span class="doc-icono">📄</span>
+            <div>
+              <p class="doc-nombre">Nota Aval del Director <span class="badge-obligatorio">Obligatorio</span></p>
+              <p class="doc-desc">Nota firmada por el director del proyecto</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos['nota_aval']?.length">
+              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, 'NOTA_AVAL_DIRECTOR')" hidden>
+              {{ archivos['nota_aval']?.length ? '1 archivo' : 'Adjuntar' }}
+            </label>
+          </div>
+        </div>
+
+        <div class="doc-item" [class.doc-cargado]="archivos['carta_motivacion']?.length">
+          <div class="doc-info">
+            <span class="doc-icono">✉️</span>
+            <div>
+              <p class="doc-nombre">Carta de Motivación <span class="badge-obligatorio">Obligatorio</span></p>
+              <p class="doc-desc">Carta describiendo tus motivaciones e intereses</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos['carta_motivacion']?.length">
+              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, 'CARTA_MOTIVACION')" hidden>
+              {{ archivos['carta_motivacion']?.length ? '1 archivo' : 'Adjuntar' }}
+            </label>
+          </div>
+        </div>
+
+        <div class="doc-item" [class.doc-cargado]="archivos['analitico']?.length">
+          <div class="doc-info">
+            <span class="doc-icono">📋</span>
+            <div>
+              <p class="doc-nombre">Analítico <span class="badge-obligatorio">Obligatorio</span></p>
+              <p class="doc-desc">Descargalo desde el SIU Guaraní</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos['analitico']?.length">
+              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, 'ANALITICO')" hidden>
+              {{ archivos['analitico']?.length ? '1 archivo' : 'Adjuntar' }}
+            </label>
+          </div>
+        </div>
+
+        <div class="doc-item" [class.doc-cargado]="archivos['certificado_alumno']?.length">
+          <div class="doc-info">
+            <span class="doc-icono">🎓</span>
+            <div>
+              <p class="doc-nombre">Certificado de Alumno Regular <span class="badge-obligatorio">Obligatorio</span></p>
+              <p class="doc-desc">Emitido por Secretaría Académica</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos['certificado_alumno']?.length">
+              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, 'CERTIFICADO_ALUMNO_REGULAR')" hidden>
+              {{ archivos['certificado_alumno']?.length ? '1 archivo' : 'Adjuntar' }}
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      @if (erroresArchivo.length > 0) {
+        <div class="errores-archivo">
+          @for (err of erroresArchivo; track err) {
+            <p class="error-archivo-item">⚠ {{ err }}</p>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- DECLARACIÓN JURADA -->
+    <div class="seccion-declaracion">
+      <h3>Declaración Jurada</h3>
+      <p>
+        La información detallada en esta solicitud supone el conocimiento del Reglamento de Becas BINID
+        y tiene carácter de <strong>Declaración Jurada</strong>. La falsedad de los datos será motivo de evaluación
+        y no aceptación por parte de la Comisión de Becas.
+      </p>
+      <label class="checkbox-container">
+        <input type="checkbox" formControlName="aceptaDeclaracion">
+        <span class="check-label">Declaro que los datos son verídicos y acepto los términos del reglamento.</span>
+      </label>
+    </div>
+
+    <div class="form-footer">
+      @if (form.invalid && intentoEnvio) {
+        <p class="form-estado error-texto">⚠ Revisá los campos marcados antes de continuar.</p>
+      }
+      <button type="submit" class="btn-enviar" [disabled]="enviando">
+        @if (!enviando) {
+          <span>Enviar Postulación</span>
+        } @else {
+          <span>Enviando...</span>
+        }
+      </button>
+    </div>
+
+  </form>
+</div>

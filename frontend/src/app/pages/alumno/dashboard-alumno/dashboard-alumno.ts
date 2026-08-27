@@ -56,6 +56,9 @@ export class DashboardAlumno implements OnInit{
       case TipoBeca.BINID:
         this.router.navigate(['alumno/postular/binid', convocatoria.id]);
         break;
+      case TipoBeca.CARRERA_INVESTIGADOR:
+        this.router.navigate(['alumno/postular/carrera-investigador', convocatoria.id]);
+        break;
     }
   }
 

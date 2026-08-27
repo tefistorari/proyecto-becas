@@ -1,7 +1,7 @@
 /* =========================================================
    FORMULARIO DE POSTULACIÓN
    ========================================================= */
-   
+
 /* =========================================================
    CONTENEDOR PRINCIPAL
    ========================================================= */
@@ -317,6 +317,52 @@
     color: #405568;
     font-size: 0.87rem;
     line-height: 1.4;
+}
+
+/* =========================================================
+   DOMICILIO FAMILIAR DISTINTO
+   ========================================================= */
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.domicilio-familiar {
+    margin-top: 1rem;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border: 1px solid #d8e2ec;
+    border-left: 3px solid #3475a8;
+    border-radius: 6px;
+    animation: aparecer 0.25s ease-out;
+}
+
+.subseccion-header {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid #e2e8ef;
+}
+
+.subseccion-header h3 {
+    margin: 0 0 0.35rem;
+    color: #294963;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.subseccion-header p {
+    margin: 0;
+    color: #718191;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.domicilio-familiar .grid-campos {
+    gap: 1.1rem 1.5rem;
+}
+
+.domicilio-familiar .campo input {
+    background: #ffffff;
 }
 
 

@@ -17,6 +17,7 @@ import { ArchivoService } from '../../../../services/archivo-service';
 import { firstValueFrom } from 'rxjs';
 import { PostulacionBaseBisRequest } from '../../../../models/postulacion-base-bis-request';
 import { LabelEnumPipe } from '../../../../pipes/label-enum-pipe';
+import { UbicacionService } from '../../../../services/ubicacion-service';
 
 const MAX_MB_POR_ARCHIVO = 5;
 @Component({
@@ -29,8 +30,13 @@ export class FormularioBase implements OnInit{
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private perfilService = inject(PerfilService);
+  private ubicacionService = inject(UbicacionService);
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
+
+  private nacionalidadCodigo = '';
+  private provinciaCodigo = '';
+  private localidadCodigo = '';
  
   // Input que recibe el id de la convocatoria seleccionada
   readonly convocatoriaId = input.required<number>();
@@ -101,31 +107,67 @@ export class FormularioBase implements OnInit{
   // --- Carga de datos personales del perfil ---
   // Reutiliza PerfilService, que ya existe y ya funciona (mismo que usa Perfil).
  
-  cargarDatosPersonales(): void {
-    this.perfilService.obtenerMisDatos().subscribe({
-      next: (datos: any) => {
-        this.form.patchValue({
-          dpNombre: datos.nombre,
-          dpApellido: datos.apellido,
-          dpDni: datos.dni,
-          dpFechaNacimiento: datos.fechaNacimiento,
-          dpGenero: datos.genero,
-          dpCelular: datos.celular,
-          dpDomicilioCalle: datos.domicilioCalle,
-          dpDomicilioNumero: datos.domicilioNumero,
-          dpDomicilioPisoDepto: datos.domicilioPisoDepto,
-          dpCodigoPostal: datos.codigoPostal,
-          dpLocalidad: datos.localidad,
-          dpProvincia: datos.provincia,
-          dpNacionalidad: datos.nacionalidad,
-        });
-        this.cargandoDatos.set(false);
-      },
-      error: () => {
-        this.cargandoDatos.set(false);
-      },
-    });
-  }
+  async cargarDatosPersonales(): Promise<void> {
+  this.perfilService.obtenerMisDatos().subscribe({
+    next: async (datos) => {
+
+      // Guardamos los códigos originales
+      this.nacionalidadCodigo = datos.nacionalidad;
+      this.provinciaCodigo = datos.provincia;
+      this.localidadCodigo = datos.localidad;
+
+      // Obtenemos los nombres para mostrar en el formulario
+      const nacionalidades = await this.ubicacionService.getNacionalidades();
+      const provincias = await this.ubicacionService.getProvincias();
+
+      const nacionalidad = nacionalidades.find(
+        n => n.iso2 === datos.nacionalidad
+      );
+
+      const provincia = provincias.find(
+        p => p.iso2 === datos.provincia
+      );
+
+      let localidadNombre = '';
+
+      if (datos.provincia && datos.localidad) {
+        const localidades = await this.ubicacionService.getLocalidades(
+          datos.provincia
+        );
+
+        const localidad = localidades.find(
+          l => String(l.id) === String(datos.localidad)
+        );
+
+        localidadNombre = localidad?.name ?? String(datos.localidad);
+      }
+
+      this.form.patchValue({
+        dpDni: datos.dni,
+        dpFechaNacimiento: datos.fechaNacimiento,
+        dpGenero: datos.genero,
+        dpCelular: datos.celular,
+
+        dpDomicilioCalle: datos.domicilioCalle,
+        dpDomicilioNumero: datos.domicilioNumero,
+        dpDomicilioPisoDepto: datos.domicilioPisoDepto,
+
+        dpCodigoPostal: datos.codigoPostal,
+
+        dpLocalidad: localidadNombre,
+        dpProvincia: provincia?.name ?? datos.provincia,
+        dpNacionalidad: nacionalidad?.name ?? datos.nacionalidad,
+      });
+
+      this.cargandoDatos.set(false);
+    },
+
+    error: (error) => {
+      console.error('Error al obtener los datos personales:', error);
+      this.cargandoDatos.set(false);
+    },
+  });
+}
  
   // --- FormArrays: Materias a cursar ---
  
@@ -253,9 +295,9 @@ export class FormularioBase implements OnInit{
         domicilioNumero: v.dpDomicilioNumero,
         domicilioPisoDepto: v.dpDomicilioPisoDepto || null,
         codigoPostal: v.dpCodigoPostal,
-        localidad: v.dpLocalidad,
-        provincia: v.dpProvincia,
-        nacionalidad: v.dpNacionalidad,
+        localidad: this.localidadCodigo,
+        provincia: this.provinciaCodigo,
+        nacionalidad: this.nacionalidadCodigo,
         domicilioFamiliarDistinto: false,
       },
       tipoVivienda: v.tipoVivienda === 'otra' ? v.tipoViviendaDetalle : v.tipoVivienda,
