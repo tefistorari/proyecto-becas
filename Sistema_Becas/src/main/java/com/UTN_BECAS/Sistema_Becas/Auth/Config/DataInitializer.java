@@ -74,7 +74,7 @@ public class DataInitializer implements CommandLineRunner {
             );
 
             base.setDescripcion("Beca de Ayuda Social y Económica destinada a estudiantes que necesitan apoyo "
-            + "para afrontar necesidades básicas como transporte, apuntes, residencia y todas "
+            + "para afrontar necesidades básicas como transporte, apuntes, residencia, monto de cuota y todas "
             + "aquellas que puedan limitar sus posibilidades de estudio."    
             );
 
@@ -88,7 +88,7 @@ public class DataInitializer implements CommandLineRunner {
                 false
             );
 
-            bis.setDescripcion("Beca de Investigación y Servicio destinada a estudiantes para participar "
+            bis.setDescripcion("Becas destinadas a tutorias, de Investigación y Servicio para estudiantes "
                 + "en proyectos de investigacion y desarrollar tareas técnicas no administrativas "
                 + "que contribuyan a cubrir necesidades de la Facultad Regional."
             );
