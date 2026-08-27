@@ -1,6 +1,7 @@
 export enum EstadoPostulacion {
     PENDIENTE = 'PENDIENTE',
     EN_REVISION = 'EN_REVISION',
+    BORRADOR = 'BORRADOR',
     ACEPTADO = 'ACEPTADO',
     RECHAZADO = 'RECHAZADO'
 }

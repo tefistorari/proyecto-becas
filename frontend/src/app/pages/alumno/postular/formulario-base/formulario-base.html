@@ -1,1 +1,515 @@
-<p>formulario-base works!</p>
+<div class="contenedor-principal">
+  <div class="header-beca">
+    <div class="header-badge">Beca BASE · UTN FRMDP</div>
+    <h1>Formulario de Postulación</h1>
+    <p>Completá todos los campos con información verídica. Los datos tienen carácter de Declaración Jurada.</p>
+  </div>
+ 
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="formulario-sae">
+ 
+    <!-- SECCIÓN 00: DATOS PERSONALES -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">00</span>
+        <h2 class="titulo-seccion">Datos Personales</h2>
+      </div>
+ 
+      @if (cargandoDatos) {
+        <div class="loading-datos">
+          <span>Cargando tus datos...</span>
+        </div>
+      } @else {
+        <div class="aviso-autocompletado">
+          <span class="aviso-icono">ℹ</span>
+          <p>Estos datos se completaron desde tu perfil. Revisalos y corregí cualquier error antes de enviar.</p>
+        </div>
+ 
+        <div class="grid-campos">
+ 
+          <div class="campo">
+            <label>Nombre/s</label>
+            <input type="text" formControlName="dpNombre">
+            @if (campoInvalido('dpNombre')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Apellido/s</label>
+            <input type="text" formControlName="dpApellido">
+            @if (campoInvalido('dpApellido')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>DNI</label>
+            <input type="text" formControlName="dpDni" maxlength="8">
+            @if (campoInvalido('dpDni')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" formControlName="dpFechaNacimiento">
+            @if (campoInvalido('dpFechaNacimiento')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Género</label>
+            <select formControlName="dpGenero">
+              <option value="" disabled selected>Seleccioná...</option>
+              @for (g of generos; track g) {
+                <option [value]="g">{{ g | labelEnum }}</option>
+              }
+            </select>
+            @if (campoInvalido('dpGenero')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Celular</label>
+            <input type="tel" formControlName="dpCelular" placeholder="Ej: 2234123456">
+            @if (campoInvalido('dpCelular')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Calle</label>
+            <input type="text" formControlName="dpDomicilioCalle" placeholder="Ej: San Martín">
+            @if (campoInvalido('dpDomicilioCalle')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Número</label>
+            <input type="number" formControlName="dpDomicilioNumero" placeholder="Ej: 1234">
+            @if (campoInvalido('dpDomicilioNumero')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Piso / Depto <span class="campo-opcional">(opcional)</span></label>
+            <input type="text" formControlName="dpDomicilioPisoDepto" placeholder="Ej: 2° B">
+          </div>
+ 
+          <div class="campo">
+            <label>Código Postal</label>
+            <input type="text" formControlName="dpCodigoPostal" placeholder="Ej: 7600">
+            @if (campoInvalido('dpCodigoPostal')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Localidad</label>
+            <input type="text" formControlName="dpLocalidad" placeholder="Ej: Mar del Plata">
+            @if (campoInvalido('dpLocalidad')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Provincia</label>
+            <input type="text" formControlName="dpProvincia" placeholder="Ej: Buenos Aires">
+            @if (campoInvalido('dpProvincia')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+          <div class="campo">
+            <label>Nacionalidad</label>
+            <input type="text" formControlName="dpNacionalidad" placeholder="Ej: Argentina">
+            @if (campoInvalido('dpNacionalidad')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+ 
+        </div>
+      }
+    </div>
+ 
+    <!-- SECCIÓN 01: INFORMACIÓN GENERAL -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">01</span>
+        <h2 class="titulo-seccion">Información General</h2>
+      </div>
+      <div class="grid-campos">
+ 
+        <div class="campo">
+          <label>Carrera</label>
+          <select formControlName="carrera">
+            <option value="" disabled selected>Seleccioná tu carrera...</option>
+            <option value="ADMINISTRACION">Administración</option>
+            <option value="ENOLOGIA">Enología</option>
+            <option value="PROCEDIMIENTOS_TECNOLOGIAS_AMBIENTALES">Procedimientos y Tecnologías Ambientales</option>
+            <option value="PRODUCCION_TEXTIL">Producción Textil</option>
+            <option value="PROGRAMACION">Programación</option>
+            <option value="INGENIERIA_NAVAL">Ingeniería Naval</option>
+            <option value="INGENIERIA_PESQUERA">Ingeniería Pesquera</option>
+          </select>
+          @if (campoInvalido('carrera')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+ 
+        <div class="campo">
+          <label>Tipo de Vivienda</label>
+          <select formControlName="tipoVivienda">
+            <option value="" disabled selected>Seleccioná una opción...</option>
+            <option value="Vivienda propia">Vivienda propia</option>
+            <option value="Vivienda con deuda hipotecaria">Vivienda con deuda hipotecaria</option>
+            <option value="Inquilino / alquiler">Inquilino / alquiler</option>
+            <option value="Prestada / cedida">Prestada / cedida</option>
+            <option value="otra">Otra (especificar)</option>
+          </select>
+          @if (campoInvalido('tipoVivienda')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+ 
+        @if (form.get('tipoVivienda')?.value === 'otra') {
+          <div class="campo">
+            <label>Especificá tu situación de vivienda</label>
+            <input type="text" formControlName="tipoViviendaDetalle" placeholder="Ej: Vivienda en toma, judicializada...">
+          </div>
+        }
+ 
+        <div class="campo">
+          <label>Condición Laboral del jefe de hogar</label>
+          <select formControlName="condicionLaboral">
+            <option value="" disabled selected>Seleccioná condición...</option>
+            @for (cond of condicionesLaborales; track cond) {
+              <option [value]="cond">{{ cond | labelEnum }}</option>
+            }
+          </select>
+          @if (campoInvalido('condicionLaboral')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+ 
+      </div>
+    </div>
+ 
+    <!-- SECCIÓN 02: SALUD Y COBERTURA -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">02</span>
+        <h2 class="titulo-seccion">Salud y Cobertura</h2>
+      </div>
+      <div class="grid-campos">
+ 
+        <div class="campo">
+          <label>Tipo de Cobertura de Salud</label>
+          <select formControlName="salud">
+            <option value="" disabled selected>Seleccioná cobertura...</option>
+            @for (s of tiposSalud; track s) {
+              <option [value]="s">{{ s | labelEnum }}</option>
+            }
+          </select>
+          @if (campoInvalido('salud')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+ 
+        <div class="campo campo-check">
+          <label class="checkbox-container">
+            <input type="checkbox" formControlName="tieneCondicionSalud">
+            <span class="check-label">¿Poseés alguna condición de salud?</span>
+          </label>
+        </div>
+ 
+      </div>
+ 
+      @if (form.get('tieneCondicionSalud')?.value) {
+        <div class="campo full-width animate-fade">
+          <label>Detalle de la condición de salud</label>
+          <textarea formControlName="detalleCondicionSalud"
+            placeholder="Indicá brevemente el diagnóstico o detalle..."></textarea>
+        </div>
+      }
+    </div>
+ 
+    <!-- SECCIÓN 03: ESTADO ACADÉMICO -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">03</span>
+        <h2 class="titulo-seccion">Estado Académico</h2>
+      </div>
+ 
+      <!-- MATERIAS A CURSAR -->
+      <div class="subtabla-seccion">
+        <div class="flex-header">
+          <h3 class="subtitulo">¿Qué materias planificás cursar este año?</h3>
+          <button type="button" class="btn-agregar" (click)="agregarMateriaCursar()">+ Agregar materia</button>
+        </div>
+ 
+        <div class="tabla-responsive">
+          <table class="tabla-datos">
+            <thead>
+              <tr>
+                <th>Nombre de la materia</th>
+                <th>Nivel</th>
+                <th>Régimen</th>
+                <th>Año</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody formArrayName="materiasACursar">
+              @for (materia of materiasACursar.controls; track materia; let i = $index) {
+                <tr [formGroupName]="i">
+                  <td><input type="text" formControlName="nombreMateria" placeholder="Ej: Análisis Matemático I"></td>
+                  <td>
+                    <select formControlName="nivelMateria">
+                      <option value="" disabled selected>Nivel...</option>
+                      @for (n of nivelesMaterias; track n) {
+                        <option [value]="n">{{ n | labelEnum }}</option>
+                      }
+                    </select>
+                  </td>
+                  <td>
+                    <select formControlName="regimenMateria">
+                      @for (r of regimenesMateria; track r) {
+                        <option [value]="r">{{ r | labelEnum }}</option>
+                      }
+                    </select>
+                  </td>
+                  <td><input type="number" formControlName="anioMateria" [placeholder]="anioActual" [min]="anioActual - 1" [max]="anioActual + 1"></td>
+                  <td>
+                    @if (materiasACursar.length > 1) {
+                      <button type="button" class="btn-quitar" (click)="removerMateriaCursar(i)">✕</button>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+ 
+      <!-- MATERIAS A RENDIR -->
+      <div class="subtabla-seccion">
+        <div class="flex-header">
+          <h3 class="subtitulo">¿Qué finales planificás rendir este año?</h3>
+          <button type="button" class="btn-agregar" (click)="agregarMateriaRendir()">+ Agregar final</button>
+        </div>
+ 
+        <div class="tabla-responsive">
+          <table class="tabla-datos">
+            <thead>
+              <tr>
+                <th>Nombre de la materia</th>
+                <th>Nivel</th>
+                <th>Mesa (mes)</th>
+                <th>Año</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody formArrayName="materiasARendir">
+              @for (final of materiasARendir.controls; track final; let i = $index) {
+                <tr [formGroupName]="i">
+                  <td><input type="text" formControlName="nombreMateria" placeholder="Ej: Física I"></td>
+                  <td>
+                    <select formControlName="nivelMateria">
+                      <option value="" disabled selected>Nivel...</option>
+                      @for (n of nivelesMaterias; track n) {
+                        <option [value]="n">{{ n | labelEnum }}</option>
+                      }
+                    </select>
+                  </td>
+                  <td>
+                    <select formControlName="mesMesa">
+                      <option value="" disabled selected>Mes...</option>
+                      @for (m of mesesMesa; track m) {
+                        <option [value]="m">{{ m | titlecase }}</option>
+                      }
+                    </select>
+                  </td>
+                  <td><input type="number" formControlName="anioMesa" [placeholder]="anioActual" [min]="anioActual" [max]="anioActual + 1"></td>
+                  <td>
+                    @if (materiasARendir.length > 0) {
+                      <button type="button" class="btn-quitar" (click)="removerMateriaRendir(i)">✕</button>
+                    }
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="tabla-vacia">No agregaste finales aún</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- SECCIÓN 04: GRUPO FAMILIAR -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">04</span>
+        <h2 class="titulo-seccion">Grupo Familiar</h2>
+      </div>
+      <p class="seccion-nota">Incluí a todos los integrantes del grupo familiar. Consigná el ingreso mensual neto (de bolsillo).</p>
+ 
+      <div formArrayName="grupoFamiliar" class="lista-familiares">
+        @for (integrante of integrantes.controls; track integrante; let i = $index) {
+          <div [formGroupName]="i" class="tarjeta-familiar">
+            <div class="header-tarjeta">
+              <span class="tarjeta-numero">Integrante #{{ i + 1 }}</span>
+              @if (integrantes.length > 1) {
+                <button type="button" (click)="removerIntegrante(i)" class="btn-eliminar">Eliminar</button>
+              }
+            </div>
+ 
+            <div class="grid-familiar">
+              <div class="campo-mini">
+                <label>Nombre</label>
+                <input type="text" formControlName="nombre" placeholder="Nombre">
+              </div>
+              <div class="campo-mini">
+                <label>Apellido</label>
+                <input type="text" formControlName="apellido" placeholder="Apellido">
+              </div>
+              <div class="campo-mini">
+                <label>DNI</label>
+                <input type="text" formControlName="dni" placeholder="Sin puntos" maxlength="8">
+              </div>
+              <div class="campo-mini">
+                <label>Parentesco</label>
+                <select formControlName="parentesco">
+                  <option value="" disabled selected>Parentesco...</option>
+                  @for (p of parentescos; track p) {
+                    <option [value]="p">{{ p | titlecase }}</option>
+                  }
+                </select>
+              </div>
+              <div class="campo-mini">
+                <label>Ocupación</label>
+                <input type="text" formControlName="ocupacion" placeholder="Ocupación">
+              </div>
+              <div class="campo-mini">
+                <label>Ingreso mensual ($)</label>
+                <input type="number" formControlName="ingreso" placeholder="0" min="0">
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+ 
+      <button type="button" class="btn-agregar btn-agregar-grande" (click)="agregarIntegrante()">
+        + Agregar integrante
+      </button>
+    </div>
+ 
+    <!-- SECCIÓN 05: DOCUMENTACIÓN -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">05</span>
+        <h2 class="titulo-seccion">Documentación Requerida</h2>
+      </div>
+      <p class="seccion-nota">
+        Adjuntá los archivos en formato <strong>PDF o imagen</strong>. Peso máximo: 5 MB por archivo.
+      </p>
+ 
+      <div class="lista-docs">
+ 
+        <!-- DNI — OBLIGATORIO -->
+        <div class="doc-item" [class.doc-cargado]="archivos[tipoDocumento.DNI]?.length">
+          <div class="doc-info">
+            <span class="doc-icono">🪪</span>
+            <div>
+              <p class="doc-nombre">DNI <span class="badge-obligatorio">Obligatorio</span></p>
+              <p class="doc-desc">Frente y dorso</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.DNI]?.length">
+              <input type="file" accept=".pdf,image/*" multiple (change)="onArchivoSeleccionado($event, tipoDocumento.DNI)" hidden>
+              {{ archivos[tipoDocumento.DNI]?.length ? archivos[tipoDocumento.DNI]!.length + ' archivo(s)' : 'Adjuntar' }}
+            </label>
+          </div>
+        </div>
+ 
+        <!-- CERTIFICADO ALUMNO REGULAR — OPCIONAL -->
+        <div class="doc-item" [class.doc-cargado]="archivos[tipoDocumento.CERTIFICADO_ALUMNO_REGULAR]?.length">
+          <div class="doc-info">
+            <span class="doc-icono">🎓</span>
+            <div>
+              <p class="doc-nombre">Certificado de alumno regular <span class="campo-opcional">(opcional)</span></p>
+              <p class="doc-desc">Emitido por Secretaría Académica</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.CERTIFICADO_ALUMNO_REGULAR]?.length">
+              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, tipoDocumento.CERTIFICADO_ALUMNO_REGULAR)" hidden>
+              {{ archivos[tipoDocumento.CERTIFICADO_ALUMNO_REGULAR]?.length ? '1 archivo' : 'Adjuntar' }}
+            </label>
+          </div>
+        </div>
+ 
+        <!-- DOCUMENTACIÓN ADICIONAL — OPCIONAL -->
+        <div class="doc-item" [class.doc-cargado]="archivos[tipoDocumento.OTRO]?.length">
+          <div class="doc-info">
+            <span class="doc-icono">📎</span>
+            <div>
+              <p class="doc-nombre">Documentación adicional <span class="campo-opcional">(opcional)</span></p>
+              <p class="doc-desc">Cualquier otro documento de respaldo</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.OTRO]?.length">
+              <input type="file" accept=".pdf,image/*" multiple (change)="onArchivoSeleccionado($event, tipoDocumento.OTRO)" hidden>
+              {{ archivos[tipoDocumento.OTRO]?.length ? archivos[tipoDocumento.OTRO]!.length + ' archivo(s)' : 'Adjuntar (opcional)' }}
+            </label>
+          </div>
+        </div>
+ 
+      </div>
+ 
+      @if (erroresArchivo.length > 0) {
+        <div class="errores-archivo">
+          @for (err of erroresArchivo; track err) {
+            <p class="error-archivo-item">⚠ {{ err }}</p>
+          }
+        </div>
+      }
+    </div>
+ 
+    <!-- DECLARACIÓN JURADA -->
+    <div class="seccion-declaracion">
+      <h3>Declaración Jurada</h3>
+      <p>
+        La información detallada en esta solicitud supone el conocimiento del Reglamento de Becas de Ayuda Económica
+        y tiene carácter de <strong>Declaración Jurada</strong>. La falsedad de los datos será motivo de evaluación
+        y no aceptación por parte de la Comisión de Becas.
+      </p>
+      <label class="checkbox-container">
+        <input type="checkbox" formControlName="aceptaDeclaracion">
+        <span class="check-label">Declaro que los datos son verídicos y acepto los términos del reglamento.</span>
+      </label>
+    </div>
+ 
+    <div class="form-footer">
+      @if (form.invalid && intentoEnvio) {
+        <p class="form-estado error-texto">⚠ Revisá los campos marcados antes de continuar.</p>
+      }
+      <button type="submit" class="btn-enviar" [disabled]="enviando">
+        @if (!enviando) {
+          <span>Enviar Postulación</span>
+        } @else {
+          <span>Enviando...</span>
+        }
+      </button>
+    </div>
+ 
+  </form>
+</div>
+ 

@@ -14,6 +14,7 @@ import { DashboardAlumno } from './pages/alumno/dashboard-alumno/dashboard-alumn
 import { ConvocatoriaForm } from './pages/admin/convocatoria-form/convocatoria-form';
 import { ConvocatoriaDetalle } from './pages/admin/convocatoria-detalle/convocatoria-detalle';
 import { CambioPassword } from './pages/cambio-password/cambio-password';
+import { FormCarreraInvestigador } from './pages/alumno/postular/form-carrera-investigador/form-carrera-investigador';
 
 
 export const routes: Routes = [
@@ -32,7 +33,8 @@ export const routes: Routes = [
     {path: 'alumno/postular/base/:convocatoriaId', component: FormularioBase},
     {path: 'alumno/postular/bis/:convocatoriaId', component: FormularioBis},
     {path: 'alumno/postular/binid/:convocatoriaId', component: FormularioBinid},
-
+    {path: 'alumno/postular/carrera-investigador/:convocatoriaId', component: FormCarreraInvestigador},
+    
     //auth y admin
     {path: 'admin/dashboard', component: DashboardAdmin},
     {path: 'admin/postulaciones', component: Postulaciones},

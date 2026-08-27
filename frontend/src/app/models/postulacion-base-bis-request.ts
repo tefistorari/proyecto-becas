@@ -17,10 +17,9 @@ export interface PostulacionBaseBisRequest {
     carrera: CarreraBaseBis,
     salud: Salud;
     tieneCondicionSalud: boolean;
-    detalleCondicionSalud: string;
+    detalleCondicionSalud?: string;
 
     grupoFamiliar: GrupoFamiliarRequest[];
-
     materiasACursar?: MateriasACursarRequest[];
     materiasARendir?: MateriasARendirRequest[];
 }
