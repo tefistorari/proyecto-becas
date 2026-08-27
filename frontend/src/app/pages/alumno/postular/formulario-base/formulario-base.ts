@@ -36,7 +36,7 @@ export class FormularioBase implements OnInit{
   readonly convocatoriaId = input.required<number>();
  
   form!: FormGroup;
-  cargandoDatos = true;
+  cargandoDatos = signal(true);
   enviando = false;
   intentoEnvio = false;
   erroresArchivo: string[] = [];
@@ -119,11 +119,10 @@ export class FormularioBase implements OnInit{
           dpProvincia: datos.provincia,
           dpNacionalidad: datos.nacionalidad,
         });
-        this.cargandoDatos = false;
+        this.cargandoDatos.set(false);
       },
       error: () => {
-        // Si no tiene datos personales cargados, deja el form vacío
-        this.cargandoDatos = false;
+        this.cargandoDatos.set(false);
       },
     });
   }
