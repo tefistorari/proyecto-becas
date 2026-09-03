@@ -6,10 +6,11 @@ import { PerfilService } from '../../../services/perfil-service';
 import { UsuarioResponse } from '../../../models/usuario-response';
 import { DatosPersonalesResponse } from '../../../models/datos-personales-response';
 import { UbicacionService } from '../../../services/ubicacion-service';
+import { LogoutButton } from "../../../components/logout-button/logout-button";
 
 @Component({
   selector: 'app-dashboard-admin',
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, LogoutButton],
   templateUrl: './dashboard-admin.html',
   styleUrl: './dashboard-admin.css',
 })
@@ -145,19 +146,4 @@ export class DashboardAdmin {
     this.localidadFamiliarNombre.set('');
   }
 
-  // CERRAR SESION
-
-  confirmLogout(): void {
-    this.showLogoutModal.set(true);
-  }
-
-  cancelLogout(): void {
-    this.showLogoutModal.set(false);
-  }
-
-  logout(): void {
-    this.showLogoutModal.set(false);
-    this.authService.logout();
-    this.router.navigate(['/']);
-  }
 }

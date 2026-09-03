@@ -5,10 +5,11 @@ import { ConvocatoriaService } from '../../../services/convocatoria-service';
 import { ConvocatoriaResponse } from '../../../models/convocatoria-response';
 import { DatePipe } from '@angular/common';
 import { TipoBeca } from '../../../models/tipo-beca';
+import { LogoutButton } from "../../../components/logout-button/logout-button";
 
 @Component({
   selector: 'app-dashboard-alumno',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, LogoutButton],
   templateUrl: './dashboard-alumno.html',
   styleUrl: './dashboard-alumno.css',
 })
@@ -62,17 +63,4 @@ export class DashboardAlumno implements OnInit{
     }
   }
 
-  confirmLogout(): void {
-    this.showLogoutModal.set(true);
-  }
-
-  cancelLogout(): void {
-    this.showLogoutModal.set(false);
-  }
-
-  logout(): void {
-    this.showLogoutModal.set(false);
-    this.authService.logout();
-    this.router.navigate(['/']);
-  }
 }
