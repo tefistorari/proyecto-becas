@@ -141,51 +141,9 @@
 
     </div>
 
-    <!-- CERRAR SESIÓN -->
     <div class="logout-container">
-        <button
-            type="button"
-            class="logout-btn"
-            (click)="confirmLogout()">
-            Cerrar sesión
-        </button>
+        <app-logout-button></app-logout-button>
     </div>
-
-    @if (showLogoutModal()) {
-
-        <div class="modal-overlay">
-
-            <div class="modal">
-
-                <h2>¿Cerrar sesión?</h2>
-
-                <p>
-                    ¿Estas seguro de que querés cerrar tu sesión?
-                </p>
-
-                <div class="modal-actions">
-
-                    <button
-                        type="button"
-                        class="btn-cancel"
-                        (click)="cancelLogout()">
-                        Cancelar
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn-confirm"
-                        (click)="logout()">
-                        Cerrar sesión
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    }
 
     
     @if (alumnoSeleccionado(); as alumno) {
