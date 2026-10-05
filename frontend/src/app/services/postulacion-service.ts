@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { PostulacionBaseBisRequest } from '../models/postulacion-base-bis-request';
 import { Observable } from 'rxjs';
 import { PostulacionResponse } from '../models/postulacion-response';
 import { PostulacionBinidRequest } from '../models/postulacion-binid-request';
 import { PostulacionCarreraInvestigadorRequest } from '../models/postulacion-carrera-investigador-request';
-import { PostulacionBinidResponse } from '../models/postulacion-binid-response';
+import { EstadoPostulacion } from '../models/estado-postulacion';
 
-@Service()
+@Injectable({providedIn: 'root'})
 export class PostulacionService {
     private readonly API_URL = 'http://localhost:8080/api/postulaciones';
     private http = inject(HttpClient);
@@ -35,4 +35,22 @@ export class PostulacionService {
     buscarPorId(id: number): Observable<PostulacionResponse> {
         return this.http.get<PostulacionResponse>(`${this.API_URL}/${id}`);
     }
+
+    listarTodas(): Observable<PostulacionResponse[]> {
+    return this.http.get<PostulacionResponse[]>(this.API_URL);
+}
+
+listarPorEstado(estado: EstadoPostulacion): Observable<PostulacionResponse[]> {
+    return this.http.get<PostulacionResponse[]>(`${this.API_URL}/estado`, {
+        params: { estado }
+    });
+}
+
+cambiarEstado(id: number, estado: EstadoPostulacion): Observable<PostulacionResponse> {
+    return this.http.put<PostulacionResponse>(
+        `${this.API_URL}/${id}/estado`,
+        null,
+        { params: { estado } }
+    );
+}
 }

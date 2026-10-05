@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BecaResponse } from '../models/beca-response';
 
-@Service()
+@Injectable({providedIn: 'root'})
 export class BecaService {
     private http = inject(HttpClient);
     private readonly API_URL = 'http://localhost:8080/api/becas';
@@ -11,5 +11,5 @@ export class BecaService {
     listarTodas(): Observable<BecaResponse[]> {
         return this.http.get<BecaResponse[]>(this.API_URL);
     }
-    
+
 }

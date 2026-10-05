@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ConvocatoriaRequest } from '../models/convocatoria-request';
 import { Observable } from 'rxjs';
 import { ConvocatoriaResponse } from '../models/convocatoria-response';
@@ -7,7 +7,7 @@ import { EstadoConvocatoria } from '../models/estado-convocatoria';
 import { EstadisticasConvocatoriaResponse } from '../models/estadisticas-convocatoria-response';
 import { InformeConvocatoriaResponse } from '../models/informe-convocatoria-response';
 
-@Service()
+@Injectable({providedIn: 'root'})
 export class ConvocatoriaService {
     private http = inject(HttpClient);
     private readonly API_URL = 'http://localhost:8080/api/convocatorias';

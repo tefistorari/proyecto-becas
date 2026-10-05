@@ -6,7 +6,9 @@ import { AuthService } from '../../../../services/auth-service';
 import { TipoDocumento } from '../../../../models/tipo-documento';
 import { Genero } from '../../../../models/genero';
 import { CondicionLaboral } from '../../../../models/condicion-laboral';
+import { CondicionLaboralDescripcion } from '../../../../models/condicion-laboral'
 import { Salud } from '../../../../models/salud';
+import { SaludDescripcion} from '../../../../models/salud';
 import { NivelMateria } from '../../../../models/nivel-materia';
 import { MesMesa } from '../../../../models/mes-mesa';
 import { Parentesco } from '../../../../models/parentesco';
@@ -37,37 +39,44 @@ export class FormularioBase implements OnInit{
   private nacionalidadCodigo = '';
   private provinciaCodigo = '';
   private localidadCodigo = '';
- 
+
   // Input que recibe el id de la convocatoria seleccionada
   readonly convocatoriaId = input.required<number>();
- 
+
   form!: FormGroup;
   cargandoDatos = signal(true);
   enviando = false;
   intentoEnvio = false;
   erroresArchivo: string[] = [];
- 
+
   // Para referenciar tipoDocumento.DNI, etc. desde el template
   tipoDocumento = TipoDocumento;
   // Archivos seleccionados por tipo
   archivos: Partial<Record<TipoDocumento, File[]>> = {};
- 
+
+  // Listas de ubicación
+  nacionalidades: any[] = [];
+  provincias: any[] = [];
+  localidades: any[] = [];
+
   // Enums
   generos = Object.values(Genero);
   condicionesLaborales = Object.values(CondicionLaboral);
+  condicionLaboralDescripcion = CondicionLaboralDescripcion;
   tiposSalud = Object.values(Salud);
+  saludDescripcion = SaludDescripcion;
   nivelesMaterias = Object.values(NivelMateria);
   mesesMesa = Object.values(MesMesa);
   parentescos = Object.values(Parentesco);
   regimenesMateria = Object.values(RegimenMateria);
- 
+
   anioActual = new Date().getFullYear();
- 
+
   ngOnInit(): void {
     this.inicializarForm();
     this.cargarDatosPersonales();
   }
- 
+
   inicializarForm(): void {
     this.form = this.fb.group({
       // Datos personales
@@ -84,7 +93,7 @@ export class FormularioBase implements OnInit{
       dpLocalidad: ['', Validators.required],
       dpProvincia: ['', Validators.required],
       dpNacionalidad: ['', Validators.required],
- 
+
       // Datos BASE/BIS
       carrera: ['', Validators.required],
       tipoVivienda: ['', Validators.required],
@@ -93,20 +102,20 @@ export class FormularioBase implements OnInit{
       salud: [null as Salud | null, Validators.required],
       tieneCondicionSalud: [false],
       detalleCondicionSalud: [''],
- 
+
       // FormArrays
       materiasACursar: this.fb.array([this.crearMateriaACursar()]),
       materiasARendir: this.fb.array([this.crearMateriaARendir()]),
       grupoFamiliar: this.fb.array([this.crearIntegrante()]),
- 
+
       // Declaración
       aceptaDeclaracion: [false, Validators.requiredTrue],
     });
   }
- 
+
   // --- Carga de datos personales del perfil ---
   // Reutiliza PerfilService, que ya existe y ya funciona (mismo que usa Perfil).
- 
+
   async cargarDatosPersonales(): Promise<void> {
   this.perfilService.obtenerMisDatos().subscribe({
     next: async (datos) => {
@@ -116,31 +125,12 @@ export class FormularioBase implements OnInit{
       this.provinciaCodigo = datos.provincia;
       this.localidadCodigo = datos.localidad;
 
-      // Obtenemos los nombres para mostrar en el formulario
-      const nacionalidades = await this.ubicacionService.getNacionalidades();
-      const provincias = await this.ubicacionService.getProvincias();
+      this.nacionalidades = await this.ubicacionService.getNacionalidades();
+      this.provincias = await this.ubicacionService.getProvincias();
 
-      const nacionalidad = nacionalidades.find(
-        n => n.iso2 === datos.nacionalidad
-      );
-
-      const provincia = provincias.find(
-        p => p.iso2 === datos.provincia
-      );
-
-      let localidadNombre = '';
-
-      if (datos.provincia && datos.localidad) {
-        const localidades = await this.ubicacionService.getLocalidades(
-          datos.provincia
-        );
-
-        const localidad = localidades.find(
-          l => String(l.id) === String(datos.localidad)
-        );
-
-        localidadNombre = localidad?.name ?? String(datos.localidad);
-      }
+  if (datos.provincia) {
+      this.localidades = await this.ubicacionService.getLocalidades(datos.provincia);
+  }
 
       this.form.patchValue({
         dpDni: datos.dni,
@@ -154,9 +144,9 @@ export class FormularioBase implements OnInit{
 
         dpCodigoPostal: datos.codigoPostal,
 
-        dpLocalidad: localidadNombre,
-        dpProvincia: provincia?.name ?? datos.provincia,
-        dpNacionalidad: nacionalidad?.name ?? datos.nacionalidad,
+        dpLocalidad: datos.localidad,
+        dpProvincia: datos.provincia,
+        dpNacionalidad: datos.nacionalidad,
       });
 
       this.cargandoDatos.set(false);
@@ -168,13 +158,21 @@ export class FormularioBase implements OnInit{
     },
   });
 }
- 
+
+async onProvinciaChange(codigoProvincia: string): Promise<void> {
+    this.localidades = [];
+    this.form.patchValue({ dpLocalidad: '' });
+    if (codigoProvincia) {
+        this.localidades = await this.ubicacionService.getLocalidades(codigoProvincia);
+    }
+}
+
   // --- FormArrays: Materias a cursar ---
- 
+
   get materiasACursar(): FormArray {
     return this.form.get('materiasACursar') as FormArray;
   }
- 
+
   crearMateriaACursar(): FormGroup {
     return this.fb.group({
       nombreMateria: ['', Validators.required],
@@ -183,21 +181,21 @@ export class FormularioBase implements OnInit{
       anioMateria: [this.anioActual, Validators.required],
     });
   }
- 
+
   agregarMateriaCursar(): void {
     this.materiasACursar.push(this.crearMateriaACursar());
   }
- 
+
   removerMateriaCursar(index: number): void {
     this.materiasACursar.removeAt(index);
   }
- 
+
   // --- FormArrays: Materias a rendir ---
- 
+
   get materiasARendir(): FormArray {
     return this.form.get('materiasARendir') as FormArray;
   }
- 
+
   crearMateriaARendir(): FormGroup {
     return this.fb.group({
       nombreMateria: ['', Validators.required],
@@ -206,21 +204,21 @@ export class FormularioBase implements OnInit{
       anioMesa: [this.anioActual, Validators.required],
     });
   }
- 
+
   agregarMateriaRendir(): void {
     this.materiasARendir.push(this.crearMateriaARendir());
   }
- 
+
   removerMateriaRendir(index: number): void {
     this.materiasARendir.removeAt(index);
   }
- 
+
   // --- FormArrays: Grupo familiar ---
- 
+
   get integrantes(): FormArray {
     return this.form.get('grupoFamiliar') as FormArray;
   }
- 
+
   crearIntegrante(): FormGroup {
     return this.fb.group({
       nombre: ['', Validators.required],
@@ -231,17 +229,17 @@ export class FormularioBase implements OnInit{
       ingreso: ['', Validators.required],
     });
   }
- 
+
   agregarIntegrante(): void {
     this.integrantes.push(this.crearIntegrante());
   }
- 
+
   removerIntegrante(index: number): void {
     this.integrantes.removeAt(index);
   }
- 
+
   // --- Archivos ---
- 
+
   onArchivoSeleccionado(event: Event, tipo: TipoDocumento): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -256,32 +254,38 @@ export class FormularioBase implements OnInit{
       this.erroresArchivo = [];
     }
   }
- 
+
   // --- Validación de campos ---
- 
+
   campoInvalido(campo: string): boolean {
     const control = this.form.get(campo);
     return !!(control && control.invalid && (control.dirty || control.touched || this.intentoEnvio));
   }
- 
+
   // --- Submit ---
- 
+
   async onSubmit(): Promise<void> {
     this.intentoEnvio = true;
- 
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
- 
+
     if (!this.archivos[TipoDocumento.DNI] || this.archivos[TipoDocumento.DNI]!.length === 0) {
       this.erroresArchivo.push('El DNI es obligatorio.');
       return;
     }
- 
+
     this.enviando = true;
     const v = this.form.getRawValue();
- 
+
+
+    // Actualizamos los códigos con los valores seleccionados en los dropdowns
+    this.nacionalidadCodigo = v.dpNacionalidad;
+    this.provinciaCodigo = v.dpProvincia;
+    this.localidadCodigo = v.dpLocalidad;
+
     // Tipado con PostulacionBaseBisRequest en vez de objeto suelto:
     // así TS avisa si falta o sobra algún campo respecto al @RequestBody del backend.
     const body: PostulacionBaseBisRequest = {
@@ -310,7 +314,7 @@ export class FormularioBase implements OnInit{
       materiasACursar: v.materiasACursar,
       materiasARendir: v.materiasARendir,
     };
- 
+
     try {
       // Paso 1 — Postularse
       const postulacion = await firstValueFrom(this.postulacionService.postularBaseBis(body));
@@ -325,10 +329,10 @@ export class FormularioBase implements OnInit{
       console.error('Error al postularse:', err);
     }
   }
- 
+
   private async subirArchivos(postulacionId: number): Promise<void> {
     const uploads: Promise<unknown>[] = [];
- 
+
     (Object.entries(this.archivos) as [TipoDocumento, File[]][]).forEach(([tipo, archivosArray]) => {
       archivosArray.forEach((archivo) => {
         const formData = new FormData();
@@ -337,7 +341,7 @@ export class FormularioBase implements OnInit{
         uploads.push(firstValueFrom(this.archivoService.subir(postulacionId, formData)));
       });
     });
- 
+
     await Promise.all(uploads);
   }
 }

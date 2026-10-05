@@ -1,7 +1,7 @@
 export enum NivelMateria {
     PRIMER = 'PRIMER',
     SEGUNDO = 'SEGUNDO',
-    TERCERO = 'TERCERO',
+    TERCER = 'TERCER',
     CUARTO = 'CUARTO',
     QUINTO = 'QUINTO',
     SEXTO = 'SEXTO'

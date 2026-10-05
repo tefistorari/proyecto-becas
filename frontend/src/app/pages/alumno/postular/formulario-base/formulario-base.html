@@ -4,16 +4,16 @@
     <h1>Formulario de Postulación - Beca BASE</h1>
     <p>Completá todos los campos con información verídica. Los datos tienen carácter de Declaración Jurada.</p>
   </div>
- 
+
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="formulario-sae">
- 
+
     <!-- SECCIÓN 00: DATOS PERSONALES -->
     <div class="seccion-formulario">
       <div class="seccion-header">
         <span class="seccion-numero">00</span>
         <h2 class="titulo-seccion">Datos Personales</h2>
       </div>
- 
+
       @if (cargandoDatos()) {
         <div class="loading-datos">
           <span>Cargando tus datos...</span>
@@ -23,9 +23,9 @@
           <span class="aviso-icono">ℹ</span>
           <p>Estos datos se completaron desde tu perfil. Revisalos y corregí cualquier error antes de enviar.</p>
         </div>
- 
+
         <div class="grid-campos">
- 
+
           <div class="campo">
             <label>Nombre/s</label>
             <input type="text" formControlName="dpNombre">
@@ -33,7 +33,7 @@
               <span class="campo-error">Campo obligatorio</span>
             }
           </div>
- 
+
           <div class="campo">
             <label>Apellido/s</label>
             <input type="text" formControlName="dpApellido">
@@ -41,7 +41,7 @@
               <span class="campo-error">Campo obligatorio</span>
             }
           </div>
- 
+
           <div class="campo">
             <label>DNI</label>
             <input type="text" formControlName="dpDni" maxlength="8">
@@ -49,7 +49,7 @@
               <span class="campo-error">Campo obligatorio</span>
             }
           </div>
- 
+
           <div class="campo">
             <label>Fecha de Nacimiento</label>
             <input type="date" formControlName="dpFechaNacimiento">
@@ -57,7 +57,7 @@
               <span class="campo-error">Campo obligatorio</span>
             }
           </div>
- 
+
           <div class="campo">
             <label>Género</label>
             <select formControlName="dpGenero">
@@ -70,7 +70,7 @@
               <span class="campo-error">Campo obligatorio</span>
             }
           </div>
- 
+
           <div class="campo">
             <label>Celular</label>
             <input type="tel" formControlName="dpCelular" placeholder="Ej: 2234123456">
@@ -78,7 +78,7 @@
               <span class="campo-error">Campo obligatorio</span>
             }
           </div>
- 
+
           <div class="campo">
             <label>Calle</label>
             <input type="text" formControlName="dpDomicilioCalle" placeholder="Ej: San Martín">
@@ -86,7 +86,7 @@
               <span class="campo-error">Campo obligatorio</span>
             }
           </div>
- 
+
           <div class="campo">
             <label>Número</label>
             <input type="number" formControlName="dpDomicilioNumero" placeholder="Ej: 1234">
@@ -94,12 +94,12 @@
               <span class="campo-error">Campo obligatorio</span>
             }
           </div>
- 
+
           <div class="campo">
             <label>Piso / Depto <span class="campo-opcional">(opcional)</span></label>
             <input type="text" formControlName="dpDomicilioPisoDepto" placeholder="Ej: 2° B">
           </div>
- 
+
           <div class="campo">
             <label>Código Postal</label>
             <input type="text" formControlName="dpCodigoPostal" placeholder="Ej: 7600">
@@ -107,35 +107,50 @@
               <span class="campo-error">Campo obligatorio</span>
             }
           </div>
- 
-          <div class="campo">
-            <label>Localidad</label>
-            <input type="text" formControlName="dpLocalidad" placeholder="Ej: Mar del Plata">
-            @if (campoInvalido('dpLocalidad')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
- 
+
           <div class="campo">
             <label>Provincia</label>
-            <input type="text" formControlName="dpProvincia" placeholder="Ej: Buenos Aires">
-            @if (campoInvalido('dpProvincia')) {
-              <span class="campo-error">Campo obligatorio</span>
+            <select formControlName="dpProvincia" (change)="onProvinciaChange($any($event.target).value)">
+            <option value="" disabled>Seleccioná tu provincia...</option>
+              @for (p of provincias; track p.iso2) {
+            <option [value]="p.iso2">{{ p.name }}</option>
             }
+            </select>
+              @if (campoInvalido('dpProvincia')) {
+              <span class="campo-error">Campo obligatorio</span>
+              }
           </div>
- 
+
           <div class="campo">
-            <label>Nacionalidad</label>
-            <input type="text" formControlName="dpNacionalidad" placeholder="Ej: Argentina">
-            @if (campoInvalido('dpNacionalidad')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
+            <label>Localidad</label>
+          <select formControlName="dpLocalidad">
+            <option value="" disabled>Seleccioná tu localidad...</option>
+            @for (l of localidades; track l.id) {
+            <option [value]="l.id">{{ l.name }}</option>
+          }
+          </select>
+            @if (campoInvalido('dpLocalidad')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
           </div>
- 
+
+          <div class="campo">
+          <label>Nacionalidad</label>
+          <select formControlName="dpNacionalidad">
+          <option value="" disabled>Seleccioná tu nacionalidad...</option>
+            @for (n of nacionalidades; track n.iso2) {
+            <option [value]="n.iso2">{{ n.name }}</option>
+            }
+          </select>
+            @if (campoInvalido('dpNacionalidad')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+          </div>
+
         </div>
       }
     </div>
- 
+
     <!-- SECCIÓN 01: INFORMACIÓN GENERAL -->
     <div class="seccion-formulario">
       <div class="seccion-header">
@@ -143,7 +158,7 @@
         <h2 class="titulo-seccion">Información General</h2>
       </div>
       <div class="grid-campos">
- 
+
         <div class="campo">
           <label>Carrera</label>
           <select formControlName="carrera">
@@ -160,7 +175,7 @@
             <span class="campo-error">Campo obligatorio</span>
           }
         </div>
- 
+
         <div class="campo">
           <label>Tipo de Vivienda</label>
           <select formControlName="tipoVivienda">
@@ -175,30 +190,30 @@
             <span class="campo-error">Campo obligatorio</span>
           }
         </div>
- 
+
         @if (form.get('tipoVivienda')?.value === 'otra') {
           <div class="campo">
             <label>Especificá tu situación de vivienda</label>
             <input type="text" formControlName="tipoViviendaDetalle" placeholder="Ej: Vivienda en toma, judicializada...">
           </div>
         }
- 
+
         <div class="campo">
           <label>Condición Laboral del jefe de hogar</label>
           <select formControlName="condicionLaboral">
             <option value="" disabled selected>Seleccioná condición...</option>
             @for (cond of condicionesLaborales; track cond) {
-              <option [value]="cond">{{ cond | labelEnum }}</option>
+              <option [value]="cond">{{ condicionLaboralDescripcion[cond] }}</option>
             }
           </select>
           @if (campoInvalido('condicionLaboral')) {
             <span class="campo-error">Campo obligatorio</span>
           }
         </div>
- 
+
       </div>
     </div>
- 
+
     <!-- SECCIÓN 02: SALUD Y COBERTURA -->
     <div class="seccion-formulario">
       <div class="seccion-header">
@@ -206,29 +221,29 @@
         <h2 class="titulo-seccion">Salud y Cobertura</h2>
       </div>
       <div class="grid-campos">
- 
+
         <div class="campo">
           <label>Tipo de Cobertura de Salud</label>
           <select formControlName="salud">
             <option value="" disabled selected>Seleccioná cobertura...</option>
             @for (s of tiposSalud; track s) {
-              <option [value]="s">{{ s | labelEnum }}</option>
+              <option [value]="s">{{ saludDescripcion[s]  }}</option>
             }
           </select>
           @if (campoInvalido('salud')) {
             <span class="campo-error">Campo obligatorio</span>
           }
         </div>
- 
+
         <div class="campo campo-check">
           <label class="checkbox-container">
             <input type="checkbox" formControlName="tieneCondicionSalud">
             <span class="check-label">¿Poseés alguna condición de salud?</span>
           </label>
         </div>
- 
+
       </div>
- 
+
       @if (form.get('tieneCondicionSalud')?.value) {
         <div class="campo full-width animate-fade">
           <label>Detalle de la condición de salud</label>
@@ -237,21 +252,21 @@
         </div>
       }
     </div>
- 
+
     <!-- SECCIÓN 03: ESTADO ACADÉMICO -->
     <div class="seccion-formulario">
       <div class="seccion-header">
         <span class="seccion-numero">03</span>
         <h2 class="titulo-seccion">Estado Académico</h2>
       </div>
- 
+
       <!-- MATERIAS A CURSAR -->
       <div class="subtabla-seccion">
         <div class="flex-header">
           <h3 class="subtitulo">¿Qué materias planificás cursar este año?</h3>
           <button type="button" class="btn-agregar" (click)="agregarMateriaCursar()">+ Agregar materia</button>
         </div>
- 
+
         <div class="tabla-responsive">
           <table class="tabla-datos">
             <thead>
@@ -294,14 +309,14 @@
           </table>
         </div>
       </div>
- 
+
       <!-- MATERIAS A RENDIR -->
       <div class="subtabla-seccion">
         <div class="flex-header">
           <h3 class="subtitulo">¿Qué finales planificás rendir este año?</h3>
           <button type="button" class="btn-agregar" (click)="agregarMateriaRendir()">+ Agregar final</button>
         </div>
- 
+
         <div class="tabla-responsive">
           <table class="tabla-datos">
             <thead>
@@ -350,7 +365,7 @@
         </div>
       </div>
     </div>
- 
+
     <!-- SECCIÓN 04: GRUPO FAMILIAR -->
     <div class="seccion-formulario">
       <div class="seccion-header">
@@ -358,7 +373,7 @@
         <h2 class="titulo-seccion">Grupo Familiar</h2>
       </div>
       <p class="seccion-nota">Incluí a todos los integrantes del grupo familiar. Consigná el ingreso mensual neto (de bolsillo).</p>
- 
+
       <div formArrayName="grupoFamiliar" class="lista-familiares">
         @for (integrante of integrantes.controls; track integrante; let i = $index) {
           <div [formGroupName]="i" class="tarjeta-familiar">
@@ -368,7 +383,7 @@
                 <button type="button" (click)="removerIntegrante(i)" class="btn-eliminar">Eliminar</button>
               }
             </div>
- 
+
             <div class="grid-familiar">
               <div class="campo-mini">
                 <label>Nombre</label>
@@ -403,12 +418,12 @@
           </div>
         }
       </div>
- 
+
       <button type="button" class="btn-agregar btn-agregar-grande" (click)="agregarIntegrante()">
         + Agregar integrante
       </button>
     </div>
- 
+
     <!-- SECCIÓN 05: DOCUMENTACIÓN -->
     <div class="seccion-formulario">
       <div class="seccion-header">
@@ -418,9 +433,9 @@
       <p class="seccion-nota">
         Adjuntá los archivos en formato <strong>PDF o imagen</strong>. Peso máximo: 5 MB por archivo.
       </p>
- 
+
       <div class="lista-docs">
- 
+
         <!-- DNI — OBLIGATORIO -->
         <div class="doc-item" [class.doc-cargado]="archivos[tipoDocumento.DNI]?.length">
           <div class="doc-info">
@@ -437,7 +452,7 @@
             </label>
           </div>
         </div>
- 
+
         <!-- CERTIFICADO ALUMNO REGULAR — OPCIONAL -->
         <div class="doc-item" [class.doc-cargado]="archivos[tipoDocumento.CERTIFICADO_ALUMNO_REGULAR]?.length">
           <div class="doc-info">
@@ -454,7 +469,7 @@
             </label>
           </div>
         </div>
- 
+
         <!-- DOCUMENTACIÓN ADICIONAL — OPCIONAL -->
         <div class="doc-item" [class.doc-cargado]="archivos[tipoDocumento.OTRO]?.length">
           <div class="doc-info">
@@ -471,9 +486,9 @@
             </label>
           </div>
         </div>
- 
+
       </div>
- 
+
       @if (erroresArchivo.length > 0) {
         <div class="errores-archivo">
           @for (err of erroresArchivo; track err) {
@@ -482,7 +497,7 @@
         </div>
       }
     </div>
- 
+
     <!-- DECLARACIÓN JURADA -->
     <div class="seccion-declaracion">
       <h3>Declaración Jurada</h3>
@@ -496,7 +511,7 @@
         <span class="check-label">Declaro que los datos son verídicos y acepto los términos del reglamento.</span>
       </label>
     </div>
- 
+
     <div class="form-footer">
       @if (form.invalid && intentoEnvio) {
         <p class="form-estado error-texto">⚠ Revisá los campos marcados antes de continuar.</p>
@@ -509,7 +524,6 @@
         }
       </button>
     </div>
- 
+
   </form>
 </div>
- 

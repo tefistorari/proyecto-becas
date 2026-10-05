@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Service, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { DatosPersonalesResponse } from '../models/datos-personales-response';
 import { DatosPersonalesRequest } from '../models/datos-personales-request';
 import { Observable, tap } from 'rxjs';
 import { UsuarioResponse } from '../models/usuario-response';
 
-@Service()
+@Injectable({providedIn: 'root'})
 export class PerfilService {
     private http = inject(HttpClient);
     private readonly API_URL = 'http://localhost:8080/api/datos-personales';

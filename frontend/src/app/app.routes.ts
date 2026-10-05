@@ -15,32 +15,33 @@ import { ConvocatoriaForm } from './pages/admin/convocatoria-form/convocatoria-f
 import { ConvocatoriaDetalle } from './pages/admin/convocatoria-detalle/convocatoria-detalle';
 import { CambioPassword } from './pages/cambio-password/cambio-password';
 import { FormCarreraInvestigador } from './pages/alumno/postular/form-carrera-investigador/form-carrera-investigador';
-
+import { authGuard } from './guards/auth-guard';
+import { roleGuard } from './guards/role-guard';
 
 export const routes: Routes = [
-    //No auth
-    {path: '', component: Home},
-    {path: 'login', component: Login},
-    {path: 'registro', component: Registro},
+    // No auth
+    { path: '', component: Home },
+    { path: 'login', component: Login },
+    { path: 'registro', component: Registro },
 
-    //auth
-    {path: 'cambio-password', component: CambioPassword},
+    // Auth
+    { path: 'cambio-password', component: CambioPassword, canActivate: [authGuard] },
 
-    //auth y alumno
-    {path: 'alumno/dashboard', component: DashboardAlumno},
-    {path: 'alumno/perfil', component: Perfil},
-    {path: 'alumno/mis-postulaciones', component: MisPostulaciones},
-    {path: 'alumno/postular/base/:convocatoriaId', component: FormularioBase},
-    {path: 'alumno/postular/bis/:convocatoriaId', component: FormularioBis},
-    {path: 'alumno/postular/binid/:convocatoriaId', component: FormularioBinid},
-    {path: 'alumno/postular/carrera-investigador/:convocatoriaId', component: FormCarreraInvestigador},
-    
-    //auth y admin
-    {path: 'admin/dashboard', component: DashboardAdmin},
-    {path: 'admin/postulaciones', component: Postulaciones},
-    {path: 'admin/convocatorias', component: Convocatorias},
-    {path: 'admin/convocatorias/nueva', component: ConvocatoriaForm},
-    {path: 'admin/convocatorias/:id', component: ConvocatoriaDetalle},
+    // Auth y ALUMNO
+    { path: 'alumno/dashboard', component: DashboardAlumno, canActivate: [authGuard, roleGuard('ALUMNO')] },
+    { path: 'alumno/perfil', component: Perfil, canActivate: [authGuard, roleGuard('ALUMNO')] },
+    { path: 'alumno/mis-postulaciones', component: MisPostulaciones, canActivate: [authGuard, roleGuard('ALUMNO')] },
+    { path: 'alumno/postular/base/:convocatoriaId', component: FormularioBase, canActivate: [authGuard, roleGuard('ALUMNO')] },
+    { path: 'alumno/postular/bis/:convocatoriaId', component: FormularioBis, canActivate: [authGuard, roleGuard('ALUMNO')] },
+    { path: 'alumno/postular/binid/:convocatoriaId', component: FormularioBinid, canActivate: [authGuard, roleGuard('ALUMNO')] },
+    { path: 'alumno/postular/carrera-investigador/:convocatoriaId', component: FormCarreraInvestigador, canActivate: [authGuard, roleGuard('ALUMNO')] },
 
-    {path: '**', redirectTo: ''}
+    // Auth y ADMIN
+    { path: 'admin/dashboard', component: DashboardAdmin, canActivate: [authGuard, roleGuard('ADMIN')] },
+    { path: 'admin/postulaciones', component: Postulaciones, canActivate: [authGuard, roleGuard('ADMIN')] },
+    { path: 'admin/convocatorias', component: Convocatorias, canActivate: [authGuard, roleGuard('ADMIN')] },
+    { path: 'admin/convocatorias/nueva', component: ConvocatoriaForm, canActivate: [authGuard, roleGuard('ADMIN')] },
+    { path: 'admin/convocatorias/:id', component: ConvocatoriaDetalle, canActivate: [authGuard, roleGuard('ADMIN')] },
+
+    { path: '**', redirectTo: '' }
 ];

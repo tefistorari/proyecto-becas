@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Service, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { AuthResponse } from '../models/auth-response';
 import { AuthRequest } from '../models/auth-request';
 import { Observable, tap } from 'rxjs';
@@ -7,14 +7,14 @@ import { Rol } from '../models/rol';
 import { RegisterRequest } from '../models/register-request';
 import { ChangePasswordRequest } from '../models/change-password-request';
 
-@Service()
+@Injectable({providedIn: 'root'})
 export class AuthService {
     private http = inject(HttpClient);
 
     private readonly API_URL = 'http://localhost:8080/api/auth';
 
     //indica si existe una sesion iniciada
-    private authenticated = signal(false); 
+    private authenticated = signal(false);
 
     //guarda informacion del usuario iniciado
     private currentUser = signal<AuthResponse | null>(null);
@@ -61,7 +61,7 @@ export class AuthService {
 
     private saveSession(response: AuthResponse): void {
         localStorage.setItem("token", response.token);
-        
+
         localStorage.setItem(
             "user",
             JSON.stringify(response)

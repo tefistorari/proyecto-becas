@@ -1,1 +1,236 @@
-<p>postulaciones works!</p>
+<div class="postulaciones-page">
+    <div class="header">
+        <h2>Postulaciones</h2>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros">
+        <button [class.activo]="filtroEstado() === 'TODAS'" (click)="setFiltro('TODAS')">Todas</button>
+        <button [class.activo]="filtroEstado() === EstadoPostulacion.BORRADOR" (click)="setFiltro(EstadoPostulacion.BORRADOR)">Borrador</button>
+        <button [class.activo]="filtroEstado() === EstadoPostulacion.PENDIENTE" (click)="setFiltro(EstadoPostulacion.PENDIENTE)">Pendientes</button>
+        <button [class.activo]="filtroEstado() === EstadoPostulacion.EN_REVISION" (click)="setFiltro(EstadoPostulacion.EN_REVISION)">En revisión</button>
+        <button [class.activo]="filtroEstado() === EstadoPostulacion.ACEPTADO" (click)="setFiltro(EstadoPostulacion.ACEPTADO)">Aceptadas</button>
+        <button [class.activo]="filtroEstado() === EstadoPostulacion.RECHAZADO" (click)="setFiltro(EstadoPostulacion.RECHAZADO)">Rechazadas</button>
+    </div>
+
+    @if (cargando()) {
+        <p>Cargando...</p>
+    } @else if (error()) {
+        <p class="error-message">{{ error() }}</p>
+    } @else if (postulacionesFiltradas().length === 0) {
+        <p>No hay postulaciones para mostrar.</p>
+    } @else {
+        <table>
+            <thead>
+                <tr>
+                    <th>Alumno</th>
+                    <th>Beca</th>
+                    <th>Convocatoria</th>
+                    <th>Fecha de envío</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (p of postulacionesFiltradas(); track p.id) {
+                    <tr (click)="verDetalle(p)" style="cursor: pointer;">
+                        <td>{{ p.usuario.nombre }} {{ p.usuario.apellido }}</td>
+                        <td>{{ tipoBeca(p) }}</td>
+                        <td>{{ p.convocatoria.beca.nombre }} {{ p.convocatoria.anio }}</td>
+                        <td>{{ p.fechaEnvio | date:'short' }}</td>
+                        <td>{{ p.estado }}</td>
+                        <td>Ver →</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- MODAL DETALLE -->
+@if (postulacionSeleccionada(); as p) {
+    <div class="modal-overlay" (click)="cerrarDetalle()">
+        <div class="modal-detalle" (click)="$event.stopPropagation()">
+
+            <div class="modal-header">
+                <div>
+                    <span class="eyebrow">POSTULACIÓN #{{ p.id }}</span>
+                    <h2>{{ p.usuario.nombre }} {{ p.usuario.apellido }}</h2>
+                    <span class="modal-email">{{ p.usuario.email }}</span>
+                </div>
+                <button type="button" class="modal-close" (click)="cerrarDetalle()">×</button>
+            </div>
+
+            <div class="modal-content">
+
+                <!-- INFO GENERAL -->
+                <div class="detalle-seccion">
+                    <h3>Información general</h3>
+                    <div class="detalle-grid">
+                        <div class="detalle-field">
+                            <span class="field-label">Beca</span>
+                            <span class="field-value">{{ tipoBeca(p) }}</span>
+                        </div>
+                        <div class="detalle-field">
+                            <span class="field-label">Convocatoria</span>
+                            <span class="field-value">{{ p.convocatoria.beca.nombre }} {{ p.convocatoria.anio }}</span>
+                        </div>
+                        <div class="detalle-field">
+                            <span class="field-label">Fecha de envío</span>
+                            <span class="field-value">{{ p.fechaEnvio | date:'short' }}</span>
+                        </div>
+                        <div class="detalle-field">
+                            <span class="field-label">Estado actual</span>
+                            <span class="field-value">{{ p.estado }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DATOS PERSONALES -->
+                @if (p.datosPersonalesHistorial) {
+                    <div class="detalle-seccion">
+                        <h3>Datos personales</h3>
+                        <div class="detalle-grid">
+                            <div class="detalle-field">
+                                <span class="field-label">DNI</span>
+                                <span class="field-value">{{ p.datosPersonalesHistorial.dni }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Fecha de nacimiento</span>
+                                <span class="field-value">{{ p.datosPersonalesHistorial.fechaNacimiento }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Celular</span>
+                                <span class="field-value">{{ p.datosPersonalesHistorial.celular }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Domicilio</span>
+                                <span class="field-value">
+                                    {{ p.datosPersonalesHistorial.domicilioCalle }}
+                                    {{ p.datosPersonalesHistorial.domicilioNumero }}
+                                </span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Localidad</span>
+                                <span class="field-value">{{ p.datosPersonalesHistorial.localidad }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Provincia</span>
+                                <span class="field-value">{{ p.datosPersonalesHistorial.provincia }}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- DATOS ESPECÍFICOS BASE/BIS -->
+                @if (p.becaBaseBis) {
+                    <div class="detalle-seccion">
+                        <h3>Datos BASE/BIS</h3>
+                        <div class="detalle-grid">
+                            <div class="detalle-field">
+                                <span class="field-label">Carrera</span>
+                                <span class="field-value">{{ p.becaBaseBis.carrera }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Tipo de vivienda</span>
+                                <span class="field-value">{{ p.becaBaseBis.tipoVivienda }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Condición laboral</span>
+                                <span class="field-value">{{ p.becaBaseBis.condicionLaboral }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Salud</span>
+                                <span class="field-value">{{ p.becaBaseBis.salud }}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- DATOS ESPECÍFICOS BINID -->
+                @if (p.becaBinid) {
+                    <div class="detalle-seccion">
+                        <h3>Datos BINID</h3>
+                        <div class="detalle-grid">
+                            <div class="detalle-field">
+                                <span class="field-label">Categoría</span>
+                                <span class="field-value">{{ p.becaBinid.categoriaBinid }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Carrera de grado</span>
+                                <span class="field-value">{{ p.becaBinid.carreraGrado }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Promedio con aplazos</span>
+                                <span class="field-value">{{ p.becaBinid.promedioConAplazos }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Director del proyecto</span>
+                                <span class="field-value">{{ p.becaBinid.nombreDirectorProyecto }} {{ p.becaBinid.apellidoDirectorProyecto }}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- DATOS ESPECÍFICOS CARRERA INVESTIGADOR -->
+                @if (p.becaCarreraInvestigador) {
+                    <div class="detalle-seccion">
+                        <h3>Datos Carrera Investigador</h3>
+                        <div class="detalle-grid">
+                            <div class="detalle-field">
+                                <span class="field-label">Categoría actual</span>
+                                <span class="field-value">{{ p.becaCarreraInvestigador.categoriaActual ?? 'Sin categoría' }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Categoría solicitada</span>
+                                <span class="field-value">{{ p.becaCarreraInvestigador.categoriaSolicitada }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Carrera</span>
+                                <span class="field-value">{{ p.becaCarreraInvestigador.carreraGrado }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Materia</span>
+                                <span class="field-value">{{ p.becaCarreraInvestigador.materia }}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- CAMBIAR ESTADO -->
+                <div class="detalle-seccion">
+                    <h3>Cambiar estado</h3>
+                    <div class="estado-acciones">
+                        <button
+                            class="btn-estado btn-revision"
+                            [disabled]="cambiandoEstado() || p.estado === EstadoPostulacion.EN_REVISION"
+                            (click)="cambiarEstado(p, EstadoPostulacion.EN_REVISION)">
+                            En revisión
+                        </button>
+                        <button
+                            class="btn-estado btn-aceptar"
+                            [disabled]="cambiandoEstado() || p.estado === EstadoPostulacion.ACEPTADO"
+                            (click)="cambiarEstado(p, EstadoPostulacion.ACEPTADO)">
+                            Aceptar
+                        </button>
+                        <button
+                            class="btn-estado btn-rechazar"
+                            [disabled]="cambiandoEstado() || p.estado === EstadoPostulacion.RECHAZADO"
+                            (click)="cambiarEstado(p, EstadoPostulacion.RECHAZADO)">
+                            Rechazar
+                        </button>
+                    </div>
+                    @if (errorEstado()) {
+                        <p class="error-message">{{ errorEstado() }}</p>
+                    }
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cerrar" (click)="cerrarDetalle()">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+}

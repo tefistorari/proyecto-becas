@@ -8,7 +8,7 @@ export enum Parentesco {
     TIA = 'TIA',
     ABUELO = 'ABUELO',
     ABUELA = 'ABUELA',
-    CONYUGUE = 'CONYUGUE',
+    CONYUGE = 'CONYUGE',
     PAREJA = 'PAREJA',
     TUTOR = 'TUTOR',
     OTRO = 'OTRO'

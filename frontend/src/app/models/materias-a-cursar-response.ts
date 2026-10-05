@@ -6,5 +6,5 @@ export interface MateriasACursarResponse {
     nombreMateria: string;
     nivelMateria: NivelMateria;
     regimenMateria: RegimenMateria;
-    anioMateria: string;
+    anioMateria: number;
 }

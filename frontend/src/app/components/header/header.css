@@ -76,6 +76,12 @@
 
     flex: 1;
 }
+.nav a.active {
+    color: #274c77;
+}
+.nav a.active::after {
+    width: 100%;
+}
 
 
 /* =========================

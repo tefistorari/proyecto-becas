@@ -2,6 +2,7 @@ import { TipoDocumento } from "./tipo-documento";
 
 export interface ArchivoResponse {
     id: number;
-    nombre: string;
+    nombreOriginal: string;
     tipoArchivo: TipoDocumento;
+    fechaSubida: string;
 }

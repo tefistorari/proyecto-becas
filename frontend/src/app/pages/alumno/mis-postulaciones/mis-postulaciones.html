@@ -1,1 +1,165 @@
-<p>mis-postulaciones works!</p>
+<div class="mis-postulaciones-page">
+    <div class="header">
+        <h2>Mis postulaciones</h2>
+        <button class="btn-volver" (click)="volver()">← Volver al panel</button>
+    </div>
+
+    @if (cargando()) {
+        <p>Cargando...</p>
+    } @else if (error()) {
+        <p class="error-message">{{ error() }}</p>
+    } @else if (postulaciones().length === 0) {
+        <div class="empty-state">
+            <span class="empty-icon">○</span>
+            <h3>No tenés postulaciones</h3>
+            <p>Todavía no te postulaste a ninguna convocatoria.</p>
+        </div>
+    } @else {
+        <div class="postulaciones-list">
+            @for (p of postulaciones(); track p.id) {
+                <article class="postulacion-card" (click)="verDetalle(p)">
+                    <div class="card-info">
+                        <span class="card-badge {{ badgeEstado(p.estado) }}">
+                            {{ p.estado }}
+                        </span>
+                        <h3>{{ p.convocatoria.beca.nombre }}</h3>
+                        <p class="card-sub">{{ tipoBeca(p) }} · Convocatoria {{ p.convocatoria.anio }}</p>
+                        <p class="card-fecha">Enviada el <strong>{{ p.fechaEnvio | date:'dd/MM/yyyy' }}</strong></p>
+                    </div>
+                    <span class="card-arrow">→</span>
+                </article>
+            }
+        </div>
+    }
+</div>
+
+<!-- MODAL DETALLE -->
+@if (postulacionSeleccionada(); as p) {
+    <div class="modal-overlay" (click)="cerrarDetalle()">
+        <div class="modal-detalle" (click)="$event.stopPropagation()">
+
+            <div class="modal-header">
+                <div>
+                    <span class="eyebrow">POSTULACIÓN #{{ p.id }}</span>
+                    <h2>{{ p.convocatoria.beca.nombre }}</h2>
+                    <span class="modal-sub">{{ tipoBeca(p) }} · Convocatoria {{ p.convocatoria.anio }}</span>
+                </div>
+                <button type="button" class="modal-close" (click)="cerrarDetalle()">×</button>
+            </div>
+
+            <div class="modal-content">
+
+                <!-- ESTADO -->
+                <div class="detalle-seccion">
+                    <h3>Estado</h3>
+                    <span class="badge-grande {{ badgeEstado(p.estado) }}">{{ p.estado }}</span>
+                </div>
+
+                <!-- DATOS PERSONALES -->
+                @if (p.datosPersonalesHistorial) {
+                    <div class="detalle-seccion">
+                        <h3>Datos personales</h3>
+                        <div class="detalle-grid">
+                            <div class="detalle-field">
+                                <span class="field-label">DNI</span>
+                                <span class="field-value">{{ p.datosPersonalesHistorial.dni }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Celular</span>
+                                <span class="field-value">{{ p.datosPersonalesHistorial.celular }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Domicilio</span>
+                                <span class="field-value">
+                                    {{ p.datosPersonalesHistorial.domicilioCalle }}
+                                    {{ p.datosPersonalesHistorial.domicilioNumero }}
+                                </span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Localidad</span>
+                                <span class="field-value">{{ p.datosPersonalesHistorial.localidad }}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- DATOS BASE/BIS -->
+                @if (p.becaBaseBis) {
+                    <div class="detalle-seccion">
+                        <h3>Datos BASE/BIS</h3>
+                        <div class="detalle-grid">
+                            <div class="detalle-field">
+                                <span class="field-label">Carrera</span>
+                                <span class="field-value">{{ p.becaBaseBis.carrera }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Condición laboral</span>
+                                <span class="field-value">{{ p.becaBaseBis.condicionLaboral }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Salud</span>
+                                <span class="field-value">{{ p.becaBaseBis.salud }}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- DATOS BINID -->
+                @if (p.becaBinid) {
+                    <div class="detalle-seccion">
+                        <h3>Datos BINID</h3>
+                        <div class="detalle-grid">
+                            <div class="detalle-field">
+                                <span class="field-label">Categoría</span>
+                                <span class="field-value">{{ p.becaBinid.categoriaBinid }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Carrera de grado</span>
+                                <span class="field-value">{{ p.becaBinid.carreraGrado }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Promedio con aplazos</span>
+                                <span class="field-value">{{ p.becaBinid.promedioConAplazos }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Director</span>
+                                <span class="field-value">{{ p.becaBinid.nombreDirectorProyecto }} {{ p.becaBinid.apellidoDirectorProyecto }}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- DATOS CARRERA INVESTIGADOR -->
+                @if (p.becaCarreraInvestigador) {
+                    <div class="detalle-seccion">
+                        <h3>Datos Carrera Investigador</h3>
+                        <div class="detalle-grid">
+                            <div class="detalle-field">
+                                <span class="field-label">Categoría actual</span>
+                                <span class="field-value">{{ p.becaCarreraInvestigador.categoriaActual ?? 'Sin categoría' }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Categoría solicitada</span>
+                                <span class="field-value">{{ p.becaCarreraInvestigador.categoriaSolicitada }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Carrera</span>
+                                <span class="field-value">{{ p.becaCarreraInvestigador.carreraGrado }}</span>
+                            </div>
+                            <div class="detalle-field">
+                                <span class="field-label">Materia</span>
+                                <span class="field-value">{{ p.becaCarreraInvestigador.materia }}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cerrar" (click)="cerrarDetalle()">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+}

@@ -1,8 +1,8 @@
-import { Service } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { getCountries, getStatesOfCountry, getCitiesOfState } from '@countrystatecity/countries-browser';
 import { getTranslation } from '@countrystatecity/translations';
 
-@Service()
+@Injectable({providedIn: 'root'})
 export class UbicacionService {
 
     getNacionalidades() {

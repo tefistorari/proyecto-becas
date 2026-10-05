@@ -1,1 +1,281 @@
-<p>form-carrera-investigador works!</p>
+<div class="contenedor-principal">
+  <div class="header-beca">
+    <div class="header-badge">Carrera del Investigador · UTN FRMDP</div>
+    <h1>Formulario de Postulación - Carrera del Investigador</h1>
+    <p>Completá todos los campos con información verídica. Los datos tienen carácter de Declaración Jurada.</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="formulario-carrera-investigador">
+
+    <!-- SECCIÓN 00: DATOS PERSONALES -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">00</span>
+        <h2 class="titulo-seccion">Datos Personales</h2>
+      </div>
+
+      @if (cargandoDatos()) {
+        <div class="loading-datos">
+          <span>Cargando tus datos...</span>
+        </div>
+      } @else {
+        <div class="aviso-autocompletado">
+          <span class="aviso-icono">ℹ</span>
+          <p>Estos datos se completaron desde tu perfil. Revisalos y corregí cualquier error antes de enviar.</p>
+        </div>
+
+        <div class="grid-campos">
+
+          <div class="campo">
+            <label>Nombre/s</label>
+            <input type="text" formControlName="dpNombre">
+          </div>
+
+          <div class="campo">
+            <label>Apellido/s</label>
+            <input type="text" formControlName="dpApellido">
+          </div>
+
+          <div class="campo">
+            <label>DNI</label>
+            <input type="text" formControlName="dpDni" maxlength="8">
+            @if (campoInvalido('dpDni')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" formControlName="dpFechaNacimiento">
+            @if (campoInvalido('dpFechaNacimiento')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Género</label>
+            <select formControlName="dpGenero">
+              <option value="" disabled>Seleccioná...</option>
+              @for (g of generos; track g) {
+                <option [value]="g">{{ g | labelEnum }}</option>
+              }
+            </select>
+            @if (campoInvalido('dpGenero')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Celular</label>
+            <input type="tel" formControlName="dpCelular" placeholder="Ej: 2234123456">
+            @if (campoInvalido('dpCelular')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Calle</label>
+            <input type="text" formControlName="dpDomicilioCalle" placeholder="Ej: San Martín">
+            @if (campoInvalido('dpDomicilioCalle')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Número</label>
+            <input type="number" formControlName="dpDomicilioNumero" placeholder="Ej: 1234">
+            @if (campoInvalido('dpDomicilioNumero')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Piso / Depto <span class="campo-opcional">(opcional)</span></label>
+            <input type="text" formControlName="dpDomicilioPisoDepto" placeholder="Ej: 2° B">
+          </div>
+
+          <div class="campo">
+            <label>Código Postal</label>
+            <input type="text" formControlName="dpCodigoPostal" placeholder="Ej: 7600">
+            @if (campoInvalido('dpCodigoPostal')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Localidad</label>
+            <input type="text" formControlName="dpLocalidad" placeholder="Ej: Mar del Plata">
+            @if (campoInvalido('dpLocalidad')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Provincia</label>
+            <input type="text" formControlName="dpProvincia" placeholder="Ej: Buenos Aires">
+            @if (campoInvalido('dpProvincia')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+          <div class="campo">
+            <label>Nacionalidad</label>
+            <input type="text" formControlName="dpNacionalidad" placeholder="Ej: Argentina">
+            @if (campoInvalido('dpNacionalidad')) {
+              <span class="campo-error">Campo obligatorio</span>
+            }
+          </div>
+
+        </div>
+      }
+    </div>
+
+    <!-- SECCIÓN 01: CATEGORIZACIÓN -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">01</span>
+        <h2 class="titulo-seccion">Categorización</h2>
+      </div>
+      <div class="grid-campos">
+
+        <div class="campo">
+          <label>Categoría Actual <span class="campo-opcional">(opcional — si es tu primera postulación dejá sin seleccionar)</span></label>
+          <select formControlName="categoriaActual">
+            <option [value]="null">Sin categoría (primera postulación)</option>
+            @for (c of categoriasInvestigador; track c) {
+              <option [value]="c">{{ categoriaInvestigadorDescripcion[c] }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="campo">
+          <label>Categoría Solicitada</label>
+          <select formControlName="categoriaSolicitada">
+            <option value="" disabled>Seleccioná la categoría que solicitás...</option>
+            @for (c of categoriasInvestigador; track c) {
+              <option [value]="c">{{ categoriaInvestigadorDescripcion[c] }}</option>
+            }
+          </select>
+          @if (campoInvalido('categoriaSolicitada')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECCIÓN 02: INFORMACIÓN ACADÉMICA -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">02</span>
+        <h2 class="titulo-seccion">Información Académica</h2>
+      </div>
+      <div class="grid-campos">
+
+        <div class="campo">
+          <label>Carrera de Grado</label>
+          <select formControlName="carreraGrado">
+            <option value="" disabled>Seleccioná tu carrera...</option>
+            <option value="INGENIERIA_NAVAL">Ingeniería Naval</option>
+            <option value="INGENIERIA_PESQUERA">Ingeniería Pesquera</option>
+          </select>
+          @if (campoInvalido('carreraGrado')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Materia que dictás</label>
+          <input type="text" formControlName="materia" placeholder="Ej: Análisis Matemático I">
+          @if (campoInvalido('materia')) {
+            <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECCIÓN 03: DOCUMENTACIÓN -->
+    <div class="seccion-formulario">
+      <div class="seccion-header">
+        <span class="seccion-numero">03</span>
+        <h2 class="titulo-seccion">Documentación Requerida</h2>
+      </div>
+      <p class="seccion-nota">
+        Todos los documentos son <strong>obligatorios</strong>. Adjuntá los archivos en formato <strong>PDF o imagen</strong>. Peso máximo: 5 MB por archivo.
+      </p>
+
+      <div class="lista-docs">
+
+        <div class="doc-item" [class.doc-cargado]="archivos[tipoDocumento.FORMULARIO_INSCRIPCION]?.length">
+          <div class="doc-info">
+            <span class="doc-icono">📝</span>
+            <div>
+              <p class="doc-nombre">Formulario de Inscripción <span class="badge-obligatorio">Obligatorio</span></p>
+              <p class="doc-desc">Formulario oficial de inscripción a la Carrera del Investigador</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.FORMULARIO_INSCRIPCION]?.length">
+              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, tipoDocumento.FORMULARIO_INSCRIPCION)" hidden>
+              {{ archivos[tipoDocumento.FORMULARIO_INSCRIPCION]?.length ? '1 archivo' : 'Adjuntar' }}
+            </label>
+          </div>
+        </div>
+
+        <div class="doc-item" [class.doc-cargado]="archivos[tipoDocumento.CURRICULUM_VITAE]?.length">
+          <div class="doc-info">
+            <span class="doc-icono">📄</span>
+            <div>
+              <p class="doc-nombre">Currículum Vitae <span class="badge-obligatorio">Obligatorio</span></p>
+              <p class="doc-desc">CV actualizado con actividades de investigación y docencia</p>
+            </div>
+          </div>
+          <div class="doc-accion">
+            <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.CURRICULUM_VITAE]?.length">
+              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, tipoDocumento.CURRICULUM_VITAE)" hidden>
+              {{ archivos[tipoDocumento.CURRICULUM_VITAE]?.length ? '1 archivo' : 'Adjuntar' }}
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      @if (erroresArchivo.length > 0) {
+        <div class="errores-archivo">
+          @for (err of erroresArchivo; track err) {
+            <p class="error-archivo-item">⚠ {{ err }}</p>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- DECLARACIÓN JURADA -->
+    <div class="seccion-declaracion">
+      <h3>Declaración Jurada</h3>
+      <p>
+        La información detallada en esta solicitud supone el conocimiento del Reglamento de la Carrera del Investigador UTN
+        y tiene carácter de <strong>Declaración Jurada</strong>. La falsedad de los datos será motivo de evaluación
+        y no aceptación por parte de la Comisión de Becas.
+      </p>
+      <label class="checkbox-container">
+        <input type="checkbox" formControlName="aceptaDeclaracion">
+        <span class="check-label">Declaro que los datos son verídicos y acepto los términos del reglamento.</span>
+      </label>
+    </div>
+
+    <div class="form-footer">
+      @if (form.invalid && intentoEnvio) {
+        <p class="form-estado error-texto">⚠ Revisá los campos marcados antes de continuar.</p>
+      }
+      <button type="submit" class="btn-enviar" [disabled]="enviando">
+        @if (!enviando) {
+          <span>Enviar Postulación</span>
+        } @else {
+          <span>Enviando...</span>
+        }
+      </button>
+    </div>
+
+  </form>
+</div>
