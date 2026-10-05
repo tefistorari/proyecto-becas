@@ -311,7 +311,7 @@
           <select formControlName="condicionLaboral">
             <option value="" disabled selected>Seleccioná condición...</option>
             @for (cond of condicionesLaborales; track cond) {
-            <option [value]="cond">{{ cond | labelEnum }}</option>
+            <option [value]="cond">{{ condicionLaboralDescripcion[cond] }}</option>
             }
           </select>
           @if (campoInvalido('condicionLaboral')) {
@@ -335,7 +335,7 @@
           <select formControlName="salud">
             <option value="" disabled selected>Seleccioná cobertura...</option>
             @for (s of tiposSalud; track s) {
-            <option [value]="s">{{ s | labelEnum }}</option>
+            <option [value]="s">{{ saludDescripcion[s] }}</option>
             }
           </select>
           @if (campoInvalido('salud')) {

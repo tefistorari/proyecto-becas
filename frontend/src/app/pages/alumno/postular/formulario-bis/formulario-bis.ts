@@ -9,7 +9,9 @@ import { ArchivoService } from '../../../../services/archivo-service';
 import { TipoDocumento } from '../../../../models/tipo-documento';
 import { Genero } from '../../../../models/genero';
 import { CondicionLaboral } from '../../../../models/condicion-laboral';
+import { CondicionLaboralDescripcion } from '../../../../models/condicion-laboral';
 import { Salud } from '../../../../models/salud';
+import { SaludDescripcion } from '../../../../models/salud';
 import { NivelMateria } from '../../../../models/nivel-materia';
 import { MesMesa } from '../../../../models/mes-mesa';
 import { Parentesco } from '../../../../models/parentesco';
@@ -66,7 +68,9 @@ export class FormularioBis implements OnInit {
   // Enums
   generos = Object.values(Genero);
   condicionesLaborales = Object.values(CondicionLaboral);
+  condicionLaboralDescripcion = CondicionLaboralDescripcion;
   tiposSalud = Object.values(Salud);
+  saludDescripcion = SaludDescripcion;
   nivelesMaterias = Object.values(NivelMateria);
   mesesMesa = Object.values(MesMesa);
   parentescos = Object.values(Parentesco);
@@ -400,11 +404,11 @@ export class FormularioBis implements OnInit {
           : null,
 
         domicilioFamiliarLocalidad: v.domicilioFamiliarDistinto
-          ? v.domicilioFamiliarLocalidadCodigo
+          ? v.domicilioFamiliarLocalidad
           : null,
 
         domicilioFamiliarProvincia: v.domicilioFamiliarDistinto
-          ? v.domicilioFamiliarProvinciaCodigo
+          ? v.domicilioFamiliarProvincia
           : null,
       },
       tipoVivienda: v.tipoVivienda === 'otra' ? v.tipoViviendaDetalle : v.tipoVivienda,

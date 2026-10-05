@@ -2,7 +2,6 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
-import { required } from '@angular/forms/signals';
 import { passwordsMatchValidator } from '../../validators/auth.validator';
 
 @Component({

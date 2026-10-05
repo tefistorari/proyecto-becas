@@ -6,7 +6,7 @@ import { AuthService } from '../../../../services/auth-service';
 import { TipoDocumento } from '../../../../models/tipo-documento';
 import { Genero } from '../../../../models/genero';
 import { CondicionLaboral } from '../../../../models/condicion-laboral';
-import { CondicionLaboralDescripcion } from '../../../../models/condicion-laboral'
+import { CondicionLaboralDescripcion } from '../../../../models/condicion-laboral';
 import { Salud } from '../../../../models/salud';
 import { SaludDescripcion} from '../../../../models/salud';
 import { NivelMateria } from '../../../../models/nivel-materia';

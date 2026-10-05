@@ -2,17 +2,17 @@
     <div class="container">
 
         <a routerLink="/" class="logo">
-            <img src="images/UTN_Institucional_Simbolo-Positivo.png" 
-            class="LogoUTN" 
+            <img src="images/UTN_Institucional_Simbolo-Positivo.png"
+            class="LogoUTN"
             alt="Logo UTN">
             <span>Sistema Becas</span>
         </a>
-        
+
         <nav class="nav">
             <!-- IZQUIERDA: Navegacion general. Home -->
             <div class="nav-left">
 
-                <a routerLink="/">
+                <a routerLink="/" routerLinkActive="active">
                     Inicio
                 </a>
 
@@ -41,20 +41,20 @@
                     </span>
 
                 </div>
-                
+
                 <div class="nav-right">
-                    
+
                     @if(authService.isAdmin()) {
 
-                        <a routerLink="/admin/dashboard">
+                        <a routerLink="/admin/dashboard" routerLinkActive="active">
                             Mi panel
                         </a>
 
-                        <a routerLink="/admin/convocatorias">
+                        <a routerLink="/admin/convocatorias" routerLinkActive="active">
                             Convocatorias
                         </a>
 
-                        <a routerLink="/admin/postulaciones">
+                        <a routerLink="/admin/postulaciones" routerLinkActive="active">
                             Postulaciones
                         </a>
 
@@ -62,15 +62,15 @@
 
                     @if (authService.isAlumno()) {
 
-                        <a routerLink="/alumno/dashboard">
+                        <a routerLink="/alumno/dashboard" routerLinkActive="active">
                             Mi panel
                         </a>
-                        
-                        <a routerLink="/alumno/mis-postulaciones">
+
+                        <a routerLink="/alumno/mis-postulaciones" routerLinkActive="active">
                             Mis postulaciones
                         </a>
-                        
-                        <a routerLink="/alumno/perfil">
+
+                        <a routerLink="/alumno/perfil" routerLinkActive="active">
                             Mi perfil
                         </a>
 
