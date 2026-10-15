@@ -13,6 +13,7 @@ import { CategoriaInvestigador, CategoriaInvestigadorDescripcion } from '../../.
 import { PostulacionCarreraInvestigadorRequest } from '../../../../models/postulacion-carrera-investigador-request';
 import { UbicacionService } from '../../../../services/ubicacion-service';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../../../services/auth-service';
 
 const MAX_MB_POR_ARCHIVO = 5;
 
@@ -29,6 +30,7 @@ export class FormCarreraInvestigador implements OnInit {
   private ubicacionService = inject(UbicacionService);
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
+  private authService = inject(AuthService);
 
   private nacionalidadCodigo = '';
   private provinciaCodigo = '';
@@ -53,31 +55,40 @@ export class FormCarreraInvestigador implements OnInit {
 
   ngOnInit(): void {
     this.inicializarForm();
+    this.cargarNombreUsuario();
     this.cargarDatosPersonales();
+  }
+
+  private cargarNombreUsuario(): void {
+    const usuario = this.authService.getCurrentUser();
+    this.form.patchValue({
+      dpNombre: usuario?.nombre ?? '',
+      dpApellido: usuario?.apellido ?? '',
+    });
   }
 
   inicializarForm(): void {
     this.form = this.fb.group({
       // Datos personales
-      dpNombre:             [{ value: '', disabled: true }],
-      dpApellido:           [{ value: '', disabled: true }],
-      dpDni:                ['', Validators.required],
-      dpFechaNacimiento:    ['', Validators.required],
-      dpGenero:             [null as Genero | null, Validators.required],
-      dpCelular:            ['', [Validators.required, Validators.pattern('^[1-9][0-9]{9,10}$')]],
-      dpDomicilioCalle:     ['', Validators.required],
-      dpDomicilioNumero:    ['', Validators.required],
+      dpNombre: [{ value: '', disabled: true }],
+      dpApellido: [{ value: '', disabled: true }],
+      dpDni: ['', Validators.required],
+      dpFechaNacimiento: ['', Validators.required],
+      dpGenero: [null as Genero | null, Validators.required],
+      dpCelular: ['', [Validators.required, Validators.pattern('^[1-9][0-9]{9,10}$')]],
+      dpDomicilioCalle: ['', Validators.required],
+      dpDomicilioNumero: ['', Validators.required],
       dpDomicilioPisoDepto: [''],
-      dpCodigoPostal:       ['', Validators.required],
-      dpLocalidad:          ['', Validators.required],
-      dpProvincia:          ['', Validators.required],
-      dpNacionalidad:       ['', Validators.required],
+      dpCodigoPostal: ['', Validators.required],
+      dpLocalidad: ['', Validators.required],
+      dpProvincia: ['', Validators.required],
+      dpNacionalidad: ['', Validators.required],
 
       // Datos CarreraInvestigador
-      categoriaActual:     [null as CategoriaInvestigador | null],
+      categoriaActual: [null as CategoriaInvestigador | null],
       categoriaSolicitada: [null as CategoriaInvestigador | null, Validators.required],
-      carreraGrado:        [null as CarreraGrado | null, Validators.required],
-      materia:             ['', Validators.required],
+      carreraGrado: [null as CarreraGrado | null, Validators.required],
+      materia: ['', Validators.required],
 
       // Declaración
       aceptaDeclaracion: [false, Validators.requiredTrue],
@@ -105,17 +116,17 @@ export class FormCarreraInvestigador implements OnInit {
         }
 
         this.form.patchValue({
-          dpDni:                datos.dni,
-          dpFechaNacimiento:    datos.fechaNacimiento,
-          dpGenero:             datos.genero,
-          dpCelular:            datos.celular,
-          dpDomicilioCalle:     datos.domicilioCalle,
-          dpDomicilioNumero:    datos.domicilioNumero,
+          dpDni: datos.dni,
+          dpFechaNacimiento: datos.fechaNacimiento,
+          dpGenero: datos.genero,
+          dpCelular: datos.celular,
+          dpDomicilioCalle: datos.domicilioCalle,
+          dpDomicilioNumero: datos.domicilioNumero,
           dpDomicilioPisoDepto: datos.domicilioPisoDepto,
-          dpCodigoPostal:       datos.codigoPostal,
-          dpLocalidad:          localidadNombre,
-          dpProvincia:          provincia?.name ?? datos.provincia,
-          dpNacionalidad:       nacionalidad?.name ?? datos.nacionalidad,
+          dpCodigoPostal: datos.codigoPostal,
+          dpLocalidad: localidadNombre,
+          dpProvincia: provincia?.name ?? datos.provincia,
+          dpNacionalidad: nacionalidad?.name ?? datos.nacionalidad,
         });
 
         this.cargandoDatos.set(false);
@@ -167,23 +178,23 @@ export class FormCarreraInvestigador implements OnInit {
     const body: PostulacionCarreraInvestigadorRequest = {
       convocatoriaId: this.convocatoriaId(),
       datosPersonales: {
-        dni:                       v.dpDni,
-        fechaNacimiento:           v.dpFechaNacimiento,
-        genero:                    v.dpGenero,
-        celular:                   v.dpCelular,
-        domicilioCalle:            v.dpDomicilioCalle,
-        domicilioNumero:           v.dpDomicilioNumero,
-        domicilioPisoDepto:        v.dpDomicilioPisoDepto || null,
-        codigoPostal:              v.dpCodigoPostal,
-        localidad:                 this.localidadCodigo,
-        provincia:                 this.provinciaCodigo,
-        nacionalidad:              this.nacionalidadCodigo,
+        dni: v.dpDni,
+        fechaNacimiento: v.dpFechaNacimiento,
+        genero: v.dpGenero,
+        celular: v.dpCelular,
+        domicilioCalle: v.dpDomicilioCalle,
+        domicilioNumero: v.dpDomicilioNumero,
+        domicilioPisoDepto: v.dpDomicilioPisoDepto || null,
+        codigoPostal: v.dpCodigoPostal,
+        localidad: this.localidadCodigo,
+        provincia: this.provinciaCodigo,
+        nacionalidad: this.nacionalidadCodigo,
         domicilioFamiliarDistinto: false,
       },
-      categoriaActual:     v.categoriaActual || null,
+      categoriaActual: v.categoriaActual || null,
       categoriaSolicitada: v.categoriaSolicitada,
-      carreraGrado:        v.carreraGrado,
-      materia:             v.materia,
+      carreraGrado: v.carreraGrado,
+      materia: v.materia,
     };
 
     try {

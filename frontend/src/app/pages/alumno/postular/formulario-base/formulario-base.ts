@@ -8,7 +8,7 @@ import { Genero } from '../../../../models/genero';
 import { CondicionLaboral } from '../../../../models/condicion-laboral';
 import { CondicionLaboralDescripcion } from '../../../../models/condicion-laboral';
 import { Salud } from '../../../../models/salud';
-import { SaludDescripcion} from '../../../../models/salud';
+import { SaludDescripcion } from '../../../../models/salud';
 import { NivelMateria } from '../../../../models/nivel-materia';
 import { MesMesa } from '../../../../models/mes-mesa';
 import { Parentesco } from '../../../../models/parentesco';
@@ -28,13 +28,14 @@ const MAX_MB_POR_ARCHIVO = 5;
   templateUrl: './formulario-base.html',
   styleUrl: './formulario-base.css',
 })
-export class FormularioBase implements OnInit{
+export class FormularioBase implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private perfilService = inject(PerfilService);
   private ubicacionService = inject(UbicacionService);
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
+  private authService = inject(AuthService);
 
   private nacionalidadCodigo = '';
   private provinciaCodigo = '';
@@ -74,7 +75,16 @@ export class FormularioBase implements OnInit{
 
   ngOnInit(): void {
     this.inicializarForm();
+    this.cargarNombreUsuario();
     this.cargarDatosPersonales();
+  }
+
+  private cargarNombreUsuario(): void {
+    const usuario = this.authService.getCurrentUser();
+    this.form.patchValue({
+      dpNombre: usuario?.nombre ?? '',
+      dpApellido: usuario?.apellido ?? '',
+    });
   }
 
   inicializarForm(): void {
@@ -117,55 +127,55 @@ export class FormularioBase implements OnInit{
   // Reutiliza PerfilService, que ya existe y ya funciona (mismo que usa Perfil).
 
   async cargarDatosPersonales(): Promise<void> {
-  this.perfilService.obtenerMisDatos().subscribe({
-    next: async (datos) => {
+    this.perfilService.obtenerMisDatos().subscribe({
+      next: async (datos) => {
 
-      // Guardamos los códigos originales
-      this.nacionalidadCodigo = datos.nacionalidad;
-      this.provinciaCodigo = datos.provincia;
-      this.localidadCodigo = datos.localidad;
+        // Guardamos los códigos originales
+        this.nacionalidadCodigo = datos.nacionalidad;
+        this.provinciaCodigo = datos.provincia;
+        this.localidadCodigo = datos.localidad;
 
-      this.nacionalidades = await this.ubicacionService.getNacionalidades();
-      this.provincias = await this.ubicacionService.getProvincias();
+        this.nacionalidades = await this.ubicacionService.getNacionalidades();
+        this.provincias = await this.ubicacionService.getProvincias();
 
-  if (datos.provincia) {
-      this.localidades = await this.ubicacionService.getLocalidades(datos.provincia);
+        if (datos.provincia) {
+          this.localidades = await this.ubicacionService.getLocalidades(datos.provincia);
+        }
+
+        this.form.patchValue({
+          dpDni: datos.dni,
+          dpFechaNacimiento: datos.fechaNacimiento,
+          dpGenero: datos.genero,
+          dpCelular: datos.celular,
+
+          dpDomicilioCalle: datos.domicilioCalle,
+          dpDomicilioNumero: datos.domicilioNumero,
+          dpDomicilioPisoDepto: datos.domicilioPisoDepto,
+
+          dpCodigoPostal: datos.codigoPostal,
+
+          dpLocalidad: datos.localidad,
+          dpProvincia: datos.provincia,
+          dpNacionalidad: datos.nacionalidad,
+        });
+
+        this.cargandoDatos.set(false);
+      },
+
+      error: (error) => {
+        console.error('Error al obtener los datos personales:', error);
+        this.cargandoDatos.set(false);
+      },
+    });
   }
 
-      this.form.patchValue({
-        dpDni: datos.dni,
-        dpFechaNacimiento: datos.fechaNacimiento,
-        dpGenero: datos.genero,
-        dpCelular: datos.celular,
-
-        dpDomicilioCalle: datos.domicilioCalle,
-        dpDomicilioNumero: datos.domicilioNumero,
-        dpDomicilioPisoDepto: datos.domicilioPisoDepto,
-
-        dpCodigoPostal: datos.codigoPostal,
-
-        dpLocalidad: datos.localidad,
-        dpProvincia: datos.provincia,
-        dpNacionalidad: datos.nacionalidad,
-      });
-
-      this.cargandoDatos.set(false);
-    },
-
-    error: (error) => {
-      console.error('Error al obtener los datos personales:', error);
-      this.cargandoDatos.set(false);
-    },
-  });
-}
-
-async onProvinciaChange(codigoProvincia: string): Promise<void> {
+  async onProvinciaChange(codigoProvincia: string): Promise<void> {
     this.localidades = [];
     this.form.patchValue({ dpLocalidad: '' });
     if (codigoProvincia) {
-        this.localidades = await this.ubicacionService.getLocalidades(codigoProvincia);
+      this.localidades = await this.ubicacionService.getLocalidades(codigoProvincia);
     }
-}
+  }
 
   // --- FormArrays: Materias a cursar ---
 

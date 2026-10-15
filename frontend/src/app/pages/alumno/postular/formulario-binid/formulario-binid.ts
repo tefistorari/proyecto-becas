@@ -12,6 +12,7 @@ import { CategoriaBinid } from '../../../../models/categoria-binid';
 import { firstValueFrom } from 'rxjs';
 import { PostulacionBinidRequest } from '../../../../models/postulacion-binid-request';
 import { UbicacionService } from '../../../../services/ubicacion-service';
+import { AuthService } from '../../../../services/auth-service';
 
 const MAX_MB_POR_ARCHIVO = 5;
 @Component({
@@ -20,13 +21,14 @@ const MAX_MB_POR_ARCHIVO = 5;
   templateUrl: './formulario-binid.html',
   styleUrl: './formulario-binid.css',
 })
-export class FormularioBinid implements OnInit{
+export class FormularioBinid implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private perfilService = inject(PerfilService);
   private ubicacionService = inject(UbicacionService);
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
+  private authService = inject(AuthService);
 
   private nacionalidadCodigo = '';
   private provinciaCodigo = '';
@@ -66,9 +68,19 @@ export class FormularioBinid implements OnInit{
 
   ngOnInit(): void {
     this.inicializarForm();
+    this.cargarNombreUsuario();
     this.configurarValidacionesCondicionales();
     this.cargarDatosPersonales();
   }
+
+  private cargarNombreUsuario(): void {
+    const usuario = this.authService.getCurrentUser();
+    this.form.patchValue({
+      dpNombre: usuario?.nombre ?? '',
+      dpApellido: usuario?.apellido ?? '',
+    });
+  }
+
 
   inicializarForm(): void {
     this.form = this.fb.group({
@@ -108,66 +120,66 @@ export class FormularioBinid implements OnInit{
   }
 
   async cargarDatosPersonales(): Promise<void> {
-  this.perfilService.obtenerMisDatos().subscribe({
-    next: async (datos) => {
+    this.perfilService.obtenerMisDatos().subscribe({
+      next: async (datos) => {
 
-      // Guardamos los códigos originales para enviarlos al backend
-      this.nacionalidadCodigo = datos.nacionalidad;
-      this.provinciaCodigo = datos.provincia;
-      this.localidadCodigo = datos.localidad;
+        // Guardamos los códigos originales para enviarlos al backend
+        this.nacionalidadCodigo = datos.nacionalidad;
+        this.provinciaCodigo = datos.provincia;
+        this.localidadCodigo = datos.localidad;
 
-      // Buscamos los nombres para mostrar en el formulario
-      const nacionalidades = await this.ubicacionService.getNacionalidades();
-      const provincias = await this.ubicacionService.getProvincias();
+        // Buscamos los nombres para mostrar en el formulario
+        const nacionalidades = await this.ubicacionService.getNacionalidades();
+        const provincias = await this.ubicacionService.getProvincias();
 
-      const nacionalidad = nacionalidades.find(
-        n => n.iso2 === datos.nacionalidad
-      );
-
-      const provincia = provincias.find(
-        p => p.iso2 === datos.provincia
-      );
-
-      let localidadNombre = '';
-
-      if (datos.provincia && datos.localidad) {
-        const localidades = await this.ubicacionService.getLocalidades(
-          datos.provincia
+        const nacionalidad = nacionalidades.find(
+          n => n.iso2 === datos.nacionalidad
         );
 
-        const localidad = localidades.find(
-          l => String(l.id) === String(datos.localidad)
+        const provincia = provincias.find(
+          p => p.iso2 === datos.provincia
         );
 
-        localidadNombre = localidad?.name ?? String(datos.localidad);
-      }
+        let localidadNombre = '';
 
-      this.form.patchValue({
-        dpDni: datos.dni,
-        dpFechaNacimiento: datos.fechaNacimiento,
-        dpGenero: datos.genero,
-        dpCelular: datos.celular,
+        if (datos.provincia && datos.localidad) {
+          const localidades = await this.ubicacionService.getLocalidades(
+            datos.provincia
+          );
 
-        dpDomicilioCalle: datos.domicilioCalle,
-        dpDomicilioNumero: datos.domicilioNumero,
-        dpDomicilioPisoDepto: datos.domicilioPisoDepto,
+          const localidad = localidades.find(
+            l => String(l.id) === String(datos.localidad)
+          );
 
-        dpCodigoPostal: datos.codigoPostal,
+          localidadNombre = localidad?.name ?? String(datos.localidad);
+        }
 
-        dpLocalidad: localidadNombre,
-        dpProvincia: provincia?.name ?? datos.provincia,
-        dpNacionalidad: nacionalidad?.name ?? datos.nacionalidad,
-      });
+        this.form.patchValue({
+          dpDni: datos.dni,
+          dpFechaNacimiento: datos.fechaNacimiento,
+          dpGenero: datos.genero,
+          dpCelular: datos.celular,
 
-      this.cargandoDatos.set(false);
-    },
+          dpDomicilioCalle: datos.domicilioCalle,
+          dpDomicilioNumero: datos.domicilioNumero,
+          dpDomicilioPisoDepto: datos.domicilioPisoDepto,
 
-    error: (error) => {
-      console.error('Error al obtener los datos personales:', error);
-      this.cargandoDatos.set(false);
-    },
-  });
-}
+          dpCodigoPostal: datos.codigoPostal,
+
+          dpLocalidad: localidadNombre,
+          dpProvincia: provincia?.name ?? datos.provincia,
+          dpNacionalidad: nacionalidad?.name ?? datos.nacionalidad,
+        });
+
+        this.cargandoDatos.set(false);
+      },
+
+      error: (error) => {
+        console.error('Error al obtener los datos personales:', error);
+        this.cargandoDatos.set(false);
+      },
+    });
+  }
 
   // --- Campos condicionales según categoría BINID ---
 

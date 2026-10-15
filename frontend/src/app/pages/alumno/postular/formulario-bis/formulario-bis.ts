@@ -19,6 +19,7 @@ import { RegimenMateria } from '../../../../models/regimen-materia';
 import { PostulacionBaseBisRequest } from '../../../../models/postulacion-base-bis-request';
 import { firstValueFrom } from 'rxjs';
 import { UbicacionService } from '../../../../services/ubicacion-service';
+import { AuthService } from '../../../../services/auth-service';
 
 
 const MAX_MB_POR_ARCHIVO = 5;
@@ -35,6 +36,7 @@ export class FormularioBis implements OnInit {
   private ubicacionService = inject(UbicacionService);
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
+  private authService = inject(AuthService);
 
   private nacionalidadCodigo = '';
   private provinciaCodigo = '';
@@ -80,8 +82,17 @@ export class FormularioBis implements OnInit {
 
   ngOnInit(): void {
     this.inicializarForm();
+    this.cargarNombreUsuario();
     this.configurarValidacionesCondicionales();
     this.cargarDatosPersonales();
+  }
+
+  private cargarNombreUsuario(): void {
+    const usuario = this.authService.getCurrentUser();
+    this.form.patchValue({
+      dpNombre: usuario?.nombre ?? '',
+      dpApellido: usuario?.apellido ?? '',
+    });
   }
 
   inicializarForm(): void {
