@@ -37,9 +37,6 @@ export class FormularioBase implements OnInit {
   private archivoService = inject(ArchivoService);
   private authService = inject(AuthService);
 
-  private nacionalidadCodigo = '';
-  private provinciaCodigo = '';
-  private localidadCodigo = '';
 
   // Input que recibe el id de la convocatoria seleccionada
   readonly convocatoriaId = input.required<number>();
@@ -153,11 +150,6 @@ export class FormularioBase implements OnInit {
     // 2. Perfil
     this.perfilService.obtenerMisDatos().subscribe({
       next: async (datos) => {
-
-        // Guardamos los códigos originales
-        this.nacionalidadCodigo = datos.nacionalidad;
-        this.provinciaCodigo = datos.provincia;
-        this.localidadCodigo = datos.localidad;
 
         if (datos.provincia) {
           this.localidades.set(await this.ubicacionService.getLocalidades(datos.provincia));
@@ -366,12 +358,6 @@ export class FormularioBase implements OnInit {
     this.enviando = true;
     const v = this.form.getRawValue();
 
-
-    // Actualizamos los códigos con los valores seleccionados en los dropdowns
-    this.nacionalidadCodigo = v.dpNacionalidad;
-    this.provinciaCodigo = v.dpProvincia;
-    this.localidadCodigo = v.dpLocalidad;
-
     // Tipado con PostulacionBaseBisRequest en vez de objeto suelto:
     // así TS avisa si falta o sobra algún campo respecto al @RequestBody del backend.
     const body: PostulacionBaseBisRequest = {
@@ -385,9 +371,9 @@ export class FormularioBase implements OnInit {
         domicilioNumero: v.dpDomicilioNumero,
         domicilioPisoDepto: v.dpDomicilioPisoDepto || null,
         codigoPostal: v.dpCodigoPostal,
-        localidad: this.localidadCodigo,
-        provincia: this.provinciaCodigo,
-        nacionalidad: this.nacionalidadCodigo,
+        localidad: v.dpLocalidad,
+        provincia: v.dpProvincia,
+        nacionalidad: v.dpNacionalidad,
         domicilioFamiliarDistinto: v.domicilioFamiliarDistinto,
         domicilioFamiliarCalle: v.domicilioFamiliarDistinto ? v.domicilioFamiliarCalle : null,
         domicilioFamiliarNumero: v.domicilioFamiliarDistinto ? v.domicilioFamiliarNumero : null,

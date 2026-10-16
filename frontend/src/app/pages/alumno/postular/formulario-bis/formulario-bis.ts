@@ -38,20 +38,13 @@ export class FormularioBis implements OnInit {
   private archivoService = inject(ArchivoService);
   private authService = inject(AuthService);
 
-  private nacionalidadCodigo = '';
-  private provinciaCodigo = '';
-  private localidadCodigo = '';
+  //Listas de ubicacion
+  nacionalidades = signal<any[]>([]);
+  provincias = signal<any[]>([]);
+  localidades = signal<any[]>([]);
 
-  private domicilioFamiliarProvinciaCodigo = '';
-  private domicilioFamiliarLocalidadCodigo = '';
-
-
-  nacionalidades: any[] = [];
-  provincias: any[] = [];
-  localidades: any[] = [];
-
-  provinciasFamiliar: any[] = [];
-  localidadesFamiliar: any[] = [];
+  provinciasFamiliar = signal<any[]>([]);
+  localidadesFamiliar = signal<any[]>([]);
 
   // Input que recibe el id de la convocatoria seleccionada
   readonly convocatoriaId = input.required<number>();
@@ -144,62 +137,28 @@ export class FormularioBis implements OnInit {
   // Reutiliza PerfilService, que ya existe y ya funciona (mismo que usa Perfil).
 
   async cargarDatosPersonales(): Promise<void> {
+    // 1. Listas: si fallan, no bloquean el resto del formulario
+    try {
+      this.nacionalidades.set(await this.ubicacionService.getNacionalidades());
+      this.provincias.set(await this.ubicacionService.getProvincias());
+      this.provinciasFamiliar.set(this.provincias());
+    } catch (err) {
+      console.error('Error al cargar las listas de ubicación:', err);
+    }
+
+    // 2. Perfil
     this.perfilService.obtenerMisDatos().subscribe({
       next: async (datos) => {
-
-        // Guardamos los códigos originales
-        this.nacionalidadCodigo = datos.nacionalidad;
-        this.provinciaCodigo = datos.provincia;
-        this.localidadCodigo = datos.localidad;
-
-        //Cargamos listas
-        this.nacionalidades =
-          await this.ubicacionService.getNacionalidades();
-        this.provincias =
-          await this.ubicacionService.getProvincias();
-        //Buscar provincia del perfil
-        const provinciaSeleccionada = this.provincias.find(
-          p => p.iso2 === datos.provincia
-        );
-
-        if (datos.provincia) {
-          this.localidades =
-            await this.ubicacionService.getLocalidades(datos.provincia);
-        }
-
-        // Buscamos los nombres para mostrar
-        const nacionalidadSeleccionada = this.nacionalidades.find(
-          n => n.iso2 === datos.nacionalidad
-        );
-
-        const localidadSeleccionada = this.localidades.find(
-          l => String(l.id) === String(datos.localidad)
-        );
-
-        // Obtenemos los nombres para mostrar en el formulario
-        const nacionalidades = await this.ubicacionService.getNacionalidades();
-        const provincias = await this.ubicacionService.getProvincias();
-
-        const nacionalidad = nacionalidades.find(
-          n => n.iso2 === datos.nacionalidad
-        );
-
-        const provincia = provincias.find(
-          p => p.iso2 === datos.provincia
-        );
-
-        let localidadNombre = '';
-
-        if (datos.provincia && datos.localidad) {
-          const localidades = await this.ubicacionService.getLocalidades(
-            datos.provincia
-          );
-
-          const localidad = localidades.find(
-            l => String(l.id) === String(datos.localidad)
-          );
-
-          localidadNombre = localidad?.name ?? String(datos.localidad);
+        try {
+          if (datos.provincia) {
+            this.localidades.set(await this.ubicacionService.getLocalidades(datos.provincia));
+          }
+          if (datos.domicilioFamiliarProvincia) {
+            this.localidadesFamiliar.set(
+              await this.ubicacionService.getLocalidades(datos.domicilioFamiliarProvincia));
+          }
+        } catch (err) {
+          console.error('Error al cargar las localidades:', err);
         }
 
         this.form.patchValue({
@@ -207,26 +166,48 @@ export class FormularioBis implements OnInit {
           dpFechaNacimiento: datos.fechaNacimiento,
           dpGenero: datos.genero,
           dpCelular: datos.celular,
-
           dpDomicilioCalle: datos.domicilioCalle,
           dpDomicilioNumero: datos.domicilioNumero,
           dpDomicilioPisoDepto: datos.domicilioPisoDepto,
-
           dpCodigoPostal: datos.codigoPostal,
+          dpLocalidad: datos.localidad,
+          dpProvincia: datos.provincia,
+          dpNacionalidad: datos.nacionalidad,
 
-          dpLocalidad: localidadNombre,
-          dpProvincia: provincia?.name ?? datos.provincia,
-          dpNacionalidad: nacionalidad?.name ?? datos.nacionalidad,
+          domicilioFamiliarDistinto: datos.domicilioFamiliarDistinto,
+          domicilioFamiliarCalle: datos.domicilioFamiliarCalle,
+          domicilioFamiliarNumero: datos.domicilioFamiliarNumero,
+          domicilioFamiliarPisoDepto: datos.domicilioFamiliarPisoDepto,
+          domicilioFamiliarCodigoPostal: datos.domicilioFamiliarCodigoPostal,
+          domicilioFamiliarProvincia: datos.domicilioFamiliarProvincia,
+          domicilioFamiliarLocalidad: datos.domicilioFamiliarLocalidad,
         });
 
         this.cargandoDatos.set(false);
       },
-
       error: (error) => {
-        console.error('Error al obtener los datos personales:', error);
+        if (error.status !== 404) {
+          console.error('Error al obtener los datos personales:', error);
+        }
         this.cargandoDatos.set(false);
       },
     });
+  }
+
+  async onProvinciaChange(codigoProvincia: string): Promise<void> {
+    this.localidades.set([]);
+    this.form.patchValue({ dpLocalidad: '' });
+    if (codigoProvincia) {
+      this.localidades.set(await this.ubicacionService.getLocalidades(codigoProvincia));
+    }
+  }
+
+  async cargarLocalidadesFamiliar(codigoProvincia: string): Promise<void> {
+    this.localidadesFamiliar.set([]);
+    this.form.patchValue({ domicilioFamiliarLocalidad: '' });
+    if (codigoProvincia) {
+      this.localidadesFamiliar.set(await this.ubicacionService.getLocalidades(codigoProvincia));
+    }
   }
 
   // --- FormArrays: Materias a cursar ---
@@ -355,6 +336,7 @@ export class FormularioBis implements OnInit {
       // Piso/depto sigue siendo opcional
       if (!valor) {
         this.form.get('domicilioFamiliarPisoDepto')?.setValue('');
+        this.localidadesFamiliar.set([]);
       }
     });
   }
@@ -392,35 +374,17 @@ export class FormularioBis implements OnInit {
         domicilioPisoDepto: v.dpDomicilioPisoDepto || null,
 
         codigoPostal: v.dpCodigoPostal,
-        localidad: this.localidadCodigo,
-        provincia: this.provinciaCodigo,
-        nacionalidad: this.nacionalidadCodigo,
+        localidad: v.dpLocalidad,
+        provincia: v.dpProvincia,
+        nacionalidad: v.dpNacionalidad,
 
         domicilioFamiliarDistinto: v.domicilioFamiliarDistinto,
-
-        domicilioFamiliarCalle: v.domicilioFamiliarDistinto
-          ? v.domicilioFamiliarCalle
-          : null,
-
-        domicilioFamiliarNumero: v.domicilioFamiliarDistinto
-          ? v.domicilioFamiliarNumero
-          : null,
-
-        domicilioFamiliarPisoDepto: v.domicilioFamiliarDistinto
-          ? v.domicilioFamiliarPisoDepto
-          : null,
-
-        domicilioFamiliarCodigoPostal: v.domicilioFamiliarDistinto
-          ? v.domicilioFamiliarCodigoPostal
-          : null,
-
-        domicilioFamiliarLocalidad: v.domicilioFamiliarDistinto
-          ? v.domicilioFamiliarLocalidad
-          : null,
-
-        domicilioFamiliarProvincia: v.domicilioFamiliarDistinto
-          ? v.domicilioFamiliarProvincia
-          : null,
+        domicilioFamiliarCalle: v.domicilioFamiliarDistinto ? v.domicilioFamiliarCalle : null,
+        domicilioFamiliarNumero: v.domicilioFamiliarDistinto ? v.domicilioFamiliarNumero : null,
+        domicilioFamiliarPisoDepto: v.domicilioFamiliarDistinto ? (v.domicilioFamiliarPisoDepto || null) : null,
+        domicilioFamiliarCodigoPostal: v.domicilioFamiliarDistinto ? v.domicilioFamiliarCodigoPostal : null,
+        domicilioFamiliarLocalidad: v.domicilioFamiliarDistinto ? v.domicilioFamiliarLocalidad : null,
+        domicilioFamiliarProvincia: v.domicilioFamiliarDistinto ? v.domicilioFamiliarProvincia : null,
       },
       tipoVivienda: v.tipoVivienda === 'otra' ? v.tipoViviendaDetalle : v.tipoVivienda,
       condicionLaboral: v.condicionLaboral,
