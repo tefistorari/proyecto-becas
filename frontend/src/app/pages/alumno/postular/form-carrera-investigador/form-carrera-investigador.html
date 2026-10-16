@@ -15,118 +15,221 @@
       </div>
 
       @if (cargandoDatos()) {
-        <div class="loading-datos">
-          <span>Cargando tus datos...</span>
-        </div>
+      <div class="loading-datos">
+        <span>Cargando tus datos...</span>
+      </div>
       } @else {
-        <div class="aviso-autocompletado">
-          <span class="aviso-icono">ℹ</span>
-          <p>Estos datos se completaron desde tu perfil. Revisalos y corregí cualquier error antes de enviar.</p>
+      <div class="aviso-autocompletado">
+        <span class="aviso-icono">ℹ</span>
+        <p>Estos datos se completaron desde tu perfil. Revisalos y corregí cualquier error antes de enviar.</p>
+      </div>
+
+      <div class="grid-campos">
+
+        <div class="campo">
+          <label>Nombre/s</label>
+          <input type="text" formControlName="dpNombre">
         </div>
 
-        <div class="grid-campos">
+        <div class="campo">
+          <label>Apellido/s</label>
+          <input type="text" formControlName="dpApellido">
+        </div>
 
-          <div class="campo">
-            <label>Nombre/s</label>
-            <input type="text" formControlName="dpNombre">
-          </div>
+        <div class="campo">
+          <label>DNI</label>
+          <input type="text" formControlName="dpDni" maxlength="8">
+          @if (campoInvalido('dpDni')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
 
-          <div class="campo">
-            <label>Apellido/s</label>
-            <input type="text" formControlName="dpApellido">
-          </div>
+        <div class="campo">
+          <label>Fecha de Nacimiento</label>
+          <input type="date" formControlName="dpFechaNacimiento">
+          @if (campoInvalido('dpFechaNacimiento')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
 
-          <div class="campo">
-            <label>DNI</label>
-            <input type="text" formControlName="dpDni" maxlength="8">
-            @if (campoInvalido('dpDni')) {
-              <span class="campo-error">Campo obligatorio</span>
+        <div class="campo">
+          <label>Género</label>
+          <select formControlName="dpGenero">
+            <option value="" disabled>Seleccioná...</option>
+            @for (g of generos; track g) {
+            <option [value]="g">{{ g | labelEnum }}</option>
             }
-          </div>
+          </select>
+          @if (campoInvalido('dpGenero')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
 
-          <div class="campo">
-            <label>Fecha de Nacimiento</label>
-            <input type="date" formControlName="dpFechaNacimiento">
-            @if (campoInvalido('dpFechaNacimiento')) {
-              <span class="campo-error">Campo obligatorio</span>
+        <div class="campo">
+          <label>Celular</label>
+          <input type="tel" formControlName="dpCelular" placeholder="Ej: 2234123456">
+          @if (campoInvalido('dpCelular')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Calle</label>
+          <input type="text" formControlName="dpDomicilioCalle" placeholder="Ej: San Martín">
+          @if (campoInvalido('dpDomicilioCalle')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Número</label>
+          <input type="number" formControlName="dpDomicilioNumero" placeholder="Ej: 1234">
+          @if (campoInvalido('dpDomicilioNumero')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Piso / Depto <span class="campo-opcional">(opcional)</span></label>
+          <input type="text" formControlName="dpDomicilioPisoDepto" placeholder="Ej: 2° B">
+        </div>
+
+        <div class="campo">
+          <label>Código Postal</label>
+          <input type="text" formControlName="dpCodigoPostal" placeholder="Ej: 7600">
+          @if (campoInvalido('dpCodigoPostal')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Provincia</label>
+          <select formControlName="dpProvincia" (change)="onProvinciaChange($any($event.target).value)">
+            <option value="" disabled>Seleccioná tu provincia...</option>
+            @for (p of provincias(); track p.iso2) {
+            <option [value]="p.iso2">{{ p.name }}</option>
             }
+          </select>
+          @if (campoInvalido('dpProvincia')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Localidad</label>
+          <select formControlName="dpLocalidad">
+            <option value="" disabled>Seleccioná tu localidad...</option>
+            @for (l of localidades(); track l.id) {
+            <option [value]="l.id">{{ l.name }}</option>
+            }
+          </select>
+          @if (campoInvalido('dpLocalidad')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Nacionalidad</label>
+          <select formControlName="dpNacionalidad">
+            <option value="" disabled>Seleccioná tu nacionalidad...</option>
+            @for (n of nacionalidades(); track n.iso2) {
+            <option [value]="n.iso2">{{ n.name }}</option>
+            }
+          </select>
+          @if (campoInvalido('dpNacionalidad')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo campo-check full-width">
+          <label class="checkbox-container">
+            <input type="checkbox" formControlName="domicilioFamiliarDistinto">
+            <span class="check-label">
+              ¿Tu domicilio familiar es distinto a tu domicilio actual?
+            </span>
+          </label>
+        </div>
+
+        @if (form.get('domicilioFamiliarDistinto')?.value) {
+
+        <div class="domicilio-familiar full-width">
+
+          <div class="subseccion-header">
+            <h3>Domicilio Familiar</h3>
+            <p>
+              Completá estos datos si tu domicilio familiar es diferente al actual.
+            </p>
           </div>
 
-          <div class="campo">
-            <label>Género</label>
-            <select formControlName="dpGenero">
-              <option value="" disabled>Seleccioná...</option>
-              @for (g of generos; track g) {
-                <option [value]="g">{{ g | labelEnum }}</option>
+          <div class="grid-campos">
+
+            <div class="campo">
+              <label>Calle</label>
+              <input type="text" formControlName="domicilioFamiliarCalle" placeholder="Ej: San Martín">
+
+              @if (campoInvalido('domicilioFamiliarCalle')) {
+              <span class="campo-error">Campo obligatorio</span>
               }
-            </select>
-            @if (campoInvalido('dpGenero')) {
+            </div>
+
+            <div class="campo">
+              <label>Número</label>
+              <input type="number" formControlName="domicilioFamiliarNumero" placeholder="Ej: 1234">
+
+              @if (campoInvalido('domicilioFamiliarNumero')) {
               <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
+              }
+            </div>
 
-          <div class="campo">
-            <label>Celular</label>
-            <input type="tel" formControlName="dpCelular" placeholder="Ej: 2234123456">
-            @if (campoInvalido('dpCelular')) {
+            <div class="campo">
+              <label>
+                Piso / Depto
+                <span class="campo-opcional">(opcional)</span>
+              </label>
+
+              <input type="text" formControlName="domicilioFamiliarPisoDepto" placeholder="Ej: 2° B">
+            </div>
+
+            <div class="campo">
+              <label>Código Postal</label>
+              <input type="text" formControlName="domicilioFamiliarCodigoPostal" placeholder="Ej: 7600">
+
+              @if (campoInvalido('domicilioFamiliarCodigoPostal')) {
               <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
+              }
+            </div>
 
-          <div class="campo">
-            <label>Calle</label>
-            <input type="text" formControlName="dpDomicilioCalle" placeholder="Ej: San Martín">
-            @if (campoInvalido('dpDomicilioCalle')) {
+            <div class="campo">
+              <label>Provincia</label>
+              <select formControlName="domicilioFamiliarProvincia"
+                (change)="cargarLocalidadesFamiliar($any($event.target).value)">
+                <option value="" disabled>Seleccioná una provincia...</option>
+                @for (p of provinciasFamiliar(); track p.iso2) {
+                <option [value]="p.iso2">{{ p.name }}</option>
+                }
+              </select>
+              @if (campoInvalido('domicilioFamiliarProvincia')) {
               <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
+              }
+            </div>
 
-          <div class="campo">
-            <label>Número</label>
-            <input type="number" formControlName="dpDomicilioNumero" placeholder="Ej: 1234">
-            @if (campoInvalido('dpDomicilioNumero')) {
+            <div class="campo">
+              <label>Localidad</label>
+              <select formControlName="domicilioFamiliarLocalidad">
+                <option value="" disabled>Seleccioná una localidad...</option>
+                @for (l of localidadesFamiliar(); track l.id) {
+                <option [value]="l.id">{{ l.name }}</option>
+                }
+              </select>
+              @if (campoInvalido('domicilioFamiliarLocalidad')) {
               <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
+              }
+            </div>
 
-          <div class="campo">
-            <label>Piso / Depto <span class="campo-opcional">(opcional)</span></label>
-            <input type="text" formControlName="dpDomicilioPisoDepto" placeholder="Ej: 2° B">
           </div>
-
-          <div class="campo">
-            <label>Código Postal</label>
-            <input type="text" formControlName="dpCodigoPostal" placeholder="Ej: 7600">
-            @if (campoInvalido('dpCodigoPostal')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
-
-          <div class="campo">
-            <label>Localidad</label>
-            <input type="text" formControlName="dpLocalidad" placeholder="Ej: Mar del Plata">
-            @if (campoInvalido('dpLocalidad')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
-
-          <div class="campo">
-            <label>Provincia</label>
-            <input type="text" formControlName="dpProvincia" placeholder="Ej: Buenos Aires">
-            @if (campoInvalido('dpProvincia')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
-
-          <div class="campo">
-            <label>Nacionalidad</label>
-            <input type="text" formControlName="dpNacionalidad" placeholder="Ej: Argentina">
-            @if (campoInvalido('dpNacionalidad')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
-
         </div>
+        }
+      </div>
       }
     </div>
 
@@ -139,11 +242,12 @@
       <div class="grid-campos">
 
         <div class="campo">
-          <label>Categoría Actual <span class="campo-opcional">(opcional — si es tu primera postulación dejá sin seleccionar)</span></label>
+          <label>Categoría Actual <span class="campo-opcional">(opcional — si es tu primera postulación dejá sin
+              seleccionar)</span></label>
           <select formControlName="categoriaActual">
             <option [value]="null">Sin categoría (primera postulación)</option>
             @for (c of categoriasInvestigador; track c) {
-              <option [value]="c">{{ categoriaInvestigadorDescripcion[c] }}</option>
+            <option [value]="c">{{ categoriaInvestigadorDescripcion[c] }}</option>
             }
           </select>
         </div>
@@ -153,11 +257,11 @@
           <select formControlName="categoriaSolicitada">
             <option value="" disabled>Seleccioná la categoría que solicitás...</option>
             @for (c of categoriasInvestigador; track c) {
-              <option [value]="c">{{ categoriaInvestigadorDescripcion[c] }}</option>
+            <option [value]="c">{{ categoriaInvestigadorDescripcion[c] }}</option>
             }
           </select>
           @if (campoInvalido('categoriaSolicitada')) {
-            <span class="campo-error">Campo obligatorio</span>
+          <span class="campo-error">Campo obligatorio</span>
           }
         </div>
 
@@ -180,7 +284,7 @@
             <option value="INGENIERIA_PESQUERA">Ingeniería Pesquera</option>
           </select>
           @if (campoInvalido('carreraGrado')) {
-            <span class="campo-error">Campo obligatorio</span>
+          <span class="campo-error">Campo obligatorio</span>
           }
         </div>
 
@@ -188,7 +292,7 @@
           <label>Materia que dictás</label>
           <input type="text" formControlName="materia" placeholder="Ej: Análisis Matemático I">
           @if (campoInvalido('materia')) {
-            <span class="campo-error">Campo obligatorio</span>
+          <span class="campo-error">Campo obligatorio</span>
           }
         </div>
 
@@ -202,7 +306,8 @@
         <h2 class="titulo-seccion">Documentación Requerida</h2>
       </div>
       <p class="seccion-nota">
-        Todos los documentos son <strong>obligatorios</strong>. Adjuntá los archivos en formato <strong>PDF o imagen</strong>. Peso máximo: 5 MB por archivo.
+        Todos los documentos son <strong>obligatorios</strong>. Adjuntá los archivos en formato <strong>PDF o
+          imagen</strong>. Peso máximo: 5 MB por archivo.
       </p>
 
       <div class="lista-docs">
@@ -217,7 +322,8 @@
           </div>
           <div class="doc-accion">
             <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.FORMULARIO_INSCRIPCION]?.length">
-              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, tipoDocumento.FORMULARIO_INSCRIPCION)" hidden>
+              <input type="file" accept=".pdf,image/*"
+                (change)="onArchivoSeleccionado($event, tipoDocumento.FORMULARIO_INSCRIPCION)" hidden>
               {{ archivos[tipoDocumento.FORMULARIO_INSCRIPCION]?.length ? '1 archivo' : 'Adjuntar' }}
             </label>
           </div>
@@ -233,7 +339,8 @@
           </div>
           <div class="doc-accion">
             <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.CURRICULUM_VITAE]?.length">
-              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, tipoDocumento.CURRICULUM_VITAE)" hidden>
+              <input type="file" accept=".pdf,image/*"
+                (change)="onArchivoSeleccionado($event, tipoDocumento.CURRICULUM_VITAE)" hidden>
               {{ archivos[tipoDocumento.CURRICULUM_VITAE]?.length ? '1 archivo' : 'Adjuntar' }}
             </label>
           </div>
@@ -242,11 +349,11 @@
       </div>
 
       @if (erroresArchivo.length > 0) {
-        <div class="errores-archivo">
-          @for (err of erroresArchivo; track err) {
-            <p class="error-archivo-item">⚠ {{ err }}</p>
-          }
-        </div>
+      <div class="errores-archivo">
+        @for (err of erroresArchivo; track err) {
+        <p class="error-archivo-item">⚠ {{ err }}</p>
+        }
+      </div>
       }
     </div>
 
@@ -254,7 +361,8 @@
     <div class="seccion-declaracion">
       <h3>Declaración Jurada</h3>
       <p>
-        La información detallada en esta solicitud supone el conocimiento del Reglamento de la Carrera del Investigador UTN
+        La información detallada en esta solicitud supone el conocimiento del Reglamento de la Carrera del Investigador
+        UTN
         y tiene carácter de <strong>Declaración Jurada</strong>. La falsedad de los datos será motivo de evaluación
         y no aceptación por parte de la Comisión de Becas.
       </p>
@@ -266,13 +374,13 @@
 
     <div class="form-footer">
       @if (form.invalid && intentoEnvio) {
-        <p class="form-estado error-texto">⚠ Revisá los campos marcados antes de continuar.</p>
+      <p class="form-estado error-texto">⚠ Revisá los campos marcados antes de continuar.</p>
       }
       <button type="submit" class="btn-enviar" [disabled]="enviando">
         @if (!enviando) {
-          <span>Enviar Postulación</span>
+        <span>Enviar Postulación</span>
         } @else {
-          <span>Enviando...</span>
+        <span>Enviando...</span>
         }
       </button>
     </div>
