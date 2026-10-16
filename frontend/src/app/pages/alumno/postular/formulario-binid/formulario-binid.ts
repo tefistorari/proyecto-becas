@@ -12,6 +12,7 @@ import { CategoriaBinid } from '../../../../models/categoria-binid';
 import { firstValueFrom } from 'rxjs';
 import { PostulacionBinidRequest } from '../../../../models/postulacion-binid-request';
 import { UbicacionService } from '../../../../services/ubicacion-service';
+import { AuthService } from '../../../../services/auth-service';
 
 const MAX_MB_POR_ARCHIVO = 5;
 @Component({
@@ -20,19 +21,24 @@ const MAX_MB_POR_ARCHIVO = 5;
   templateUrl: './formulario-binid.html',
   styleUrl: './formulario-binid.css',
 })
-export class FormularioBinid implements OnInit{
+export class FormularioBinid implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private perfilService = inject(PerfilService);
   private ubicacionService = inject(UbicacionService);
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
-
-  private nacionalidadCodigo = '';
-  private provinciaCodigo = '';
-  private localidadCodigo = '';
+  private authService = inject(AuthService);
 
   readonly convocatoriaId = input.required<number>();
+
+  //Listas de ubicacion
+  nacionalidades = signal<any[]>([]);
+  provincias = signal<any[]>([]);
+  localidades = signal<any[]>([]);
+
+  provinciasFamiliar = signal<any[]>([]);
+  localidadesFamiliar = signal<any[]>([]);
 
   form!: FormGroup;
   cargandoDatos = signal(true);
@@ -66,9 +72,19 @@ export class FormularioBinid implements OnInit{
 
   ngOnInit(): void {
     this.inicializarForm();
+    this.cargarNombreUsuario();
     this.configurarValidacionesCondicionales();
     this.cargarDatosPersonales();
   }
+
+  private cargarNombreUsuario(): void {
+    const usuario = this.authService.getCurrentUser();
+    this.form.patchValue({
+      dpNombre: usuario?.nombre ?? '',
+      dpApellido: usuario?.apellido ?? '',
+    });
+  }
+
 
   inicializarForm(): void {
     this.form = this.fb.group({
@@ -86,6 +102,15 @@ export class FormularioBinid implements OnInit{
       dpLocalidad: ['', Validators.required],
       dpProvincia: ['', Validators.required],
       dpNacionalidad: ['', Validators.required],
+
+      // Domicilio familiar (opcional, se valida solo si el checkbox está tildado)
+      domicilioFamiliarDistinto: [false],
+      domicilioFamiliarCalle: [''],
+      domicilioFamiliarNumero: [''],
+      domicilioFamiliarPisoDepto: [''],
+      domicilioFamiliarCodigoPostal: [''],
+      domicilioFamiliarProvincia: [''],
+      domicilioFamiliarLocalidad: [''],
 
       // Información académica
       categoriaBinid: [null as CategoriaBinid | null, Validators.required],
@@ -108,66 +133,78 @@ export class FormularioBinid implements OnInit{
   }
 
   async cargarDatosPersonales(): Promise<void> {
-  this.perfilService.obtenerMisDatos().subscribe({
-    next: async (datos) => {
+    // 1. Listas: si fallan, no bloquean el resto del formulario
+    try {
+      this.nacionalidades.set(await this.ubicacionService.getNacionalidades());
+      this.provincias.set(await this.ubicacionService.getProvincias());
+      this.provinciasFamiliar.set(this.provincias());
+    } catch (err) {
+      console.error('Error al cargar las listas de ubicación:', err);
+    }
 
-      // Guardamos los códigos originales para enviarlos al backend
-      this.nacionalidadCodigo = datos.nacionalidad;
-      this.provinciaCodigo = datos.provincia;
-      this.localidadCodigo = datos.localidad;
+    // 2. Perfil
+    this.perfilService.obtenerMisDatos().subscribe({
+      next: async (datos) => {
+        try {
+          if (datos.provincia) {
+            this.localidades.set(await this.ubicacionService.getLocalidades(datos.provincia));
+          }
+          if (datos.domicilioFamiliarProvincia) {
+            this.localidadesFamiliar.set(
+              await this.ubicacionService.getLocalidades(datos.domicilioFamiliarProvincia));
+          }
+        } catch (err) {
+          console.error('Error al cargar las localidades:', err);
+        }
 
-      // Buscamos los nombres para mostrar en el formulario
-      const nacionalidades = await this.ubicacionService.getNacionalidades();
-      const provincias = await this.ubicacionService.getProvincias();
+        this.form.patchValue({
+          dpDni: datos.dni,
+          dpFechaNacimiento: datos.fechaNacimiento,
+          dpGenero: datos.genero,
+          dpCelular: datos.celular,
+          dpDomicilioCalle: datos.domicilioCalle,
+          dpDomicilioNumero: datos.domicilioNumero,
+          dpDomicilioPisoDepto: datos.domicilioPisoDepto,
+          dpCodigoPostal: datos.codigoPostal,
+          dpLocalidad: datos.localidad,
+          dpProvincia: datos.provincia,
+          dpNacionalidad: datos.nacionalidad,
 
-      const nacionalidad = nacionalidades.find(
-        n => n.iso2 === datos.nacionalidad
-      );
+          domicilioFamiliarDistinto: datos.domicilioFamiliarDistinto,
+          domicilioFamiliarCalle: datos.domicilioFamiliarCalle,
+          domicilioFamiliarNumero: datos.domicilioFamiliarNumero,
+          domicilioFamiliarPisoDepto: datos.domicilioFamiliarPisoDepto,
+          domicilioFamiliarCodigoPostal: datos.domicilioFamiliarCodigoPostal,
+          domicilioFamiliarProvincia: datos.domicilioFamiliarProvincia,
+          domicilioFamiliarLocalidad: datos.domicilioFamiliarLocalidad,
+        });
 
-      const provincia = provincias.find(
-        p => p.iso2 === datos.provincia
-      );
+        this.cargandoDatos.set(false);
+      },
+      error: (error) => {
+        if (error.status !== 404) {
+          console.error('Error al obtener los datos personales:', error);
+        }
+        this.cargandoDatos.set(false);
+      },
+    });
+  }
 
-      let localidadNombre = '';
+  async onProvinciaChange(codigoProvincia: string): Promise<void> {
+    this.localidades.set([]);
+    this.form.patchValue({ dpLocalidad: '' });
+    if (codigoProvincia) {
+      this.localidades.set(await this.ubicacionService.getLocalidades(codigoProvincia));
+    }
+  }
 
-      if (datos.provincia && datos.localidad) {
-        const localidades = await this.ubicacionService.getLocalidades(
-          datos.provincia
-        );
-
-        const localidad = localidades.find(
-          l => String(l.id) === String(datos.localidad)
-        );
-
-        localidadNombre = localidad?.name ?? String(datos.localidad);
-      }
-
-      this.form.patchValue({
-        dpDni: datos.dni,
-        dpFechaNacimiento: datos.fechaNacimiento,
-        dpGenero: datos.genero,
-        dpCelular: datos.celular,
-
-        dpDomicilioCalle: datos.domicilioCalle,
-        dpDomicilioNumero: datos.domicilioNumero,
-        dpDomicilioPisoDepto: datos.domicilioPisoDepto,
-
-        dpCodigoPostal: datos.codigoPostal,
-
-        dpLocalidad: localidadNombre,
-        dpProvincia: provincia?.name ?? datos.provincia,
-        dpNacionalidad: nacionalidad?.name ?? datos.nacionalidad,
-      });
-
-      this.cargandoDatos.set(false);
-    },
-
-    error: (error) => {
-      console.error('Error al obtener los datos personales:', error);
-      this.cargandoDatos.set(false);
-    },
-  });
-}
+  async cargarLocalidadesFamiliar(codigoProvincia: string): Promise<void> {
+    this.localidadesFamiliar.set([]);
+    this.form.patchValue({ domicilioFamiliarLocalidad: '' });
+    if (codigoProvincia) {
+      this.localidadesFamiliar.set(await this.ubicacionService.getLocalidades(codigoProvincia));
+    }
+  }
 
   // --- Campos condicionales según categoría BINID ---
 
@@ -199,6 +236,34 @@ export class FormularioBinid implements OnInit{
       }
       anioEgreso.updateValueAndValidity();
       materiasCursadas.updateValueAndValidity();
+    });
+
+    const distinto = this.form.get('domicilioFamiliarDistinto');
+
+    const camposObligatorios = [
+      'domicilioFamiliarCalle',
+      'domicilioFamiliarNumero',
+      'domicilioFamiliarCodigoPostal',
+      'domicilioFamiliarProvincia',
+      'domicilioFamiliarLocalidad',
+    ];
+
+    distinto?.valueChanges.subscribe((valor: boolean) => {
+      camposObligatorios.forEach((campo) => {
+        const control = this.form.get(campo);
+        if (valor) {
+          control?.setValidators(Validators.required);
+        } else {
+          control?.clearValidators();
+          control?.setValue('');
+        }
+        control?.updateValueAndValidity();
+      });
+
+      if (!valor) {
+        this.form.get('domicilioFamiliarPisoDepto')?.setValue('');
+        this.localidadesFamiliar.set([]);
+      }
     });
   }
 
@@ -260,10 +325,16 @@ export class FormularioBinid implements OnInit{
         domicilioNumero: v.dpDomicilioNumero,
         domicilioPisoDepto: v.dpDomicilioPisoDepto || null,
         codigoPostal: v.dpCodigoPostal,
-        localidad: this.localidadCodigo,
-        provincia: this.provinciaCodigo,
-        nacionalidad: this.nacionalidadCodigo,
-        domicilioFamiliarDistinto: false,
+        localidad: v.dpLocalidad,
+        provincia: v.dpProvincia,
+        nacionalidad: v.dpNacionalidad,
+        domicilioFamiliarDistinto: v.domicilioFamiliarDistinto,
+        domicilioFamiliarCalle: v.domicilioFamiliarDistinto ? v.domicilioFamiliarCalle : null,
+        domicilioFamiliarNumero: v.domicilioFamiliarDistinto ? v.domicilioFamiliarNumero : null,
+        domicilioFamiliarPisoDepto: v.domicilioFamiliarDistinto ? (v.domicilioFamiliarPisoDepto || null) : null,
+        domicilioFamiliarCodigoPostal: v.domicilioFamiliarDistinto ? v.domicilioFamiliarCodigoPostal : null,
+        domicilioFamiliarLocalidad: v.domicilioFamiliarDistinto ? v.domicilioFamiliarLocalidad : null,
+        domicilioFamiliarProvincia: v.domicilioFamiliarDistinto ? v.domicilioFamiliarProvincia : null,
       },
       categoriaBinid: v.categoriaBinid,
       carreraGrado: v.carreraGrado,

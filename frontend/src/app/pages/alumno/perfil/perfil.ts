@@ -11,7 +11,7 @@ import { UbicacionService } from '../../../services/ubicacion-service';
   templateUrl: './perfil.html',
   styleUrl: './perfil.css',
 })
-export class Perfil implements OnInit{
+export class Perfil implements OnInit {
   private fb = inject(FormBuilder);
   private perfilService = inject(PerfilService);
   private ubicacionService = inject(UbicacionService);
@@ -57,7 +57,7 @@ export class Perfil implements OnInit{
   ngOnInit(): void {
     this.cargarNacionalidades();
     this.cargarProvincias();
-    
+
 
     this.ubicacionService.getProvincias()
       .then(p => this.provinciasFamiliar.set(p));
@@ -66,19 +66,23 @@ export class Perfil implements OnInit{
       next: (data) => {
         this.modo.set('editar');
         this.form.patchValue(data);
-        
+
         //cargar localidades de la provincia guardada
-        if(data.provincia) {
+        if (data.provincia) {
           this.cargarLocalidades(data.provincia);
         }
-        if(data.domicilioFamiliarDistinto && data.domicilioFamiliarProvincia) {
+        if (data.domicilioFamiliarDistinto && data.domicilioFamiliarProvincia) {
           this.cargarLocalidadesFamiliar(data.domicilioFamiliarProvincia);
         }
 
         this.cargando.set(false);
       },
-      error: () => {
-        this.modo.set('crear');
+      error: (err) => {
+        if (err.status === 404) {
+          this.modo.set('crear');
+        } else {
+          console.error('Error al cargar datos personales', err);
+        }
         this.cargando.set(false);
       }
     });
@@ -109,12 +113,12 @@ export class Perfil implements OnInit{
   }
 
   guardar(): void {
-    if(this.form.invalid) {
+    if (this.form.invalid) {
       console.log('form inválido:', this.form.value, this.form.errors);
-        Object.entries(this.form.controls).forEach(([k, c]) => {
+      Object.entries(this.form.controls).forEach(([k, c]) => {
         if (c.invalid) console.log(k, c.errors);
-        });
-        this.form.markAllAsTouched();
+      });
+      this.form.markAllAsTouched();
       return;
     }
 

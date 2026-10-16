@@ -111,12 +111,12 @@
         <div class="campo">
           <label>Provincia</label>
 
-          <select formControlName="dpProvincia">
+          <select formControlName="dpProvincia" (change)="onProvinciaChange($any($event.target).value)">
             <option value="" disabled>
               Seleccioná tu provincia...
             </option>
 
-            @for (p of provincias; track p.iso2) {
+            @for (p of provincias(); track p.iso2) {
             <option [value]="p.iso2">
               {{ p.name }}
             </option>
@@ -138,7 +138,7 @@
               Seleccioná tu localidad...
             </option>
 
-            @for (l of localidades; track l.id) {
+            @for (l of localidades(); track l.id) {
             <option [value]="l.id">
               {{ l.name }}
             </option>
@@ -162,7 +162,7 @@
               Seleccioná tu nacionalidad...
             </option>
 
-            @for (n of nacionalidades; track n.iso2) {
+            @for (n of nacionalidades(); track n.iso2) {
             <option [value]="n.iso2">
               {{ n.name }}
             </option>
@@ -235,19 +235,28 @@
             </div>
 
             <div class="campo">
-              <label>Localidad</label>
-              <input type="text" formControlName="domicilioFamiliarLocalidad" placeholder="Ej: Mar del Plata">
-
-              @if (campoInvalido('domicilioFamiliarLocalidad')) {
+              <label>Provincia</label>
+              <select formControlName="domicilioFamiliarProvincia"
+                (change)="cargarLocalidadesFamiliar($any($event.target).value)">
+                <option value="" disabled>Seleccioná una provincia...</option>
+                @for (p of provinciasFamiliar(); track p.iso2) {
+                <option [value]="p.iso2">{{ p.name }}</option>
+                }
+              </select>
+              @if (campoInvalido('domicilioFamiliarProvincia')) {
               <span class="campo-error">Campo obligatorio</span>
               }
             </div>
 
             <div class="campo">
-              <label>Provincia</label>
-              <input type="text" formControlName="domicilioFamiliarProvincia" placeholder="Ej: Buenos Aires">
-
-              @if (campoInvalido('domicilioFamiliarProvincia')) {
+              <label>Localidad</label>
+              <select formControlName="domicilioFamiliarLocalidad">
+                <option value="" disabled>Seleccioná una localidad...</option>
+                @for (l of localidadesFamiliar(); track l.id) {
+                <option [value]="l.id">{{ l.name }}</option>
+                }
+              </select>
+              @if (campoInvalido('domicilioFamiliarLocalidad')) {
               <span class="campo-error">Campo obligatorio</span>
               }
             </div>
