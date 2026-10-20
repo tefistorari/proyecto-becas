@@ -26,11 +26,11 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        if(datosPersonalesRepository.findByUsuarioId(usuarioId).isPresent()){
+        if (datosPersonalesRepository.findByUsuarioId(usuarioId).isPresent()) {
             throw new ConflictoException("El usuario ya tiene datos personales cargados");
         }
 
-        if (datosPersonalesRepository.existsByDni(request.getDni())){
+        if (datosPersonalesRepository.existsByDni(request.getDni())) {
             throw new ConflictoException("El DNI ya esta registrado");
         }
 
@@ -92,6 +92,13 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
             datosPersonales.setDomicilioFamiliarCodigoPostal(request.getDomicilioFamiliarCodigoPostal());
             datosPersonales.setDomicilioFamiliarLocalidad(request.getDomicilioFamiliarLocalidad());
             datosPersonales.setDomicilioFamiliarProvincia(request.getDomicilioFamiliarProvincia());
+        } else {
+            datosPersonales.setDomicilioFamiliarCalle(null);
+            datosPersonales.setDomicilioFamiliarNumero(null);
+            datosPersonales.setDomicilioFamiliarPisoDepto(null);
+            datosPersonales.setDomicilioFamiliarCodigoPostal(null);
+            datosPersonales.setDomicilioFamiliarLocalidad(null);
+            datosPersonales.setDomicilioFamiliarProvincia(null);
         }
 
         datosPersonalesRepository.save(datosPersonales);
