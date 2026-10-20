@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class DatosPersonalesRequest {
 
     @NotBlank(message = "El DNI es obligatorio")
+    @Pattern(regexp = "\\d{7,8}", message = "El DNI debe tener 7 u 8 dígitos, sin puntos")
     private String dni;
 
     @NotNull(message = "La fecha de nacimiento es obligatoria")

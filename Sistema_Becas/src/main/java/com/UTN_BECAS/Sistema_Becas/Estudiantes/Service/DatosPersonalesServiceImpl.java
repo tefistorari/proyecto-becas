@@ -31,7 +31,7 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         }
 
         if (datosPersonalesRepository.existsByDni(request.getDni())) {
-            throw new ConflictoException("El DNI ya esta registrado");
+            throw new ConflictoException("Ese DNI ya está registrado en otra cuenta");
         }
 
         DatosPersonales datosPersonales = new DatosPersonales();
@@ -72,6 +72,10 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
     public DatosPersonalesResponse actualizar(Long usuarioId, DatosPersonalesRequest request) {
         DatosPersonales datosPersonales = datosPersonalesRepository.findByUsuarioId(usuarioId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Datos personales no encontrados"));
+
+        if (datosPersonalesRepository.existsByDniAndUsuarioIdNot(request.getDni(), usuarioId)) {
+            throw new ConflictoException("Ese DNI ya está registrado en otra cuenta");
+        }
 
         datosPersonales.setDni(request.getDni());
         datosPersonales.setFechaNacimiento(request.getFechaNacimiento());
