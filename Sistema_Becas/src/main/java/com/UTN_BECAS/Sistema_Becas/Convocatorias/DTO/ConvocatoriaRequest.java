@@ -22,10 +22,6 @@ public class ConvocatoriaRequest {
 
     private String descripcion;
 
-    @NotNull(message = "El cupo máximo es obligatorio")
-    @Positive(message = "El cupo máximo debe ser mayor a cero")
-    private Integer cupoMaximo;
-
     public ConvocatoriaRequest(){
 
     }
@@ -68,14 +64,6 @@ public class ConvocatoriaRequest {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public Integer getCupoMaximo() {
-        return cupoMaximo;
-    }
-
-    public void setCupoMaximo(Integer cupoMaximo) {
-        this.cupoMaximo = cupoMaximo;
     }
 
 }

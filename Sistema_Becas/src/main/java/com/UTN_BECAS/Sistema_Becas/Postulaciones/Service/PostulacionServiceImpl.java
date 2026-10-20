@@ -424,16 +424,7 @@ public class PostulacionServiceImpl implements PostulacionService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
         postulacion.setEstado(estado);
         postulacionRepository.save(postulacion);
-        // Verificar si se alcanzó el cupo máximo al aceptar una postulación
-        if (estado == EstadoPostulacion.ACEPTADO) {
-            Convocatoria convocatoria = postulacion.getConvocatoria();
-            long totalAceptados = postulacionRepository.countByConvocatoriaIdAndEstado(
-                    convocatoria.getId(), EstadoPostulacion.ACEPTADO);
-            if (totalAceptados >= convocatoria.getCupoMaximo()) {
-                convocatoria.setEstado(EstadoConvocatoria.CERRADA);
-                convocatoriaRepository.save(convocatoria);
-            }
-        }
+
 
         PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(id).orElse(null);
         PostulacionBecaBinid binid = binidRepository.findByPostulacionId(id).orElse(null);

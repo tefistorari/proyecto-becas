@@ -26,7 +26,6 @@
                     <th>Año</th>
                     <th>Apertura</th>
                     <th>Cierre</th>
-                    <th>Cupo</th>
                     <th>Estado</th>
                 </tr>
             </thead>
@@ -37,7 +36,6 @@
                         <td>{{ c.anio }}</td>
                         <td>{{ c.fechaApertura | date:'short' }}</td>
                         <td>{{ c.fechaCierre | date: 'short'}}</td>
-                        <td>{{ c.cupoMaximo }}</td>
                         <td>{{ c.estado }}</td>
                     </tr>
                 }

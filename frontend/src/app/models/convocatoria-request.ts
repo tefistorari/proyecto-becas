@@ -4,5 +4,4 @@ export interface ConvocatoriaRequest {
     fechaApertura: string;
     fechaCierre: string;
     descripcion?: string;
-    cupoMaximo: number;
 }

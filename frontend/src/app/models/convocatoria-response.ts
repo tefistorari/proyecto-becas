@@ -10,6 +10,5 @@ export interface ConvocatoriaResponse {
     descripcion?: string;
     estado: EstadoConvocatoria;
     beca: BecaResponse;
-    cupoMaximo: number;
     informe?: InformeConvocatoriaResponse;
 }
