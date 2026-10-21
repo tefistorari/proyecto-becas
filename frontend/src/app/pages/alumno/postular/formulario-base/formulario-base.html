@@ -44,7 +44,7 @@
 
         <div class="campo">
           <label>DNI</label>
-          <input type="text" formControlName="dpDni" maxlength="8">
+          <input type="text" formControlName="dpDni" maxlength="15">
           @if (campoInvalido('dpDni')) {
           <span class="campo-error">Campo obligatorio</span>
           }
@@ -75,7 +75,11 @@
           <label>Celular</label>
           <input type="tel" formControlName="dpCelular" placeholder="Ej: 2234123456">
           @if (campoInvalido('dpCelular')) {
-          <span class="campo-error">Campo obligatorio</span>
+          <span class="campo-error">
+            {{ form.get('dpCelular')?.hasError('required')
+            ? 'Campo obligatorio'
+            : 'Ingresá el celular sin 0 ni 15, con código de área (10 u 11 dígitos)' }}
+          </span>
           }
         </div>
 
@@ -146,7 +150,7 @@
           <span class="campo-error">Campo obligatorio</span>
           }
         </div>
-        
+
         <div class="campo">
           <label>CBU / CVU</label>
           <input type="text" formControlName="dpCbuCvu" inputmode="numeric" maxlength="22">

@@ -62,8 +62,27 @@ form h2 {
     font-size: 0.82rem;
 }
 
+/* =========================
+   ÉXITO
+   ========================= */
+
+.mensaje-exito {
+    margin: 0 0 15px;
+    padding: 0.75rem 1rem;
+
+    border: 1px solid #b9d9c4;
+    border-radius: 6px;
+
+    background: #f2f9f4;
+    color: #2d6a43;
+
+    font-size: 0.88rem;
+    text-align: left;
+}
+
 @media (min-width: 768px) {
-    .error-message {
+    .error-message,
+    .mensaje-exito {
         grid-column: 1 / -1;
     }
 }

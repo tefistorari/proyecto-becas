@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class DatosPersonalesRequest {
 
     @NotBlank(message = "El DNI es obligatorio")
-    @Pattern(regexp = "\\d{7,8}", message = "El DNI debe tener 7 u 8 dígitos, sin puntos")
+    @Pattern(regexp = "[A-Za-z0-9]{6,15}", message = "El documento debe tener entre 6 y 15 caracteres, solo letras y números, sin puntos ni espacios")
     private String dni;
 
     @NotNull(message = "La fecha de nacimiento es obligatoria")
@@ -68,7 +68,7 @@ public class DatosPersonalesRequest {
     }
 
     public void setDni(String dni) {
-        this.dni = dni;
+        this.dni = dni == null ? null : dni.trim().toUpperCase();
     }
 
     public LocalDate getFechaNacimiento() {
@@ -150,7 +150,7 @@ public class DatosPersonalesRequest {
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
-    
+
     public String getCbuCvu() {
         return cbuCvu;
     }

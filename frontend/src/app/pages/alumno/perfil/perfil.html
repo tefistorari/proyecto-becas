@@ -9,7 +9,7 @@
         <label for="dni">DNI</label>
         <input type="text" id="dni" formControlName="dni" inputmode="numeric">
         @if (form.get('dni')?.invalid && form.get('dni')?.touched) {
-        <small class="error">Ingresá solo números, sin puntos (7 u 8 dígitos)</small>
+        <small class="error">Ingresá solo letras y números, sin puntos ni espacios (6 a 15 caracteres)</small>
         }
     </div>
 
@@ -90,7 +90,7 @@
         <label for="cbuCvu">CBU / CVU</label>
         <input type="text" id="cbuCvu" formControlName="cbuCvu" inputmode="numeric" maxlength="22">
         @if(form.get('cbuCvu')?.invalid && form.get('cbuCvu')?.touched) {
-            <small class="error">Ingresá los 22 dígitos del CBU o CVU, sin espacios ni guiones</small>
+        <small class="error">Ingresá los 22 dígitos del CBU o CVU, sin espacios ni guiones</small>
         }
     </div>
 
@@ -142,6 +142,14 @@
             }
         </select>
     </div>
+    }
+
+    @if (exito()) {
+    <div class="mensaje-exito" role="status">✓ {{ exito() }}</div>
+    }
+
+    @if (error()) {
+    <div class="error-message" role="alert">{{ error() }}</div>
     }
 
     <button type="submit" [disabled]="guardando() || form.invalid">

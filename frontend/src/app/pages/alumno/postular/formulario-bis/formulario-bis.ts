@@ -93,7 +93,7 @@ export class FormularioBis implements OnInit {
       // Datos personales
       dpNombre: [{ value: '', disabled: true }],
       dpApellido: [{ value: '', disabled: true }],
-      dpDni: ['', Validators.required],
+      dpDni: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9]{6,15}$/)]],
       dpFechaNacimiento: ['', Validators.required],
       dpGenero: [null as Genero | null, Validators.required],
       dpCelular: ['', [Validators.required, Validators.pattern('^[1-9][0-9]{9,10}$')]],

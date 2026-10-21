@@ -27,6 +27,8 @@ export class Perfil implements OnInit {
   cargando = signal(true);
   guardando = signal(false);
   error = signal<string | null>(null);
+  exito = signal<string | null>(null);
+  private timeoutExito?: ReturnType<typeof setTimeout>;
 
   private readonly camposFamiliares = [
     'domicilioFamiliarCalle',
@@ -38,7 +40,7 @@ export class Perfil implements OnInit {
 
 
   form = this.fb.group({
-    dni: ['', [Validators.required, Validators.pattern(/^\d{7,8}$/)]],
+    dni: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9]{6,15}$/)]],
     fechaNacimiento: ['', Validators.required],
     genero: [null as Genero | null, Validators.required],
     celular: ['', [Validators.required, Validators.pattern(/^[1-9][0-9]{9,10}$/)]], //solo numeros- pattern cambia si permito espacio y guiones
@@ -142,18 +144,20 @@ export class Perfil implements OnInit {
       this.localidadesFamiliar.set([]);
     }
   }
-  
-    guardar(): void {
-      if(this.form.invalid) {
+
+  guardar(): void {
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
     this.error.set(null);
+    this.exito.set(null);
     this.guardando.set(true);
     const request = this.form.value as DatosPersonalesRequest;
+    const eraCrear = this.modo() === 'crear';
 
-    const peticion = this.modo() === 'crear'
+    const peticion = eraCrear
       ? this.perfilService.crear(request)
       : this.perfilService.actualizar(request);
 
@@ -161,12 +165,21 @@ export class Perfil implements OnInit {
       next: () => {
         this.guardando.set(false);
         this.modo.set('editar');
+        this.mostrarExito(eraCrear
+          ? 'Tus datos se guardaron correctamente'
+          : 'Tu perfil se actualizó correctamente');
       },
       error: (err) => {
         this.guardando.set(false);
         this.error.set(err.error?.error ?? 'No se pudieron guardar los datos');
       }
     });
+  }
+
+  private mostrarExito(mensaje: string): void {
+    clearTimeout(this.timeoutExito);
+    this.exito.set(mensaje);
+    this.timeoutExito = setTimeout(() => this.exito.set(null), 4000);
   }
 
 }
