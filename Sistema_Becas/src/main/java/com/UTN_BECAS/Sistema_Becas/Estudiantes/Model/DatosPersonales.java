@@ -50,6 +50,9 @@ public class DatosPersonales {
     @Column(nullable = false)
     private String nacionalidad;
 
+    @Column(name = "cbu_cvu", nullable = false, length = 22)
+    private String cbuCvu;
+
     @Column(nullable = false)
     private boolean domicilioFamiliarDistinto = false;
 
@@ -75,7 +78,7 @@ public class DatosPersonales {
     public DatosPersonales(
             Usuario usuario, String dni, LocalDate fechaNacimiento, Genero genero, String celular,
             String domicilioCalle, Integer domicilioNumero, String codigoPostal, String localidad,
-            String provincia, String nacionalidad, boolean domicilioFamiliarDistinto, String domicilioFamiliarCalle,
+            String provincia, String nacionalidad, String cbuCvu, boolean domicilioFamiliarDistinto, String domicilioFamiliarCalle,
             Integer domicilioFamiliarNumero, String domicilioFamiliarCodigoPostal, String domicilioFamiliarLocalidad,
             String domicilioFamiliarProvincia
             ) {
@@ -90,6 +93,7 @@ public class DatosPersonales {
         this.localidad = localidad;
         this.provincia = provincia;
         this.nacionalidad = nacionalidad;
+        this.cbuCvu = cbuCvu;
         this.domicilioFamiliarDistinto = domicilioFamiliarDistinto;
         this.domicilioFamiliarCalle = domicilioFamiliarCalle;
         this.domicilioFamiliarNumero = domicilioFamiliarNumero;
@@ -201,6 +205,14 @@ public class DatosPersonales {
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
+    
+    public String getCbuCvu() {
+        return cbuCvu;
+    }
+
+    public void setCbuCvu(String cbuCvu) {
+        this.cbuCvu = cbuCvu;
+    }
 
     public boolean isDomicilioFamiliarDistinto() {
         return domicilioFamiliarDistinto;
@@ -270,4 +282,5 @@ public class DatosPersonales {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
 }

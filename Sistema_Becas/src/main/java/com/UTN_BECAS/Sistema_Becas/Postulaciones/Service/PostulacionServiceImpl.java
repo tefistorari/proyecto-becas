@@ -119,6 +119,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         historial.setLocalidad(dp.getLocalidad());
         historial.setProvincia(dp.getProvincia());
         historial.setNacionalidad(dp.getNacionalidad());
+        historial.setCbuCvu(dp.getCbuCvu());
         historial.setDomicilioFamiliarDistinto(dp.getDomicilioFamiliarDistinto());
         if(Boolean.TRUE.equals(dp.getDomicilioFamiliarDistinto())) {
             historial.setDomicilioFamiliarCalle(dp.getDomicilioFamiliarCalle());
@@ -252,6 +253,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         historial.setLocalidad(dp.getLocalidad());
         historial.setProvincia(dp.getProvincia());
         historial.setNacionalidad(dp.getNacionalidad());
+        historial.setCbuCvu(dp.getCbuCvu());
         historial.setDomicilioFamiliarDistinto(dp.getDomicilioFamiliarDistinto());
         if(Boolean.TRUE.equals(dp.getDomicilioFamiliarDistinto())) {
             historial.setDomicilioFamiliarCalle(dp.getDomicilioFamiliarCalle());
@@ -328,6 +330,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         historial.setLocalidad(dp.getLocalidad());
         historial.setProvincia(dp.getProvincia());
         historial.setNacionalidad(dp.getNacionalidad());
+        historial.setCbuCvu(dp.getCbuCvu());
         historial.setDomicilioFamiliarDistinto(dp.getDomicilioFamiliarDistinto());
         if (Boolean.TRUE.equals(dp.getDomicilioFamiliarDistinto())) {
             historial.setDomicilioFamiliarCalle(dp.getDomicilioFamiliarCalle());

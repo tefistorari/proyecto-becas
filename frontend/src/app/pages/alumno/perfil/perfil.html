@@ -87,6 +87,14 @@
     </div>
 
     <div class="campo">
+        <label for="cbuCvu">CBU / CVU</label>
+        <input type="text" id="cbuCvu" formControlName="cbuCvu" inputmode="numeric" maxlength="22">
+        @if(form.get('cbuCvu')?.invalid && form.get('cbuCvu')?.touched) {
+            <small class="error">Ingresá los 22 dígitos del CBU o CVU, sin espacios ni guiones</small>
+        }
+    </div>
+
+    <div class="campo">
         <label for="domicilioFamiliarDistinto">
             <input type="checkbox" id="domicilioFamiliarDistinto" formControlName="domicilioFamiliarDistinto">
             El domicilio familiar es distinto

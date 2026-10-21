@@ -141,6 +141,14 @@
           }
         </div>
 
+        <div class="campo">
+          <label>CBU / CVU</label>
+          <input type="text" formControlName="dpCbuCvu" inputmode="numeric" maxlength="22">
+          @if (campoInvalido('dpCbuCvu')) {
+          <span class="campo-error">Ingresá los 22 dígitos del CBU o CVU, sin espacios ni guiones</span>
+          }
+        </div>
+
         <div class="campo campo-check full-width">
           <label class="checkbox-container">
             <input type="checkbox" formControlName="domicilioFamiliarDistinto">

@@ -88,6 +88,8 @@ export class FormCarreraInvestigador implements OnInit {
       dpLocalidad: ['', Validators.required],
       dpProvincia: ['', Validators.required],
       dpNacionalidad: ['', Validators.required],
+      dpCbuCvu: ['', [Validators.required, Validators.pattern(/^\d{22}$/)]],
+
       // Domicilio familiar (opcional, se valida solo si el checkbox está tildado)
       domicilioFamiliarDistinto: [false],
       domicilioFamiliarCalle: [''],
@@ -145,6 +147,7 @@ export class FormCarreraInvestigador implements OnInit {
           dpLocalidad: datos.localidad,
           dpProvincia: datos.provincia,
           dpNacionalidad: datos.nacionalidad,
+          dpCbuCvu: datos.cbuCvu,
 
           domicilioFamiliarDistinto: datos.domicilioFamiliarDistinto,
           domicilioFamiliarCalle: datos.domicilioFamiliarCalle,
@@ -263,6 +266,7 @@ export class FormCarreraInvestigador implements OnInit {
         localidad: v.dpLocalidad,
         provincia: v.dpProvincia,
         nacionalidad: v.dpNacionalidad,
+        cbuCvu: v.dpCbuCvu,
         domicilioFamiliarDistinto: v.domicilioFamiliarDistinto,
         domicilioFamiliarCalle: v.domicilioFamiliarDistinto ? v.domicilioFamiliarCalle : null,
         domicilioFamiliarNumero: v.domicilioFamiliarDistinto ? v.domicilioFamiliarNumero : null,

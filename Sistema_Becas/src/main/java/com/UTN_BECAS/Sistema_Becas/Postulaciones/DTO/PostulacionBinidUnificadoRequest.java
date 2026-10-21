@@ -21,7 +21,7 @@ public class PostulacionBinidUnificadoRequest {
     @NotNull(message = "La categoria es obligatoria")
     private CategoriaBinid categoriaBinid;
 
-    @NotBlank(message = "La carrera de grado es obligatoria")
+    @NotNull(message = "La carrera de grado es obligatoria")
     private CarreraGrado carreraGrado;
 
     @NotNull(message = "Debe indicar si accedio a una beca BINID anterior")

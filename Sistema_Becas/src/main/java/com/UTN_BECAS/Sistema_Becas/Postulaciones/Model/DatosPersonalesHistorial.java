@@ -56,6 +56,9 @@ public class DatosPersonalesHistorial {
     @Column(nullable = false)
     private String nacionalidad;
 
+    @Column(name = "cbu_cvu", nullable = false, length = 22)
+    private String cbuCvu;
+
     @Column(nullable = false)
     private boolean domicilioFamiliarDistinto = false;
 
@@ -83,7 +86,7 @@ public class DatosPersonalesHistorial {
             Postulacion postulacion, String nombre, String apellido, String dni,
             LocalDate fechaNacimiento, Genero genero, String celular, String domicilioCalle,
             Integer domicilioNumero, String codigoPostal, String localidad, String provincia,
-            String nacionalidad, boolean domicilioFamiliarDistinto, String domicilioFamiliarCalle,
+            String nacionalidad, String cbuCvu , boolean domicilioFamiliarDistinto, String domicilioFamiliarCalle,
             Integer domicilioFamiliarNumero, String domicilioFamiliarCodigoPostal, String domicilioFamiliarLocalidad,
             String domicilioFamiliarProvincia
             ) {
@@ -100,6 +103,7 @@ public class DatosPersonalesHistorial {
         this.localidad = localidad;
         this.provincia = provincia;
         this.nacionalidad = nacionalidad;
+        this.cbuCvu = cbuCvu;
         this.domicilioFamiliarDistinto = domicilioFamiliarDistinto;
         this.domicilioFamiliarCalle = domicilioFamiliarCalle;
         this.domicilioFamiliarNumero = domicilioFamiliarNumero;
@@ -226,6 +230,14 @@ public class DatosPersonalesHistorial {
 
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
+    }
+        
+    public String getCbuCvu() {
+        return cbuCvu;
+    }
+
+    public void setCbuCvu(String cbuCvu) {
+        this.cbuCvu = cbuCvu;
     }
 
     public boolean isDomicilioFamiliarDistinto() {

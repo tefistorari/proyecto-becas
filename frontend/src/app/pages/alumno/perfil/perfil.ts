@@ -51,6 +51,7 @@ export class Perfil implements OnInit {
     localidad: ['', Validators.required],
     provincia: ['', Validators.required],
     nacionalidad: ['', Validators.required],
+    cbuCvu: ['', [Validators.required, Validators.pattern(/^\d{22}$/)]],
 
     domicilioFamiliarDistinto: [false, Validators.required],
 

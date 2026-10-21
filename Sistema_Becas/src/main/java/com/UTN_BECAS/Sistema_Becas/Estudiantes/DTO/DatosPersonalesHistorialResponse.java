@@ -20,6 +20,7 @@ public class DatosPersonalesHistorialResponse {
     private String localidad;
     private String provincia;
     private String nacionalidad;
+    private String cbuCvu;
     private boolean domicilioFamiliarDistinto;
     private String domicilioFamiliarCalle;
     private Integer domicilioFamiliarNumero;
@@ -86,6 +87,10 @@ public class DatosPersonalesHistorialResponse {
 
     public void setNacionalidad(String nacionalidad) { this.nacionalidad = nacionalidad; }
 
+    public String getCbuCvu() { return cbuCvu; }
+
+    public void setCbuCvu(String cbuCvu) { this.cbuCvu = cbuCvu; }
+    
     public boolean isDomicilioFamiliarDistinto() {
         return domicilioFamiliarDistinto;
     }
@@ -141,4 +146,5 @@ public class DatosPersonalesHistorialResponse {
     public void setDomicilioFamiliarProvincia(String domicilioFamiliarProvincia) {
         this.domicilioFamiliarProvincia = domicilioFamiliarProvincia;
     }
+
 }

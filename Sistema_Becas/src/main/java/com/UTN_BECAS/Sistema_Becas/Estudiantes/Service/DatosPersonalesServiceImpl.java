@@ -47,6 +47,7 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         datosPersonales.setLocalidad(request.getLocalidad());
         datosPersonales.setProvincia(request.getProvincia());
         datosPersonales.setNacionalidad(request.getNacionalidad());
+        datosPersonales.setCbuCvu(request.getCbuCvu());
         datosPersonales.setDomicilioFamiliarDistinto(request.getDomicilioFamiliarDistinto());
         if (Boolean.TRUE.equals(request.getDomicilioFamiliarDistinto())) {
             datosPersonales.setDomicilioFamiliarCalle(request.getDomicilioFamiliarCalle());
@@ -88,6 +89,7 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         datosPersonales.setLocalidad(request.getLocalidad());
         datosPersonales.setProvincia(request.getProvincia());
         datosPersonales.setNacionalidad(request.getNacionalidad());
+        datosPersonales.setCbuCvu(request.getCbuCvu());
         datosPersonales.setDomicilioFamiliarDistinto(request.getDomicilioFamiliarDistinto());
         if (Boolean.TRUE.equals(request.getDomicilioFamiliarDistinto())) {
             datosPersonales.setDomicilioFamiliarCalle(request.getDomicilioFamiliarCalle());

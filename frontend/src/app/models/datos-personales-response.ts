@@ -15,6 +15,7 @@ export interface DatosPersonalesResponse {
     localidad: string;
     provincia: string;
     nacionalidad: string;
+    cbuCvu: string;
 
     domicilioFamiliarDistinto: boolean;
 
