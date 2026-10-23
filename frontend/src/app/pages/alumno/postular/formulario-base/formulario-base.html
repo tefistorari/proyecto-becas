@@ -15,100 +15,104 @@
       </div>
 
       @if (cargandoDatos()) {
-        <div class="loading-datos">
-          <span>Cargando tus datos...</span>
-        </div>
+      <div class="loading-datos">
+        <span>Cargando tus datos...</span>
+      </div>
       } @else {
-        <div class="aviso-autocompletado">
-          <span class="aviso-icono">ℹ</span>
-          <p>Estos datos se completaron desde tu perfil. Revisalos y corregí cualquier error antes de enviar.</p>
+      <div class="aviso-autocompletado">
+        <span class="aviso-icono">ℹ</span>
+        <p>Estos datos se completaron desde tu perfil. Revisalos y corregí cualquier error antes de enviar.</p>
+      </div>
+
+      <div class="grid-campos">
+
+        <div class="campo">
+          <label>Nombre/s</label>
+          <input type="text" formControlName="dpNombre">
+          @if (campoInvalido('dpNombre')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
         </div>
 
-        <div class="grid-campos">
+        <div class="campo">
+          <label>Apellido/s</label>
+          <input type="text" formControlName="dpApellido">
+          @if (campoInvalido('dpApellido')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
 
-          <div class="campo">
-            <label>Nombre/s</label>
-            <input type="text" formControlName="dpNombre">
-            @if (campoInvalido('dpNombre')) {
-              <span class="campo-error">Campo obligatorio</span>
+        <div class="campo">
+          <label>DNI</label>
+          <input type="text" formControlName="dpDni" maxlength="15">
+          @if (campoInvalido('dpDni')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Fecha de Nacimiento</label>
+          <input type="date" formControlName="dpFechaNacimiento">
+          @if (campoInvalido('dpFechaNacimiento')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Género</label>
+          <select formControlName="dpGenero">
+            <option value="" disabled selected>Seleccioná...</option>
+            @for (g of generos; track g) {
+            <option [value]="g">{{ g | labelEnum }}</option>
             }
-          </div>
+          </select>
+          @if (campoInvalido('dpGenero')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
 
-          <div class="campo">
-            <label>Apellido/s</label>
-            <input type="text" formControlName="dpApellido">
-            @if (campoInvalido('dpApellido')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
+        <div class="campo">
+          <label>Celular</label>
+          <input type="tel" formControlName="dpCelular" placeholder="Ej: 2234123456">
+          @if (campoInvalido('dpCelular')) {
+          <span class="campo-error">
+            {{ form.get('dpCelular')?.hasError('required')
+            ? 'Campo obligatorio'
+            : 'Ingresá el celular sin 0 ni 15, con código de área (10 u 11 dígitos)' }}
+          </span>
+          }
+        </div>
 
-          <div class="campo">
-            <label>DNI</label>
-            <input type="text" formControlName="dpDni" maxlength="8">
-            @if (campoInvalido('dpDni')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
+        <div class="campo">
+          <label>Calle</label>
+          <input type="text" formControlName="dpDomicilioCalle" placeholder="Ej: San Martín">
+          @if (campoInvalido('dpDomicilioCalle')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
 
-          <div class="campo">
-            <label>Fecha de Nacimiento</label>
-            <input type="date" formControlName="dpFechaNacimiento">
-            @if (campoInvalido('dpFechaNacimiento')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
+        <div class="campo">
+          <label>Número</label>
+          <input type="number" formControlName="dpDomicilioNumero" placeholder="Ej: 1234">
+          @if (campoInvalido('dpDomicilioNumero')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
 
-          <div class="campo">
-            <label>Género</label>
-            <select formControlName="dpGenero">
-              <option value="" disabled selected>Seleccioná...</option>
-              @for (g of generos; track g) {
-                <option [value]="g">{{ g | labelEnum }}</option>
-              }
-            </select>
-            @if (campoInvalido('dpGenero')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
+        <div class="campo">
+          <label>Piso / Depto <span class="campo-opcional">(opcional)</span></label>
+          <input type="text" formControlName="dpDomicilioPisoDepto" placeholder="Ej: 2° B">
+        </div>
 
-          <div class="campo">
-            <label>Celular</label>
-            <input type="tel" formControlName="dpCelular" placeholder="Ej: 2234123456">
-            @if (campoInvalido('dpCelular')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
+        <div class="campo">
+          <label>Código Postal</label>
+          <input type="text" formControlName="dpCodigoPostal" placeholder="Ej: 7600">
+          @if (campoInvalido('dpCodigoPostal')) {
+          <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
 
-          <div class="campo">
-            <label>Calle</label>
-            <input type="text" formControlName="dpDomicilioCalle" placeholder="Ej: San Martín">
-            @if (campoInvalido('dpDomicilioCalle')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
-
-          <div class="campo">
-            <label>Número</label>
-            <input type="number" formControlName="dpDomicilioNumero" placeholder="Ej: 1234">
-            @if (campoInvalido('dpDomicilioNumero')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
-
-          <div class="campo">
-            <label>Piso / Depto <span class="campo-opcional">(opcional)</span></label>
-            <input type="text" formControlName="dpDomicilioPisoDepto" placeholder="Ej: 2° B">
-          </div>
-
-          <div class="campo">
-            <label>Código Postal</label>
-            <input type="text" formControlName="dpCodigoPostal" placeholder="Ej: 7600">
-            @if (campoInvalido('dpCodigoPostal')) {
-              <span class="campo-error">Campo obligatorio</span>
-            }
-          </div>
-
-          <div class="campo">
+        <div class="campo">
           <label>Provincia</label>
           <select formControlName="dpProvincia" (change)="onProvinciaChange($any($event.target).value)">
             <option value="" disabled>Seleccioná tu provincia...</option>
@@ -144,6 +148,14 @@
           </select>
           @if (campoInvalido('dpNacionalidad')) {
           <span class="campo-error">Campo obligatorio</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>CBU / CVU</label>
+          <input type="text" formControlName="dpCbuCvu" inputmode="numeric" maxlength="22">
+          @if (campoInvalido('dpCbuCvu')) {
+          <span class="campo-error">Ingresá los 22 dígitos del CBU o CVU, sin espacios ni guiones</span>
           }
         </div>
 
@@ -256,11 +268,12 @@
             <option value="PROCEDIMIENTOS_TECNOLOGIAS_AMBIENTALES">Procedimientos y Tecnologías Ambientales</option>
             <option value="PRODUCCION_TEXTIL">Producción Textil</option>
             <option value="PROGRAMACION">Programación</option>
+            <option value="INTERIORISMO">Interiorismo</option>
             <option value="INGENIERIA_NAVAL">Ingeniería Naval</option>
             <option value="INGENIERIA_PESQUERA">Ingeniería Pesquera</option>
           </select>
           @if (campoInvalido('carrera')) {
-            <span class="campo-error">Campo obligatorio</span>
+          <span class="campo-error">Campo obligatorio</span>
           }
         </div>
 
@@ -275,15 +288,15 @@
             <option value="otra">Otra (especificar)</option>
           </select>
           @if (campoInvalido('tipoVivienda')) {
-            <span class="campo-error">Campo obligatorio</span>
+          <span class="campo-error">Campo obligatorio</span>
           }
         </div>
 
         @if (form.get('tipoVivienda')?.value === 'otra') {
-          <div class="campo">
-            <label>Especificá tu situación de vivienda</label>
-            <input type="text" formControlName="tipoViviendaDetalle" placeholder="Ej: Vivienda en toma, judicializada...">
-          </div>
+        <div class="campo">
+          <label>Especificá tu situación de vivienda</label>
+          <input type="text" formControlName="tipoViviendaDetalle" placeholder="Ej: Vivienda en toma, judicializada...">
+        </div>
         }
 
         <div class="campo">
@@ -291,11 +304,11 @@
           <select formControlName="condicionLaboral">
             <option value="" disabled selected>Seleccioná condición...</option>
             @for (cond of condicionesLaborales; track cond) {
-              <option [value]="cond">{{ condicionLaboralDescripcion[cond] }}</option>
+            <option [value]="cond">{{ condicionLaboralDescripcion[cond] }}</option>
             }
           </select>
           @if (campoInvalido('condicionLaboral')) {
-            <span class="campo-error">Campo obligatorio</span>
+          <span class="campo-error">Campo obligatorio</span>
           }
         </div>
 
@@ -315,11 +328,11 @@
           <select formControlName="salud">
             <option value="" disabled selected>Seleccioná cobertura...</option>
             @for (s of tiposSalud; track s) {
-              <option [value]="s">{{ saludDescripcion[s]  }}</option>
+            <option [value]="s">{{ saludDescripcion[s] }}</option>
             }
           </select>
           @if (campoInvalido('salud')) {
-            <span class="campo-error">Campo obligatorio</span>
+          <span class="campo-error">Campo obligatorio</span>
           }
         </div>
 
@@ -333,11 +346,11 @@
       </div>
 
       @if (form.get('tieneCondicionSalud')?.value) {
-        <div class="campo full-width animate-fade">
-          <label>Detalle de la condición de salud</label>
-          <textarea formControlName="detalleCondicionSalud"
-            placeholder="Indicá brevemente el diagnóstico o detalle..."></textarea>
-        </div>
+      <div class="campo full-width animate-fade">
+        <label>Detalle de la condición de salud</label>
+        <textarea formControlName="detalleCondicionSalud"
+          placeholder="Indicá brevemente el diagnóstico o detalle..."></textarea>
+      </div>
       }
     </div>
 
@@ -360,7 +373,7 @@
             <thead>
               <tr>
                 <th>Nombre de la materia</th>
-                <th>Nivel</th>
+                <th>Año de cursada</th>
                 <th>Régimen</th>
                 <th>Año</th>
                 <th></th>
@@ -368,30 +381,31 @@
             </thead>
             <tbody formArrayName="materiasACursar">
               @for (materia of materiasACursar.controls; track materia; let i = $index) {
-                <tr [formGroupName]="i">
-                  <td><input type="text" formControlName="nombreMateria" placeholder="Ej: Análisis Matemático I"></td>
-                  <td>
-                    <select formControlName="nivelMateria">
-                      <option value="" disabled selected>Nivel...</option>
-                      @for (n of nivelesMaterias; track n) {
-                        <option [value]="n">{{ n | labelEnum }}</option>
-                      }
-                    </select>
-                  </td>
-                  <td>
-                    <select formControlName="regimenMateria">
-                      @for (r of regimenesMateria; track r) {
-                        <option [value]="r">{{ r | labelEnum }}</option>
-                      }
-                    </select>
-                  </td>
-                  <td><input type="number" formControlName="anioMateria" [placeholder]="anioActual" [min]="anioActual - 1" [max]="anioActual + 1"></td>
-                  <td>
-                    @if (materiasACursar.length > 1) {
-                      <button type="button" class="btn-quitar" (click)="removerMateriaCursar(i)">✕</button>
+              <tr [formGroupName]="i">
+                <td><input type="text" formControlName="nombreMateria" placeholder="Ej: Análisis Matemático I"></td>
+                <td>
+                  <select formControlName="nivelMateria">
+                    <option value="" disabled selected>Nivel...</option>
+                    @for (n of nivelesMaterias; track n) {
+                    <option [value]="n">{{ n | labelEnum }}</option>
                     }
-                  </td>
-                </tr>
+                  </select>
+                </td>
+                <td>
+                  <select formControlName="regimenMateria">
+                    @for (r of regimenesMateria; track r) {
+                    <option [value]="r">{{ r | labelEnum }}</option>
+                    }
+                  </select>
+                </td>
+                <td><input type="number" formControlName="anioMateria" [placeholder]="anioActual" [min]="anioActual - 1"
+                    [max]="anioActual + 1"></td>
+                <td>
+                  @if (materiasACursar.length > 1) {
+                  <button type="button" class="btn-quitar" (click)="removerMateriaCursar(i)">✕</button>
+                  }
+                </td>
+              </tr>
               }
             </tbody>
           </table>
@@ -410,7 +424,7 @@
             <thead>
               <tr>
                 <th>Nombre de la materia</th>
-                <th>Nivel</th>
+                <th>Año de la materia</th>
                 <th>Mesa (mes)</th>
                 <th>Año</th>
                 <th></th>
@@ -418,35 +432,36 @@
             </thead>
             <tbody formArrayName="materiasARendir">
               @for (final of materiasARendir.controls; track final; let i = $index) {
-                <tr [formGroupName]="i">
-                  <td><input type="text" formControlName="nombreMateria" placeholder="Ej: Física I"></td>
-                  <td>
-                    <select formControlName="nivelMateria">
-                      <option value="" disabled selected>Nivel...</option>
-                      @for (n of nivelesMaterias; track n) {
-                        <option [value]="n">{{ n | labelEnum }}</option>
-                      }
-                    </select>
-                  </td>
-                  <td>
-                    <select formControlName="mesMesa">
-                      <option value="" disabled selected>Mes...</option>
-                      @for (m of mesesMesa; track m) {
-                        <option [value]="m">{{ m | titlecase }}</option>
-                      }
-                    </select>
-                  </td>
-                  <td><input type="number" formControlName="anioMesa" [placeholder]="anioActual" [min]="anioActual" [max]="anioActual + 1"></td>
-                  <td>
-                    @if (materiasARendir.length > 0) {
-                      <button type="button" class="btn-quitar" (click)="removerMateriaRendir(i)">✕</button>
+              <tr [formGroupName]="i">
+                <td><input type="text" formControlName="nombreMateria" placeholder="Ej: Física I"></td>
+                <td>
+                  <select formControlName="nivelMateria">
+                    <option value="" disabled selected>Nivel...</option>
+                    @for (n of nivelesMaterias; track n) {
+                    <option [value]="n">{{ n | labelEnum }}</option>
                     }
-                  </td>
-                </tr>
+                  </select>
+                </td>
+                <td>
+                  <select formControlName="mesMesa">
+                    <option value="" disabled selected>Mes...</option>
+                    @for (m of mesesMesa; track m) {
+                    <option [value]="m">{{ m | titlecase }}</option>
+                    }
+                  </select>
+                </td>
+                <td><input type="number" formControlName="anioMesa" [placeholder]="anioActual" [min]="anioActual"
+                    [max]="anioActual + 1"></td>
+                <td>
+                  @if (materiasARendir.length > 0) {
+                  <button type="button" class="btn-quitar" (click)="removerMateriaRendir(i)">✕</button>
+                  }
+                </td>
+              </tr>
               } @empty {
-                <tr>
-                  <td colspan="5" class="tabla-vacia">No agregaste finales aún</td>
-                </tr>
+              <tr>
+                <td colspan="5" class="tabla-vacia">No agregaste finales aún</td>
+              </tr>
               }
             </tbody>
           </table>
@@ -460,50 +475,51 @@
         <span class="seccion-numero">04</span>
         <h2 class="titulo-seccion">Grupo Familiar</h2>
       </div>
-      <p class="seccion-nota">Incluí a todos los integrantes del grupo familiar. Consigná el ingreso mensual neto (de bolsillo).</p>
+      <p class="seccion-nota">Incluí a todos los integrantes del grupo familiar. Consigná el ingreso mensual neto (de
+        bolsillo).</p>
 
       <div formArrayName="grupoFamiliar" class="lista-familiares">
         @for (integrante of integrantes.controls; track integrante; let i = $index) {
-          <div [formGroupName]="i" class="tarjeta-familiar">
-            <div class="header-tarjeta">
-              <span class="tarjeta-numero">Integrante #{{ i + 1 }}</span>
-              @if (integrantes.length > 1) {
-                <button type="button" (click)="removerIntegrante(i)" class="btn-eliminar">Eliminar</button>
-              }
-            </div>
+        <div [formGroupName]="i" class="tarjeta-familiar">
+          <div class="header-tarjeta">
+            <span class="tarjeta-numero">Integrante #{{ i + 1 }}</span>
+            @if (integrantes.length > 1) {
+            <button type="button" (click)="removerIntegrante(i)" class="btn-eliminar">Eliminar</button>
+            }
+          </div>
 
-            <div class="grid-familiar">
-              <div class="campo-mini">
-                <label>Nombre</label>
-                <input type="text" formControlName="nombre" placeholder="Nombre">
-              </div>
-              <div class="campo-mini">
-                <label>Apellido</label>
-                <input type="text" formControlName="apellido" placeholder="Apellido">
-              </div>
-              <div class="campo-mini">
-                <label>DNI</label>
-                <input type="text" formControlName="dni" placeholder="Sin puntos" maxlength="8">
-              </div>
-              <div class="campo-mini">
-                <label>Parentesco</label>
-                <select formControlName="parentesco">
-                  <option value="" disabled selected>Parentesco...</option>
-                  @for (p of parentescos; track p) {
-                    <option [value]="p">{{ p | titlecase }}</option>
-                  }
-                </select>
-              </div>
-              <div class="campo-mini">
-                <label>Ocupación</label>
-                <input type="text" formControlName="ocupacion" placeholder="Ocupación">
-              </div>
-              <div class="campo-mini">
-                <label>Ingreso mensual ($)</label>
-                <input type="number" formControlName="ingreso" placeholder="0" min="0">
-              </div>
+          <div class="grid-familiar">
+            <div class="campo-mini">
+              <label>Nombre</label>
+              <input type="text" formControlName="nombre" placeholder="Nombre">
+            </div>
+            <div class="campo-mini">
+              <label>Apellido</label>
+              <input type="text" formControlName="apellido" placeholder="Apellido">
+            </div>
+            <div class="campo-mini">
+              <label>DNI</label>
+              <input type="text" formControlName="dni" placeholder="Sin puntos" maxlength="8">
+            </div>
+            <div class="campo-mini">
+              <label>Parentesco</label>
+              <select formControlName="parentesco">
+                <option value="" disabled selected>Parentesco...</option>
+                @for (p of parentescos; track p) {
+                <option [value]="p">{{ p | titlecase }}</option>
+                }
+              </select>
+            </div>
+            <div class="campo-mini">
+              <label>Ocupación</label>
+              <input type="text" formControlName="ocupacion" placeholder="Ocupación">
+            </div>
+            <div class="campo-mini">
+              <label>Ingreso mensual ($)</label>
+              <input type="number" formControlName="ingreso" placeholder="0" min="0">
             </div>
           </div>
+        </div>
         }
       </div>
 
@@ -535,8 +551,10 @@
           </div>
           <div class="doc-accion">
             <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.DNI]?.length">
-              <input type="file" accept=".pdf,image/*" multiple (change)="onArchivoSeleccionado($event, tipoDocumento.DNI)" hidden>
-              {{ archivos[tipoDocumento.DNI]?.length ? archivos[tipoDocumento.DNI]!.length + ' archivo(s)' : 'Adjuntar' }}
+              <input type="file" accept=".pdf,image/*" multiple
+                (change)="onArchivoSeleccionado($event, tipoDocumento.DNI)" hidden>
+              {{ archivos[tipoDocumento.DNI]?.length ? archivos[tipoDocumento.DNI]!.length + ' archivo(s)' : 'Adjuntar'
+              }}
             </label>
           </div>
         </div>
@@ -547,12 +565,13 @@
             <span class="doc-icono">🎓</span>
             <div>
               <p class="doc-nombre">Certificado de alumno regular <span class="campo-opcional">(opcional)</span></p>
-              <p class="doc-desc">Emitido por Secretaría Académica</p>
+              <p class="doc-desc">Emitido por Departamento de Alumnos</p>
             </div>
           </div>
           <div class="doc-accion">
             <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.CERTIFICADO_ALUMNO_REGULAR]?.length">
-              <input type="file" accept=".pdf,image/*" (change)="onArchivoSeleccionado($event, tipoDocumento.CERTIFICADO_ALUMNO_REGULAR)" hidden>
+              <input type="file" accept=".pdf,image/*"
+                (change)="onArchivoSeleccionado($event, tipoDocumento.CERTIFICADO_ALUMNO_REGULAR)" hidden>
               {{ archivos[tipoDocumento.CERTIFICADO_ALUMNO_REGULAR]?.length ? '1 archivo' : 'Adjuntar' }}
             </label>
           </div>
@@ -569,8 +588,10 @@
           </div>
           <div class="doc-accion">
             <label class="btn-file" [class.btn-file-ok]="archivos[tipoDocumento.OTRO]?.length">
-              <input type="file" accept=".pdf,image/*" multiple (change)="onArchivoSeleccionado($event, tipoDocumento.OTRO)" hidden>
-              {{ archivos[tipoDocumento.OTRO]?.length ? archivos[tipoDocumento.OTRO]!.length + ' archivo(s)' : 'Adjuntar (opcional)' }}
+              <input type="file" accept=".pdf,image/*" multiple
+                (change)="onArchivoSeleccionado($event, tipoDocumento.OTRO)" hidden>
+              {{ archivos[tipoDocumento.OTRO]?.length ? archivos[tipoDocumento.OTRO]!.length + ' archivo(s)' : 'Adjuntar
+              (opcional)' }}
             </label>
           </div>
         </div>
@@ -578,11 +599,11 @@
       </div>
 
       @if (erroresArchivo.length > 0) {
-        <div class="errores-archivo">
-          @for (err of erroresArchivo; track err) {
-            <p class="error-archivo-item">⚠ {{ err }}</p>
-          }
-        </div>
+      <div class="errores-archivo">
+        @for (err of erroresArchivo; track err) {
+        <p class="error-archivo-item">⚠ {{ err }}</p>
+        }
+      </div>
       }
     </div>
 
@@ -602,13 +623,13 @@
 
     <div class="form-footer">
       @if (form.invalid && intentoEnvio) {
-        <p class="form-estado error-texto">⚠ Revisá los campos marcados antes de continuar.</p>
+      <p class="form-estado error-texto">⚠ Revisá los campos marcados antes de continuar.</p>
       }
       <button type="submit" class="btn-enviar" [disabled]="enviando">
         @if (!enviando) {
-          <span>Enviar Postulación</span>
+        <span>Enviar Postulación</span>
         } @else {
-          <span>Enviando...</span>
+        <span>Enviando...</span>
         }
       </button>
     </div>

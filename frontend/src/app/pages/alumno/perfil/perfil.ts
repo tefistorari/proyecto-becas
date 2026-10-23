@@ -26,10 +26,21 @@ export class Perfil implements OnInit {
   modo = signal<'crear' | 'editar'>('crear');
   cargando = signal(true);
   guardando = signal(false);
+  error = signal<string | null>(null);
+  exito = signal<string | null>(null);
+  private timeoutExito?: ReturnType<typeof setTimeout>;
+
+  private readonly camposFamiliares = [
+    'domicilioFamiliarCalle',
+    'domicilioFamiliarNumero',
+    'domicilioFamiliarCodigoPostal',
+    'domicilioFamiliarProvincia',
+    'domicilioFamiliarLocalidad',
+  ] as const;
 
 
   form = this.fb.group({
-    dni: ['', Validators.required],
+    dni: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9]{6,15}$/)]],
     fechaNacimiento: ['', Validators.required],
     genero: [null as Genero | null, Validators.required],
     celular: ['', [Validators.required, Validators.pattern(/^[1-9][0-9]{9,10}$/)]], //solo numeros- pattern cambia si permito espacio y guiones
@@ -42,6 +53,7 @@ export class Perfil implements OnInit {
     localidad: ['', Validators.required],
     provincia: ['', Validators.required],
     nacionalidad: ['', Validators.required],
+    cbuCvu: ['', [Validators.required, Validators.pattern(/^\d{22}$/)]],
 
     domicilioFamiliarDistinto: [false, Validators.required],
 
@@ -61,6 +73,10 @@ export class Perfil implements OnInit {
 
     this.ubicacionService.getProvincias()
       .then(p => this.provinciasFamiliar.set(p));
+
+    this.form.get('domicilioFamiliarDistinto')!.valueChanges.subscribe(distinto => {
+      this.actualizarValidadoresFamiliares(!!distinto);
+    });
 
     this.perfilService.obtenerMisDatos().subscribe({
       next: (data) => {
@@ -112,20 +128,36 @@ export class Perfil implements OnInit {
       .then(l => this.localidadesFamiliar.set(l));
   }
 
+  private actualizarValidadoresFamiliares(distinto: boolean): void {
+    for (const campo of this.camposFamiliares) {
+      const control = this.form.get(campo)!;
+      if (distinto) {
+        control.setValidators(Validators.required);
+      } else {
+        control.clearValidators();
+        control.reset(campo === 'domicilioFamiliarNumero' ? null : '');
+      }
+      control.updateValueAndValidity({ emitEvent: false });
+    }
+    if (!distinto) {
+      this.form.get('domicilioFamiliarPisoDepto')!.reset('');
+      this.localidadesFamiliar.set([]);
+    }
+  }
+
   guardar(): void {
     if (this.form.invalid) {
-      console.log('form inválido:', this.form.value, this.form.errors);
-      Object.entries(this.form.controls).forEach(([k, c]) => {
-        if (c.invalid) console.log(k, c.errors);
-      });
       this.form.markAllAsTouched();
       return;
     }
 
+    this.error.set(null);
+    this.exito.set(null);
     this.guardando.set(true);
     const request = this.form.value as DatosPersonalesRequest;
+    const eraCrear = this.modo() === 'crear';
 
-    const peticion = this.modo() === 'crear'
+    const peticion = eraCrear
       ? this.perfilService.crear(request)
       : this.perfilService.actualizar(request);
 
@@ -133,11 +165,21 @@ export class Perfil implements OnInit {
       next: () => {
         this.guardando.set(false);
         this.modo.set('editar');
+        this.mostrarExito(eraCrear
+          ? 'Tus datos se guardaron correctamente'
+          : 'Tu perfil se actualizó correctamente');
       },
       error: (err) => {
         this.guardando.set(false);
-        console.error('Detalle:', err.error?.error ?? err.error);
+        this.error.set(err.error?.error ?? 'No se pudieron guardar los datos');
       }
-    })
+    });
   }
+
+  private mostrarExito(mensaje: string): void {
+    clearTimeout(this.timeoutExito);
+    this.exito.set(mensaje);
+    this.timeoutExito = setTimeout(() => this.exito.set(null), 4000);
+  }
+
 }

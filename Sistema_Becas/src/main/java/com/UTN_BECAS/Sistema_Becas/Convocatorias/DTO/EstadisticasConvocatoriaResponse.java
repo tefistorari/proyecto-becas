@@ -1,16 +1,15 @@
 package com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO;
 
+import java.util.Map;
+
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.EstadoPostulacion;
+
 public class EstadisticasConvocatoriaResponse {
 
     private Long convocatoriaId;
     private String nombreBeca;
-    private Integer cupoMaximo;
-    private Long totalInscriptos;
-    private Long totalAceptados;
-    private Double porcentajeOcupacion;
-
-    public EstadisticasConvocatoriaResponse() {
-    }
+    private Long totalPostulaciones;
+    private Map<EstadoPostulacion, Long> porEstado;
 
     public Long getConvocatoriaId() { return convocatoriaId; }
     public void setConvocatoriaId(Long convocatoriaId) { this.convocatoriaId = convocatoriaId; }
@@ -18,15 +17,9 @@ public class EstadisticasConvocatoriaResponse {
     public String getNombreBeca() { return nombreBeca; }
     public void setNombreBeca(String nombreBeca) { this.nombreBeca = nombreBeca; }
 
-    public Integer getCupoMaximo() { return cupoMaximo; }
-    public void setCupoMaximo(Integer cupoMaximo) { this.cupoMaximo = cupoMaximo; }
+    public Long getTotalPostulaciones() { return totalPostulaciones; }
+    public void setTotalPostulaciones(Long totalPostulaciones) { this.totalPostulaciones = totalPostulaciones; }
 
-    public Long getTotalInscriptos() { return totalInscriptos; }
-    public void setTotalInscriptos(Long totalInscriptos) { this.totalInscriptos = totalInscriptos; }
-
-    public Long getTotalAceptados() { return totalAceptados; }
-    public void setTotalAceptados(Long totalAceptados) { this.totalAceptados = totalAceptados; }
-
-    public Double getPorcentajeOcupacion() { return porcentajeOcupacion; }
-    public void setPorcentajeOcupacion(Double porcentajeOcupacion) { this.porcentajeOcupacion = porcentajeOcupacion; }
+    public Map<EstadoPostulacion, Long> getPorEstado() { return porEstado; }
+    public void setPorEstado(Map<EstadoPostulacion, Long> porEstado) { this.porEstado = porEstado; }
 }

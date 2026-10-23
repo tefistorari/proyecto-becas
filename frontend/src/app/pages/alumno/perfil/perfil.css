@@ -39,6 +39,54 @@ form h2 {
     margin-bottom: 20px;
 }
 
+/* =========================
+   ERRORES
+   ========================= */
+
+.error-message {
+    margin: 0 0 15px;
+    padding: 0.75rem 1rem;
+
+    border: 1px solid #e3b8b8;
+    border-radius: 6px;
+
+    background: #fdf5f5;
+    color: #8b3a3a;
+
+    font-size: 0.88rem;
+    text-align: left;
+}
+
+.campo .error {
+    color: #8b3a3a;
+    font-size: 0.82rem;
+}
+
+/* =========================
+   ÉXITO
+   ========================= */
+
+.mensaje-exito {
+    margin: 0 0 15px;
+    padding: 0.75rem 1rem;
+
+    border: 1px solid #b9d9c4;
+    border-radius: 6px;
+
+    background: #f2f9f4;
+    color: #2d6a43;
+
+    font-size: 0.88rem;
+    text-align: left;
+}
+
+@media (min-width: 768px) {
+    .error-message,
+    .mensaje-exito {
+        grid-column: 1 / -1;
+    }
+}
+
 /* En escritorio: dos campos por fila */
 @media (min-width: 768px) {
     form {

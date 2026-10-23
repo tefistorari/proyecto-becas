@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class DatosPersonalesRequest {
 
     @NotBlank(message = "El DNI es obligatorio")
+    @Pattern(regexp = "[A-Za-z0-9]{6,15}", message = "El documento debe tener entre 6 y 15 caracteres, solo letras y números, sin puntos ni espacios")
     private String dni;
 
     @NotNull(message = "La fecha de nacimiento es obligatoria")
@@ -21,10 +22,7 @@ public class DatosPersonalesRequest {
     private Genero genero;
 
     @NotBlank(message = "El celular es obligatorio")
-    @Pattern(
-            regexp = "^[1-9][0-9]{9,10}$",
-            message = "El celular no debe comenzar con 0 ni con 15, e ingresar solo números"
-    )
+    @Pattern(regexp = "^[1-9][0-9]{9,10}$", message = "El celular no debe comenzar con 0 ni con 15, e ingresar solo números")
     private String celular;
 
     @NotBlank(message = "La calle es obligatoria")
@@ -47,6 +45,10 @@ public class DatosPersonalesRequest {
     @NotBlank(message = "La nacionalidad es obligatoria")
     private String nacionalidad;
 
+    @NotBlank(message = "El CBU/CVU es obligatorio")
+    @Pattern(regexp = "\\d{22}", message = "El CBU/CVU debe tener 22 dígitos")
+    private String cbuCvu;
+
     @NotNull(message = "Debe indicar si el domicilio familiar es distinto")
     private Boolean domicilioFamiliarDistinto = false;
 
@@ -57,7 +59,7 @@ public class DatosPersonalesRequest {
     private String domicilioFamiliarLocalidad;
     private String domicilioFamiliarProvincia;
 
-    public DatosPersonalesRequest(){
+    public DatosPersonalesRequest() {
 
     }
 
@@ -66,7 +68,7 @@ public class DatosPersonalesRequest {
     }
 
     public void setDni(String dni) {
-        this.dni = dni;
+        this.dni = dni == null ? null : dni.trim().toUpperCase();
     }
 
     public LocalDate getFechaNacimiento() {
@@ -149,6 +151,14 @@ public class DatosPersonalesRequest {
         this.nacionalidad = nacionalidad;
     }
 
+    public String getCbuCvu() {
+        return cbuCvu;
+    }
+
+    public void setCbuCvu(String cbuCvu) {
+        this.cbuCvu = cbuCvu;
+    }
+
     public Boolean getDomicilioFamiliarDistinto() {
         return domicilioFamiliarDistinto;
     }
@@ -204,4 +214,5 @@ public class DatosPersonalesRequest {
     public void setDomicilioFamiliarProvincia(String domicilioFamiliarProvincia) {
         this.domicilioFamiliarProvincia = domicilioFamiliarProvincia;
     }
+
 }

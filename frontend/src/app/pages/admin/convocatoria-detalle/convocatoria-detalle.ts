@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConvocatoriaService } from '../../../services/convocatoria-service';
 import { ConvocatoriaResponse } from '../../../models/convocatoria-response';
 import { EstadoConvocatoria } from '../../../models/estado-convocatoria';
+import { EstadisticasConvocatoriaResponse } from '../../../models/estadisticas-convocatoria-response';
+import { EstadoPostulacion } from '../../../models/estado-postulacion';
 
 @Component({
   selector: 'app-convocatoria-detalle',
@@ -20,6 +22,8 @@ export class ConvocatoriaDetalle implements OnInit {
   cargando = signal(true);
   error = signal<string | null>(null);
   cancelando = signal(false);
+  estadisticas = signal<EstadisticasConvocatoriaResponse | null>(null);
+
 
   EstadoConvocatoria = EstadoConvocatoria;
 
@@ -30,6 +34,10 @@ export class ConvocatoriaDetalle implements OnInit {
       next: (data) => {
         this.convocatoria.set(data);
         this.cargando.set(false);
+        this.convocatoriaService.obtenerEstadisticas(id).subscribe({
+          next: (stats) => this.estadisticas.set(stats),
+          error: () => { } // si fallan, el detalle se muestra igual sin estadísticas
+        });
       },
       error: () => {
         this.error.set('No se puedo cargar la convocatoria');
@@ -38,12 +46,33 @@ export class ConvocatoriaDetalle implements OnInit {
     });
   }
 
+  // helpers para el html
+  cantidad(estado: EstadoPostulacion): number {
+    return this.estadisticas()?.porEstado[estado] ?? 0;
+  }
+
+  get tasaAceptacion(): number {
+    const aceptadas = this.cantidad(EstadoPostulacion.ACEPTADO);
+    const resueltas = aceptadas + this.cantidad(EstadoPostulacion.RECHAZADO);
+    return resueltas > 0 ? Math.round((aceptadas * 100) / resueltas) : 0;
+  }
+
+  get avanceRevision(): number {
+    const stats = this.estadisticas();
+    if (!stats) return 0;
+    const finalizadas = stats.totalPostulaciones - this.cantidad(EstadoPostulacion.BORRADOR);
+    const resueltas = this.cantidad(EstadoPostulacion.ACEPTADO) + this.cantidad(EstadoPostulacion.RECHAZADO);
+    return finalizadas > 0 ? Math.round((resueltas * 100) / finalizadas) : 0;
+  }
+
+  EstadoPostulacion = EstadoPostulacion;
+
   cancelar(): void {
     const actual = this.convocatoria();
-    if(!actual) return;
+    if (!actual) return;
 
     const confirmar = confirm('¿Seguro que querés cancelar esta convocatoria?');
-    if(!confirmar) return;
+    if (!confirmar) return;
 
     this.cancelando.set(true);
 

@@ -12,4 +12,5 @@ public interface DatosPersonalesRepository extends JpaRepository<DatosPersonales
     Optional<DatosPersonales> findByUsuarioId(Long usuarioId);
 
     boolean existsByDni(String dni);
+    boolean existsByDniAndUsuarioIdNot(String dni, Long usuarioId);
 }

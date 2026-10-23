@@ -14,7 +14,6 @@ public class ConvocatoriaResponse {
     private String descripcion;
     private EstadoConvocatoria estado;
     private BecaResponse beca;
-    private Integer cupoMaximo;
     private InformeConvocatoriaResponse informe;
 
     public ConvocatoriaResponse(){
@@ -76,15 +75,7 @@ public class ConvocatoriaResponse {
     public void setBeca(BecaResponse beca) {
         this.beca = beca;
     }
-
-    public Integer getCupoMaximo() {
-        return cupoMaximo;
-    }
-
-    public void setCupoMaximo(Integer cupoMaximo) {
-        this.cupoMaximo = cupoMaximo;
-    }
-
+    
     public InformeConvocatoriaResponse getInforme() {
         return informe;
     }

@@ -26,12 +26,12 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        if(datosPersonalesRepository.findByUsuarioId(usuarioId).isPresent()){
+        if (datosPersonalesRepository.findByUsuarioId(usuarioId).isPresent()) {
             throw new ConflictoException("El usuario ya tiene datos personales cargados");
         }
 
-        if (datosPersonalesRepository.existsByDni(request.getDni())){
-            throw new ConflictoException("El DNI ya esta registrado");
+        if (datosPersonalesRepository.existsByDni(request.getDni())) {
+            throw new ConflictoException("Ese DNI ya está registrado en otra cuenta");
         }
 
         DatosPersonales datosPersonales = new DatosPersonales();
@@ -47,6 +47,7 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         datosPersonales.setLocalidad(request.getLocalidad());
         datosPersonales.setProvincia(request.getProvincia());
         datosPersonales.setNacionalidad(request.getNacionalidad());
+        datosPersonales.setCbuCvu(request.getCbuCvu());
         datosPersonales.setDomicilioFamiliarDistinto(request.getDomicilioFamiliarDistinto());
         if (Boolean.TRUE.equals(request.getDomicilioFamiliarDistinto())) {
             datosPersonales.setDomicilioFamiliarCalle(request.getDomicilioFamiliarCalle());
@@ -73,6 +74,10 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         DatosPersonales datosPersonales = datosPersonalesRepository.findByUsuarioId(usuarioId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Datos personales no encontrados"));
 
+        if (datosPersonalesRepository.existsByDniAndUsuarioIdNot(request.getDni(), usuarioId)) {
+            throw new ConflictoException("Ese DNI ya está registrado en otra cuenta");
+        }
+
         datosPersonales.setDni(request.getDni());
         datosPersonales.setFechaNacimiento(request.getFechaNacimiento());
         datosPersonales.setGenero(request.getGenero());
@@ -84,6 +89,7 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
         datosPersonales.setLocalidad(request.getLocalidad());
         datosPersonales.setProvincia(request.getProvincia());
         datosPersonales.setNacionalidad(request.getNacionalidad());
+        datosPersonales.setCbuCvu(request.getCbuCvu());
         datosPersonales.setDomicilioFamiliarDistinto(request.getDomicilioFamiliarDistinto());
         if (Boolean.TRUE.equals(request.getDomicilioFamiliarDistinto())) {
             datosPersonales.setDomicilioFamiliarCalle(request.getDomicilioFamiliarCalle());
@@ -92,6 +98,13 @@ public class DatosPersonalesServiceImpl implements DatosPersonalesService {
             datosPersonales.setDomicilioFamiliarCodigoPostal(request.getDomicilioFamiliarCodigoPostal());
             datosPersonales.setDomicilioFamiliarLocalidad(request.getDomicilioFamiliarLocalidad());
             datosPersonales.setDomicilioFamiliarProvincia(request.getDomicilioFamiliarProvincia());
+        } else {
+            datosPersonales.setDomicilioFamiliarCalle(null);
+            datosPersonales.setDomicilioFamiliarNumero(null);
+            datosPersonales.setDomicilioFamiliarPisoDepto(null);
+            datosPersonales.setDomicilioFamiliarCodigoPostal(null);
+            datosPersonales.setDomicilioFamiliarLocalidad(null);
+            datosPersonales.setDomicilioFamiliarProvincia(null);
         }
 
         datosPersonalesRepository.save(datosPersonales);

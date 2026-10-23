@@ -1,5 +1,5 @@
 .footer{
-  background:#111827;
+  background:#172b4d;
   color:#e5e7eb;
   margin-top:40px;
 }
@@ -10,4 +10,8 @@
   display:flex;
   flex-direction:column;
   gap:8px;
+}
+
+.footer .footer-sub {
+  font-size: 0.85em;
 }

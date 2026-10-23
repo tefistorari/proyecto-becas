@@ -1,8 +1,8 @@
+import { EstadoPostulacion } from "./estado-postulacion";
+
 export interface EstadisticasConvocatoriaResponse {
     convocatoriaId: number;
     nombreBeca: string;
-    cupoMaximo: number;
-    totalInscriptos: number;
-    totalAceptados: number;
-    porcentajeOcupacion: number;
+    totalPostulaciones: number;
+    porEstado: Record<EstadoPostulacion, number>;
 }

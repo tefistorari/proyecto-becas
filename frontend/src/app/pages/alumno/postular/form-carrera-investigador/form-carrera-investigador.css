@@ -326,6 +326,11 @@
     background: #ffffff;
 }
 
+/* Alinear los campos de categorización */
+.seccion-categorizacion .grid-campos {
+  align-items: end;
+}
+
 /* =========================================================
    DOCUMENTACIÓN
    ========================================================= */

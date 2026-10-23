@@ -34,9 +34,6 @@ public class Convocatoria {
     @Column(nullable = false)
     private EstadoConvocatoria estado;
 
-    @Column(nullable = false)
-    private Integer cupoMaximo;
-
     @ManyToOne
     @JoinColumn(name = "creado_por", nullable = false)
     private Usuario creadoPor;
@@ -48,13 +45,12 @@ public class Convocatoria {
     }
 
     public Convocatoria(Beca beca, Integer anio, LocalDateTime fechaApertura, LocalDateTime fechaCierre,
-                        EstadoConvocatoria estado, Integer cupoMaximo, Usuario creadoPor) {
+                        EstadoConvocatoria estado, Usuario creadoPor) {
         this.beca = beca;
         this.anio = anio;
         this.fechaApertura = fechaApertura;
         this.fechaCierre = fechaCierre;
         this.estado = estado;
-        this.cupoMaximo = cupoMaximo;
         this.creadoPor = creadoPor;
     }
 
@@ -112,14 +108,6 @@ public class Convocatoria {
 
     public void setEstado(EstadoConvocatoria estado) {
         this.estado = estado;
-    }
-
-    public Integer getCupoMaximo() {
-        return cupoMaximo;
-    }
-
-    public void setCupoMaximo(Integer cupoMaximo) {
-        this.cupoMaximo = cupoMaximo;
     }
 
     public Usuario getCreadoPor() {

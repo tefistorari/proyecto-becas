@@ -93,7 +93,7 @@ export class FormularioBis implements OnInit {
       // Datos personales
       dpNombre: [{ value: '', disabled: true }],
       dpApellido: [{ value: '', disabled: true }],
-      dpDni: ['', Validators.required],
+      dpDni: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9]{6,15}$/)]],
       dpFechaNacimiento: ['', Validators.required],
       dpGenero: [null as Genero | null, Validators.required],
       dpCelular: ['', [Validators.required, Validators.pattern('^[1-9][0-9]{9,10}$')]],
@@ -104,6 +104,7 @@ export class FormularioBis implements OnInit {
       dpLocalidad: ['', Validators.required],
       dpProvincia: ['', Validators.required],
       dpNacionalidad: ['', Validators.required],
+      dpCbuCvu: ['', [Validators.required, Validators.pattern(/^\d{22}$/)]],
 
       //DomicilioFamiliar
       domicilioFamiliarDistinto: [false],
@@ -173,6 +174,7 @@ export class FormularioBis implements OnInit {
           dpLocalidad: datos.localidad,
           dpProvincia: datos.provincia,
           dpNacionalidad: datos.nacionalidad,
+          dpCbuCvu: datos.cbuCvu,
 
           domicilioFamiliarDistinto: datos.domicilioFamiliarDistinto,
           domicilioFamiliarCalle: datos.domicilioFamiliarCalle,
@@ -377,6 +379,7 @@ export class FormularioBis implements OnInit {
         localidad: v.dpLocalidad,
         provincia: v.dpProvincia,
         nacionalidad: v.dpNacionalidad,
+        cbuCvu: v.dpCbuCvu,
 
         domicilioFamiliarDistinto: v.domicilioFamiliarDistinto,
         domicilioFamiliarCalle: v.domicilioFamiliarDistinto ? v.domicilioFamiliarCalle : null,

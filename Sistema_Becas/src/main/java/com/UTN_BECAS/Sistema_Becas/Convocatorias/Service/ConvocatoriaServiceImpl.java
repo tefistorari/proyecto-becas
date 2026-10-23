@@ -30,7 +30,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -74,11 +76,9 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
         convocatoria.setFechaCierre(request.getFechaCierre());
         convocatoria.setDescripcion(request.getDescripcion());
         convocatoria.setEstado(
-            request.getFechaApertura().isAfter(LocalDateTime.now())
-            ? EstadoConvocatoria.PROGRAMADA
-            : EstadoConvocatoria.ABIERTA
-        );
-        convocatoria.setCupoMaximo(request.getCupoMaximo());
+                request.getFechaApertura().isAfter(LocalDateTime.now())
+                        ? EstadoConvocatoria.PROGRAMADA
+                        : EstadoConvocatoria.ABIERTA);
         convocatoria.setCreadoPor(admin);
 
         convocatoriaRepository.save(convocatoria);
@@ -125,7 +125,6 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
         convocatoria.setFechaApertura(request.getFechaApertura());
         convocatoria.setFechaCierre(request.getFechaCierre());
         convocatoria.setDescripcion(request.getDescripcion());
-        convocatoria.setCupoMaximo(request.getCupoMaximo());
 
         convocatoriaRepository.save(convocatoria);
         return ConvocatoriaMapper.toResponse(convocatoria);
@@ -152,20 +151,21 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
         Convocatoria convocatoria = convocatoriaRepository.findById(convocatoriaId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Convocatoria no encontrada"));
 
-        long totalInscriptos = postulacionRepository.countByConvocatoriaId(convocatoriaId);
-        long totalAceptados = postulacionRepository.countByConvocatoriaIdAndEstado(convocatoriaId, EstadoPostulacion.ACEPTADO);
-        double porcentajeOcupacion = convocatoria.getCupoMaximo() > 0
-                ? (totalAceptados * 100.0) / convocatoria.getCupoMaximo()
-                : 0;
+        Map<EstadoPostulacion, Long> porEstado = new EnumMap<>(EstadoPostulacion.class);
+        for (EstadoPostulacion e : EstadoPostulacion.values()) {
+            porEstado.put(e, 0L);
+        }
+        for (Object[] fila : postulacionRepository.contarPorEstado(convocatoriaId)) {
+            porEstado.put((EstadoPostulacion) fila[0], (Long) fila[1]);
+        }
+
+        long total = porEstado.values().stream().mapToLong(Long::longValue).sum();
 
         EstadisticasConvocatoriaResponse response = new EstadisticasConvocatoriaResponse();
         response.setConvocatoriaId(convocatoriaId);
         response.setNombreBeca(convocatoria.getBeca().getNombre());
-        response.setCupoMaximo(convocatoria.getCupoMaximo());
-        response.setTotalInscriptos(totalInscriptos);
-        response.setTotalAceptados(totalAceptados);
-        response.setPorcentajeOcupacion(porcentajeOcupacion);
-
+        response.setTotalPostulaciones(total);
+        response.setPorEstado(porEstado);
         return response;
     }
 
@@ -188,7 +188,8 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
             Path filePath = uploadPath.resolve(nombreUnico);
             Files.copy(file.getInputStream(), filePath);
 
-            InformeConvocatoria informe = new InformeConvocatoria(convocatoria, file.getOriginalFilename(), filePath.toString());
+            InformeConvocatoria informe = new InformeConvocatoria(convocatoria, file.getOriginalFilename(),
+                    filePath.toString());
             informeConvocatoriaRepository.save(informe);
 
             return InformeConvocatoriaMapper.toResponse(informe);

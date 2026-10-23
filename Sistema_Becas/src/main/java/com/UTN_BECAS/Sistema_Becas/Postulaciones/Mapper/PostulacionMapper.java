@@ -91,6 +91,7 @@ public class PostulacionMapper {
             dpResponse.setLocalidad(dp.getLocalidad());
             dpResponse.setProvincia(dp.getProvincia());
             dpResponse.setNacionalidad(dp.getNacionalidad());
+            dpResponse.setCbuCvu(dp.getCbuCvu());
             dpResponse.setDomicilioFamiliarDistinto(dp.isDomicilioFamiliarDistinto());
             dpResponse.setDomicilioFamiliarCalle(dp.getDomicilioFamiliarCalle());
             dpResponse.setDomicilioFamiliarNumero(dp.getDomicilioFamiliarNumero());

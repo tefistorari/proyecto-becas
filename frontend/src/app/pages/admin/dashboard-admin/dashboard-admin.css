@@ -325,6 +325,20 @@
    MODAL PERFIL DEL ALUMNO
    ========================= */
 
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem;
+
+    background: rgba(15, 23, 42, 0.45);
+}
+
 .profile-modal {
     width: min(750px, calc(100% - 32px));
     max-height: 85vh;

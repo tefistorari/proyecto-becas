@@ -30,8 +30,7 @@ export class ConvocatoriaForm {
     anio: [this.anioActual, [Validators.required, Validators.min(this.anioActual)]],
     fechaApertura: ['', [Validators.required, fechaNoPasadaValidator()]],
     fechaCierre: ['', [Validators.required, fechaNoPasadaValidator()]],
-    descripcion: [''],
-    cupoMaximo: [null as number | null, [Validators.required, Validators.min(1)]]
+    descripcion: ['']
   });
 
   constructor() {
@@ -63,8 +62,7 @@ export class ConvocatoriaForm {
       anio: raw.anio!,
       fechaApertura: `${raw.fechaApertura}:00`,
       fechaCierre: `${raw.fechaCierre}:00`,
-      descripcion: raw.descripcion ?? '',
-      cupoMaximo: raw.cupoMaximo!
+      descripcion: raw.descripcion ?? ''
     }).subscribe({
       next: () => this.router.navigate(['admin/convocatorias']),
       error: (err) => {
@@ -86,7 +84,6 @@ export class ConvocatoriaForm {
 
       if(control.errors['required']) return 'Este campo es obligatorio';
       if(control.errors['min'] && campo === 'anio') return `El año no puede ser menor a ${this.anioActual}`;
-      if(control.errors['min']) return 'Debe ser mayor a cero';
       if(control.errors['fechaPasada']) return 'La fecha no puede ser anterior a hoy';
 
       return 'Valor invalido';
