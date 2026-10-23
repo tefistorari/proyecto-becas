@@ -13,6 +13,7 @@ import { firstValueFrom } from 'rxjs';
 import { PostulacionBinidRequest } from '../../../../models/postulacion-binid-request';
 import { UbicacionService } from '../../../../services/ubicacion-service';
 import { AuthService } from '../../../../services/auth-service';
+import { ActivatedRoute } from '@angular/router';
 
 const MAX_MB_POR_ARCHIVO = 5;
 @Component({
@@ -29,8 +30,9 @@ export class FormularioBinid implements OnInit {
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
   private authService = inject(AuthService);
+  private route = inject(ActivatedRoute);
 
-  readonly convocatoriaId = input.required<number>();
+  convocatoriaId!: number;
 
   //Listas de ubicacion
   nacionalidades = signal<any[]>([]);
@@ -71,6 +73,7 @@ export class FormularioBinid implements OnInit {
   };
 
   ngOnInit(): void {
+    this.convocatoriaId = Number(this.route.snapshot.paramMap.get('convocatoriaId'));
     this.inicializarForm();
     this.cargarNombreUsuario();
     this.configurarValidacionesCondicionales();
@@ -317,7 +320,7 @@ export class FormularioBinid implements OnInit {
     const v = this.form.getRawValue();
 
     const body: PostulacionBinidRequest = {
-      convocatoriaId: this.convocatoriaId(),
+      convocatoriaId: this.convocatoriaId,
       datosPersonales: {
         dni: v.dpDni,
         fechaNacimiento: v.dpFechaNacimiento,

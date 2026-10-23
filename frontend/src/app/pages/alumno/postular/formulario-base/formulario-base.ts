@@ -20,6 +20,7 @@ import { firstValueFrom } from 'rxjs';
 import { PostulacionBaseBisRequest } from '../../../../models/postulacion-base-bis-request';
 import { LabelEnumPipe } from '../../../../pipes/label-enum-pipe';
 import { UbicacionService } from '../../../../services/ubicacion-service';
+import { ActivatedRoute } from '@angular/router';
 
 const MAX_MB_POR_ARCHIVO = 5;
 @Component({
@@ -36,10 +37,11 @@ export class FormularioBase implements OnInit {
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
   private authService = inject(AuthService);
+  private route = inject(ActivatedRoute);
 
 
   // Input que recibe el id de la convocatoria seleccionada
-  readonly convocatoriaId = input.required<number>();
+  convocatoriaId!: number;
 
   form!: FormGroup;
   cargandoDatos = signal(true);
@@ -75,6 +77,7 @@ export class FormularioBase implements OnInit {
   anioActual = new Date().getFullYear();
 
   ngOnInit(): void {
+    this.convocatoriaId = Number(this.route.snapshot.paramMap.get('convocatoriaId'));
     this.inicializarForm();
     this.cargarNombreUsuario();
     this.configurarValidacionesCondicionales();
@@ -363,7 +366,7 @@ export class FormularioBase implements OnInit {
     // Tipado con PostulacionBaseBisRequest en vez de objeto suelto:
     // así TS avisa si falta o sobra algún campo respecto al @RequestBody del backend.
     const body: PostulacionBaseBisRequest = {
-      convocatoriaId: this.convocatoriaId(), // <- es un signal, hay que llamarlo
+      convocatoriaId: this.convocatoriaId,
       datosPersonales: {
         dni: v.dpDni,
         fechaNacimiento: v.dpFechaNacimiento,
