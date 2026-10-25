@@ -263,14 +263,9 @@
           <label>Carrera</label>
           <select formControlName="carrera">
             <option value="" disabled selected>Seleccioná tu carrera...</option>
-            <option value="ADMINISTRACION">Administración</option>
-            <option value="ENOLOGIA">Enología</option>
-            <option value="PROCEDIMIENTOS_TECNOLOGIAS_AMBIENTALES">Procedimientos y Tecnologías Ambientales</option>
-            <option value="PRODUCCION_TEXTIL">Producción Textil</option>
-            <option value="PROGRAMACION">Programación</option>
-            <option value="INTERIORISMO">Interiorismo</option>
-            <option value="INGENIERIA_NAVAL">Ingeniería Naval</option>
-            <option value="INGENIERIA_PESQUERA">Ingeniería Pesquera</option>
+            @for (c of carreras; track c) {
+            <option [value]="c">{{ carreraDescripcion[c] }}</option>
+            }
           </select>
           @if (campoInvalido('carrera')) {
           <span class="campo-error">Campo obligatorio</span>
@@ -382,7 +377,16 @@
             <tbody formArrayName="materiasACursar">
               @for (materia of materiasACursar.controls; track materia; let i = $index) {
               <tr [formGroupName]="i">
-                <td><input type="text" formControlName="nombreMateria" placeholder="Ej: Análisis Matemático I"></td>
+                <td>
+                  <select formControlName="nombreMateria">
+                    <option value="" disabled>
+                      {{ form.get('carrera')?.value ? 'Seleccioná materia...' : 'Elegí primero tu carrera' }}
+                    </option>
+                    @for (m of materiasDisponibles(); track m.id) {
+                    <option [value]="m.nombre">{{ m.nombre }}</option>
+                    }
+                  </select>
+                </td>
                 <td>
                   <select formControlName="nivelMateria">
                     <option value="" disabled selected>Nivel...</option>
@@ -433,7 +437,16 @@
             <tbody formArrayName="materiasARendir">
               @for (final of materiasARendir.controls; track final; let i = $index) {
               <tr [formGroupName]="i">
-                <td><input type="text" formControlName="nombreMateria" placeholder="Ej: Física I"></td>
+                <td>
+                  <select formControlName="nombreMateria">
+                    <option value="" disabled>
+                      {{ form.get('carrera')?.value ? 'Seleccioná materia...' : 'Elegí primero tu carrera' }}
+                    </option>
+                    @for (m of materiasDisponibles(); track m.id) {
+                    <option [value]="m.nombre">{{ m.nombre }}</option>
+                    }
+                  </select>
+                </td>
                 <td>
                   <select formControlName="nivelMateria">
                     <option value="" disabled selected>Nivel...</option>

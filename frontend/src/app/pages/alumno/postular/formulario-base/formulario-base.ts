@@ -21,6 +21,9 @@ import { PostulacionBaseBisRequest } from '../../../../models/postulacion-base-b
 import { LabelEnumPipe } from '../../../../pipes/label-enum-pipe';
 import { UbicacionService } from '../../../../services/ubicacion-service';
 import { ActivatedRoute } from '@angular/router';
+import { CarreraBaseBis, CarreraBaseBisDescripcion } from '../../../../models/carrera-base-bis';
+import { Materia } from '../../../../models/Materia';
+import { MateriaService } from '../../../../services/materia-service';
 
 const MAX_MB_POR_ARCHIVO = 5;
 @Component({
@@ -38,7 +41,8 @@ export class FormularioBase implements OnInit {
   private archivoService = inject(ArchivoService);
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
-
+  private materiaService = inject(MateriaService);
+  materiasDisponibles = signal<Materia[]>([]);
 
   // Input que recibe el id de la convocatoria seleccionada
   convocatoriaId!: number;
@@ -73,6 +77,8 @@ export class FormularioBase implements OnInit {
   mesesMesa = Object.values(MesMesa);
   parentescos = Object.values(Parentesco);
   regimenesMateria = Object.values(RegimenMateria);
+  carreras = Object.values(CarreraBaseBis);
+  carreraDescripcion = CarreraBaseBisDescripcion;
 
   anioActual = new Date().getFullYear();
 
@@ -81,6 +87,7 @@ export class FormularioBase implements OnInit {
     this.inicializarForm();
     this.cargarNombreUsuario();
     this.configurarValidacionesCondicionales();
+    this.configurarCambioCarrera()
     this.cargarDatosPersonales();
   }
 
@@ -341,6 +348,22 @@ export class FormularioBase implements OnInit {
       if (!valor) {
         this.form.get('domicilioFamiliarPisoDepto')?.setValue('');
         this.localidadesFamiliar.set([]);
+      }
+    });
+  }
+
+  private configurarCambioCarrera(): void {
+    this.form.get('carrera')?.valueChanges.subscribe((carrera: string) => {
+      this.materiasDisponibles.set([]);
+
+      [...this.materiasACursar.controls, ...this.materiasARendir.controls]
+        .forEach((g) => g.get('nombreMateria')?.setValue(''));
+
+      if (carrera) {
+        this.materiaService.listarPorCarrera(carrera).subscribe({
+          next: (materias) => this.materiasDisponibles.set(materias),
+          error: (err) => console.error('Error al cargar materias:', err),
+        });
       }
     });
   }

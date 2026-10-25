@@ -21,7 +21,9 @@ import { firstValueFrom } from 'rxjs';
 import { UbicacionService } from '../../../../services/ubicacion-service';
 import { AuthService } from '../../../../services/auth-service';
 import { ActivatedRoute } from '@angular/router';
-
+import { Materia } from '../../../../models/Materia';
+import { MateriaService } from '../../../../services/materia-service';
+import { CarreraBaseBis, CarreraBaseBisDescripcion } from '../../../../models/carrera-base-bis';
 
 const MAX_MB_POR_ARCHIVO = 5;
 @Component({
@@ -39,6 +41,11 @@ export class FormularioBis implements OnInit {
   private archivoService = inject(ArchivoService);
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
+  private materiaService = inject(MateriaService);
+  materiasDisponibles = signal<Materia[]>([]);
+
+  carreras = Object.values(CarreraBaseBis);
+  carreraDescripcion = CarreraBaseBisDescripcion;
 
   //Listas de ubicacion
   nacionalidades = signal<any[]>([]);
@@ -80,6 +87,7 @@ export class FormularioBis implements OnInit {
     this.inicializarForm();
     this.cargarNombreUsuario();
     this.configurarValidacionesCondicionales();
+    this.configurarCambioCarrera();
     this.cargarDatosPersonales();
   }
 
@@ -342,6 +350,22 @@ export class FormularioBis implements OnInit {
       if (!valor) {
         this.form.get('domicilioFamiliarPisoDepto')?.setValue('');
         this.localidadesFamiliar.set([]);
+      }
+    });
+  }
+
+  private configurarCambioCarrera(): void {
+    this.form.get('carrera')?.valueChanges.subscribe((carrera: string) => {
+      this.materiasDisponibles.set([]);
+
+      [...this.materiasACursar.controls, ...this.materiasARendir.controls]
+        .forEach((g) => g.get('nombreMateria')?.setValue(''));
+
+      if (carrera) {
+        this.materiaService.listarPorCarrera(carrera).subscribe({
+          next: (materias) => this.materiasDisponibles.set(materias),
+          error: (err) => console.error('Error al cargar materias:', err),
+        });
       }
     });
   }
