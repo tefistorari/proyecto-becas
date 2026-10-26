@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PostulacionService } from '../../../services/postulacion-service';
 import { PostulacionResponse } from '../../../models/postulacion-response';
 import { EstadoPostulacion } from '../../../models/estado-postulacion';
+import { ArchivoService } from '../../../services/archivo-service';
+import { ArchivoResponse } from '../../../models/archivo-response';
 
 type Filtro = EstadoPostulacion | 'TODAS';
 
@@ -14,6 +16,8 @@ type Filtro = EstadoPostulacion | 'TODAS';
 })
 export class Postulaciones implements OnInit {
   private postulacionService = inject(PostulacionService);
+  private archivoService = inject(ArchivoService);
+  archivos = signal<ArchivoResponse[]>([]);
 
   todas = signal<PostulacionResponse[]>([]);
   cargando = signal(true);
@@ -56,6 +60,27 @@ export class Postulaciones implements OnInit {
   verDetalle(postulacion: PostulacionResponse): void {
     this.postulacionSeleccionada.set(postulacion);
     this.errorEstado.set(null);
+    this.archivos.set([]);
+    this.archivoService.listarPorPostulacion(postulacion.id).subscribe({
+      next: (lista) => this.archivos.set(lista),
+      error: (err) => console.error('Error al cargar archivos:', err),
+    });
+  }
+
+  verArchivo(id: number): void {
+    // Se abre la pestaña ya, en el clic, para que el navegador no la bloquee
+    const ventana = window.open('', '_blank');
+    this.archivoService.descargar(id).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        if (ventana) ventana.location.href = url;
+        setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      },
+      error: (err) => {
+        ventana?.close();
+        console.error('Error al abrir el archivo:', err);
+      },
+    });
   }
 
   cerrarDetalle(): void {

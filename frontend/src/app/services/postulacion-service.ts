@@ -7,17 +7,17 @@ import { PostulacionBinidRequest } from '../models/postulacion-binid-request';
 import { PostulacionCarreraInvestigadorRequest } from '../models/postulacion-carrera-investigador-request';
 import { EstadoPostulacion } from '../models/estado-postulacion';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PostulacionService {
     private readonly API_URL = 'http://localhost:8080/api/postulaciones';
     private http = inject(HttpClient);
 
     postularBaseBis(request: PostulacionBaseBisRequest): Observable<PostulacionResponse> {
-        return this.http.post<PostulacionResponse>(`${this.API_URL}/base-bis`,request);
+        return this.http.post<PostulacionResponse>(`${this.API_URL}/base-bis`, request);
     }
 
     postularBinid(request: PostulacionBinidRequest): Observable<PostulacionResponse> {
-        return this.http.post<PostulacionResponse>(`${this.API_URL}/binid`,request);
+        return this.http.post<PostulacionResponse>(`${this.API_URL}/binid`, request);
     }
 
     postularCarreraInvestigador(request: PostulacionCarreraInvestigadorRequest): Observable<PostulacionResponse> {
@@ -25,7 +25,7 @@ export class PostulacionService {
     }
 
     finalizar(postulacionId: number): Observable<PostulacionResponse> {
-        return this.http.post<PostulacionResponse>(`${this.API_URL}/${postulacionId}/finalizar`,{});
+        return this.http.post<PostulacionResponse>(`${this.API_URL}/${postulacionId}/finalizar`, {});
     }
 
     listarMisPostulaciones(): Observable<PostulacionResponse[]> {
@@ -37,20 +37,20 @@ export class PostulacionService {
     }
 
     listarTodas(): Observable<PostulacionResponse[]> {
-    return this.http.get<PostulacionResponse[]>(this.API_URL);
-}
+        return this.http.get<PostulacionResponse[]>(this.API_URL);
+    }
 
-listarPorEstado(estado: EstadoPostulacion): Observable<PostulacionResponse[]> {
-    return this.http.get<PostulacionResponse[]>(`${this.API_URL}/estado`, {
-        params: { estado }
-    });
-}
+    listarPorEstado(estado: EstadoPostulacion): Observable<PostulacionResponse[]> {
+        return this.http.get<PostulacionResponse[]>(`${this.API_URL}/estado`, {
+            params: { estado }
+        });
+    }
 
-cambiarEstado(id: number, estado: EstadoPostulacion): Observable<PostulacionResponse> {
-    return this.http.put<PostulacionResponse>(
-        `${this.API_URL}/${id}/estado`,
-        null,
-        { params: { estado } }
-    );
-}
+    cambiarEstado(id: number, estado: EstadoPostulacion): Observable<PostulacionResponse> {
+        return this.http.put<PostulacionResponse>(
+            `${this.API_URL}/${id}/estado`,
+            null,
+            { params: { estado } }
+        );
+    }
 }
