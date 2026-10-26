@@ -18,4 +18,5 @@ public interface PostulacionService {
     List<PostulacionResponse> listarPorEstado(EstadoPostulacion estado);
     PostulacionResponse buscarPorId(Long id, Long usuarioId, boolean esAdmin);
     PostulacionResponse cambiarEstado(Long id, EstadoPostulacion estado);
+    List<PostulacionResponse> listarPorConvocatoria(Long convocatoriaId);
 }

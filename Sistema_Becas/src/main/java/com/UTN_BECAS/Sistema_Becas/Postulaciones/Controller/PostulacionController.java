@@ -99,4 +99,11 @@ public class PostulacionController {
             @RequestParam EstadoPostulacion estado) {
         return ResponseEntity.ok(postulacionService.cambiarEstado(id, estado));
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/convocatoria/{convocatoriaId}")
+    public ResponseEntity<List<PostulacionResponse>> listarPorConvocatoria(
+            @PathVariable Long convocatoriaId) {
+        return ResponseEntity.ok(postulacionService.listarPorConvocatoria(convocatoriaId));
+    }
 }

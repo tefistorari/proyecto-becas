@@ -42,7 +42,7 @@
                 <td>{{ p.usuario.nombre }} {{ p.usuario.apellido }}</td>
                 <td>{{ tipoBeca(p) }}</td>
                 <td>{{ p.convocatoria.beca.nombre }} {{ p.convocatoria.anio }}</td>
-                <td>{{ p.fechaEnvio | date:'short' }}</td>
+                <td>{{ p.estado === EstadoPostulacion.BORRADOR ? '—' : (p.fechaEnvio | date:'short') }}</td>
                 <td>{{ p.estado }}</td>
                 <td>Ver →</td>
             </tr>
@@ -82,7 +82,8 @@
                     </div>
                     <div class="detalle-field">
                         <span class="field-label">Fecha de envío</span>
-                        <span class="field-value">{{ p.fechaEnvio | date:'short' }}</span>
+                        <span class="field-value">{{ p.estado === EstadoPostulacion.BORRADOR ? '—' : (p.fechaEnvio |
+                            date:'short') }}</span>
                     </div>
                     <div class="detalle-field">
                         <span class="field-label">Estado actual</span>

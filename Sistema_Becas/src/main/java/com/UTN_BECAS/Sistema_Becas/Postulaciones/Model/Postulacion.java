@@ -26,7 +26,7 @@ public class Postulacion {
     @JoinColumn(name = "convocatoria_id", nullable = false)
     private Convocatoria convocatoria;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private LocalDateTime fechaEnvio;
 
     @Column(nullable = false)

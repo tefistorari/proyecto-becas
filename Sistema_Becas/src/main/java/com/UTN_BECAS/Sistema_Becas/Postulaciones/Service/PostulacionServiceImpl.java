@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -523,6 +524,7 @@ public class PostulacionServiceImpl implements PostulacionService {
             }
         }
 
+        postulacion.setFechaEnvio(LocalDateTime.now());
         postulacion.setEstado(EstadoPostulacion.PENDIENTE);
         postulacionRepository.save(postulacion);
 
@@ -543,5 +545,30 @@ public class PostulacionServiceImpl implements PostulacionService {
         }
 
         return PostulacionMapper.toResponse(postulacion);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PostulacionResponse> listarPorConvocatoria(Long convocatoriaId) {
+        if (!convocatoriaRepository.existsById(convocatoriaId)) {
+            throw new RecursoNoEncontradoException("Convocatoria no encontrada");
+        }
+
+        return postulacionRepository.findByConvocatoriaId(convocatoriaId)
+                .stream()
+                .map(p -> {
+                    PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(p.getId()).orElse(null);
+                    PostulacionBecaBinid binid = binidRepository.findByPostulacionId(p.getId()).orElse(null);
+                    PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository
+                            .findByPostulacionId(p.getId()).orElse(null);
+                    if (baseBis != null)
+                        return PostulacionMapper.toResponse(p, baseBis);
+                    if (binid != null)
+                        return PostulacionMapper.toResponse(p, binid);
+                    if (carreraInvestigador != null)
+                        return PostulacionMapper.toResponse(p, carreraInvestigador);
+                    return PostulacionMapper.toResponse(p);
+                })
+                .collect(Collectors.toList());
     }
 }
