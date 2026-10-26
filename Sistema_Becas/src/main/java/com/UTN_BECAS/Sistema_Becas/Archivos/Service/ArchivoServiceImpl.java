@@ -10,6 +10,7 @@ import com.UTN_BECAS.Sistema_Becas.Core.Exception.ReglaDeNegocioException;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.Postulacion;
 import com.UTN_BECAS.Sistema_Becas.Archivos.Repository.ArchivoRepository;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Repository.PostulacionRepository;
+import com.UTN_BECAS.Sistema_Becas.Postulaciones.Enums.EstadoPostulacion;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,11 +42,16 @@ public class ArchivoServiceImpl implements ArchivoService {
     private String uploadDir;
 
     @Override
-    public ArchivoResponse subir(Long postulacionId, TipoArchivo tipoArchivo, MultipartFile file, String emailSolicitante) {
+    public ArchivoResponse subir(Long postulacionId, TipoArchivo tipoArchivo, MultipartFile file,
+            String emailSolicitante) {
         Postulacion postulacion = postulacionRepository.findById(postulacionId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
 
         validarAcceso(postulacion, emailSolicitante, false);
+
+        if (postulacion.getEstado() != EstadoPostulacion.BORRADOR) {
+            throw new ReglaDeNegocioException("Solo se pueden modificar archivos de postulaciones en borrador");
+        }
 
         try {
 
@@ -96,6 +102,10 @@ public class ArchivoServiceImpl implements ArchivoService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Archivo no encontrado"));
 
         validarAcceso(archivo.getPostulacion(), emailSolicitante, false);
+
+        if (archivo.getPostulacion().getEstado() != EstadoPostulacion.BORRADOR) {
+            throw new ReglaDeNegocioException("Solo se pueden modificar archivos de postulaciones en borrador");
+        }
         
         try {
             // Eliminar el archivo del servidor
