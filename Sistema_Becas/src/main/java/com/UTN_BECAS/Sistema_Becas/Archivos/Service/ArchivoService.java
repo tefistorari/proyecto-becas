@@ -9,8 +9,11 @@ import java.util.List;
 
 public interface ArchivoService {
 
-    ArchivoResponse subir(Long postulacionId, TipoArchivo tipoArchivo, MultipartFile file);
-    List<ArchivoResponse> listarPorPostulacion(Long postulacionId);
-    void eliminar(Long archivoId);
+    ArchivoResponse subir(Long postulacionId, TipoArchivo tipoArchivo, MultipartFile file, String emailSolicitante);
+
+    List<ArchivoResponse> listarPorPostulacion(Long postulacionId, String emailSolicitante, boolean esAdmin);
+
+    void eliminar(Long archivoId, String emailSolicitante);
+
     ArchivoDescarga descargar(Long archivoId, String emailSolicitante, boolean esAdmin);
 }

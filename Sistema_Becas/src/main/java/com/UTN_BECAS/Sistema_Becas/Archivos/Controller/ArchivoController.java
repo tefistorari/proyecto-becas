@@ -26,26 +26,36 @@ public class ArchivoController {
     @Autowired
     private ArchivoService archivoService;
 
+    private boolean esAdmin(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    }
+
     @PreAuthorize("hasRole('ALUMNO')")
     @PostMapping("/{postulacionId}")
     public ResponseEntity<ArchivoResponse> subir(
             @PathVariable Long postulacionId,
             @RequestParam TipoArchivo tipoArchivo,
-            @RequestParam MultipartFile file) {
-        return ResponseEntity.ok(archivoService.subir(postulacionId, tipoArchivo, file));
+            @RequestParam MultipartFile file,
+            Authentication authentication) {
+        return ResponseEntity.ok(
+                archivoService.subir(postulacionId, tipoArchivo, file, authentication.getName()));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ALUMNO')")
     @GetMapping("/{postulacionId}")
     public ResponseEntity<List<ArchivoResponse>> listarPorPostulacion(
-            @PathVariable Long postulacionId) {
-        return ResponseEntity.ok(archivoService.listarPorPostulacion(postulacionId));
+            @PathVariable Long postulacionId,
+            Authentication authentication) {
+        return ResponseEntity.ok(
+                archivoService.listarPorPostulacion(postulacionId, authentication.getName(), esAdmin(authentication)));
     }
 
     @PreAuthorize("hasRole('ALUMNO')")
     @DeleteMapping("/{archivoId}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long archivoId) {
-        archivoService.eliminar(archivoId);
+    public ResponseEntity<Void> eliminar(@PathVariable Long archivoId,
+            Authentication authentication) {
+        archivoService.eliminar(archivoId, authentication.getName());
         return ResponseEntity.noContent().build();
     }
 
@@ -53,8 +63,7 @@ public class ArchivoController {
     @GetMapping("/{archivoId}/descargar")
     public ResponseEntity<Resource> descargar(@PathVariable Long archivoId,
             Authentication authentication) {
-        boolean esAdmin = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean esAdmin = esAdmin(authentication);
 
         ArchivoDescarga d = archivoService.descargar(archivoId, authentication.getName(), esAdmin);
 

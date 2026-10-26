@@ -11,7 +11,7 @@ import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.Postulacion;
 import com.UTN_BECAS.Sistema_Becas.Archivos.Repository.ArchivoRepository;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Repository.PostulacionRepository;
 
-   import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,9 +41,11 @@ public class ArchivoServiceImpl implements ArchivoService {
     private String uploadDir;
 
     @Override
-    public ArchivoResponse subir(Long postulacionId, TipoArchivo tipoArchivo, MultipartFile file) {
+    public ArchivoResponse subir(Long postulacionId, TipoArchivo tipoArchivo, MultipartFile file, String emailSolicitante) {
         Postulacion postulacion = postulacionRepository.findById(postulacionId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
+
+        validarAcceso(postulacion, emailSolicitante, false);
 
         try {
 
@@ -75,7 +77,13 @@ public class ArchivoServiceImpl implements ArchivoService {
     }
 
     @Override
-    public List<ArchivoResponse> listarPorPostulacion(Long postulacionId) {
+    @Transactional(readOnly = true)
+    public List<ArchivoResponse> listarPorPostulacion(Long postulacionId, String emailSolicitante, boolean esAdmin) {
+        Postulacion postulacion = postulacionRepository.findById(postulacionId)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
+
+        validarAcceso(postulacion, emailSolicitante, esAdmin);
+
         return archivoRepository.findByPostulacionId(postulacionId)
                 .stream()
                 .map(ArchivoMapper::toResponse)
@@ -83,10 +91,12 @@ public class ArchivoServiceImpl implements ArchivoService {
     }
 
     @Override
-    public void eliminar(Long archivoId) {
+    public void eliminar(Long archivoId, String emailSolicitante) {
         Archivo archivo = archivoRepository.findById(archivoId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Archivo no encontrado"));
 
+        validarAcceso(archivo.getPostulacion(), emailSolicitante, false);
+        
         try {
             // Eliminar el archivo del servidor
             Path filePath = Paths.get(archivo.getRuta());
@@ -105,12 +115,7 @@ public class ArchivoServiceImpl implements ArchivoService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Archivo no encontrado"));
 
         // El ADMIN ve todo; el alumno solo los archivos de sus postulaciones
-        if (!esAdmin) {
-            String emailDuenio = archivo.getPostulacion().getUsuario().getEmail();
-            if (!emailDuenio.equals(emailSolicitante)) {
-                throw new AccessDeniedException("No tenés acceso a este archivo");
-            }
-        }
+        validarAcceso(archivo.getPostulacion(), emailSolicitante, esAdmin);
 
         Path path = Paths.get(archivo.getRuta());
         if (!Files.exists(path)) {
@@ -124,6 +129,15 @@ public class ArchivoServiceImpl implements ArchivoService {
             return new ArchivoDescarga(new FileSystemResource(path), archivo.getNombreOriginal(), contentType);
         } catch (IOException e) {
             throw new ReglaDeNegocioException("Error al leer el archivo: " + e.getMessage());
+        }
+    }
+
+    private void validarAcceso(Postulacion postulacion, String emailSolicitante, boolean esAdmin) {
+        if (esAdmin)
+            return;
+        String emailDuenio = postulacion.getUsuario().getEmail();
+        if (!emailDuenio.equals(emailSolicitante)) {
+            throw new AccessDeniedException("No tenés acceso a esta postulación");
         }
     }
 }
