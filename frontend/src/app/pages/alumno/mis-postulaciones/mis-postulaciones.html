@@ -5,161 +5,393 @@
     </div>
 
     @if (cargando()) {
-        <p>Cargando...</p>
+    <p>Cargando...</p>
     } @else if (error()) {
-        <p class="error-message">{{ error() }}</p>
+    <p class="error-message">{{ error() }}</p>
     } @else if (postulaciones().length === 0) {
-        <div class="empty-state">
-            <span class="empty-icon">○</span>
-            <h3>No tenés postulaciones</h3>
-            <p>Todavía no te postulaste a ninguna convocatoria.</p>
-        </div>
+    <div class="empty-state">
+        <span class="empty-icon">○</span>
+        <h3>No tenés postulaciones</h3>
+        <p>Todavía no te postulaste a ninguna convocatoria.</p>
+    </div>
     } @else {
-        <div class="postulaciones-list">
-            @for (p of postulaciones(); track p.id) {
-                <article class="postulacion-card" (click)="verDetalle(p)">
-                    <div class="card-info">
-                        <span class="card-badge {{ badgeEstado(p.estado) }}">
-                            {{ p.estado }}
-                        </span>
-                        <h3>{{ p.convocatoria.beca.nombre }}</h3>
-                        <p class="card-sub">{{ tipoBeca(p) }} · Convocatoria {{ p.convocatoria.anio }}</p>
-                        <p class="card-fecha">Enviada el <strong>{{ p.fechaEnvio | date:'dd/MM/yyyy' }}</strong></p>
-                    </div>
-                    <span class="card-arrow">→</span>
-                </article>
-            }
-        </div>
+    <div class="postulaciones-list">
+        @for (p of postulaciones(); track p.id) {
+        <article class="postulacion-card" (click)="verDetalle(p)">
+            <div class="card-info">
+                <span class="card-badge {{ badgeEstado(p.estado) }}">
+                    {{ p.estado }}
+                </span>
+                <h3>{{ p.convocatoria.beca.nombre }}</h3>
+                <p class="card-sub">{{ tipoBeca(p) }} · Convocatoria {{ p.convocatoria.anio }}</p>
+                <p class="card-fecha">Enviada el <strong>{{ p.fechaEnvio | date:'dd/MM/yyyy' }}</strong></p>
+            </div>
+            <span class="card-arrow">→</span>
+        </article>
+        }
+    </div>
     }
 </div>
 
 <!-- MODAL DETALLE -->
 @if (postulacionSeleccionada(); as p) {
-    <div class="modal-overlay" (click)="cerrarDetalle()">
-        <div class="modal-detalle" (click)="$event.stopPropagation()">
+<div class="modal-overlay" (click)="cerrarDetalle()">
+    <div class="modal-detalle" (click)="$event.stopPropagation()">
 
-            <div class="modal-header">
-                <div>
-                    <span class="eyebrow">POSTULACIÓN #{{ p.id }}</span>
-                    <h2>{{ p.convocatoria.beca.nombre }}</h2>
-                    <span class="modal-sub">{{ tipoBeca(p) }} · Convocatoria {{ p.convocatoria.anio }}</span>
-                </div>
-                <button type="button" class="modal-close" (click)="cerrarDetalle()">×</button>
+        <div class="modal-header">
+            <div>
+                <span class="eyebrow">POSTULACIÓN #{{ p.id }}</span>
+                <h2>{{ p.convocatoria.beca.nombre }}</h2>
+                <span class="modal-sub">{{ tipoBeca(p) }} · Convocatoria {{ p.convocatoria.anio }}</span>
+            </div>
+            <button type="button" class="modal-close" (click)="cerrarDetalle()">×</button>
+        </div>
+
+        <div class="modal-content">
+
+            <!-- ESTADO -->
+            <div class="detalle-seccion">
+                <h3>Estado</h3>
+                <span class="badge-grande {{ badgeEstado(p.estado) }}">{{ p.estado }}</span>
             </div>
 
-            <div class="modal-content">
+            <!-- DATOS PERSONALES -->
+            @if (p.datosPersonalesHistorial; as d) {
 
-                <!-- ESTADO -->
-                <div class="detalle-seccion">
-                    <h3>Estado</h3>
-                    <span class="badge-grande {{ badgeEstado(p.estado) }}">{{ p.estado }}</span>
+            <div class="detalle-seccion">
+                <h3>Datos personales</h3>
+                <div class="detalle-grid">
+                    <div class="detalle-field">
+                        <span class="field-label">Nombre completo</span>
+                        <span class="field-value">{{ d.nombre }} {{ d.apellido }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">DNI</span>
+                        <span class="field-value">{{ d.dni }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Fecha de nacimiento</span>
+                        <span class="field-value">{{ d.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Género</span>
+                        <span class="field-value">{{ d.genero }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Celular</span>
+                        <span class="field-value">{{ d.celular }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Nacionalidad</span>
+                        <span class="field-value">{{ nacionalidadNombre() }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">CBU / CVU</span>
+                        <span class="field-value">{{ d.cbuCvu }}</span>
+                    </div>
                 </div>
-
-                <!-- DATOS PERSONALES -->
-                @if (p.datosPersonalesHistorial) {
-                    <div class="detalle-seccion">
-                        <h3>Datos personales</h3>
-                        <div class="detalle-grid">
-                            <div class="detalle-field">
-                                <span class="field-label">DNI</span>
-                                <span class="field-value">{{ p.datosPersonalesHistorial.dni }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Celular</span>
-                                <span class="field-value">{{ p.datosPersonalesHistorial.celular }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Domicilio</span>
-                                <span class="field-value">
-                                    {{ p.datosPersonalesHistorial.domicilioCalle }}
-                                    {{ p.datosPersonalesHistorial.domicilioNumero }}
-                                </span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Localidad</span>
-                                <span class="field-value">{{ p.datosPersonalesHistorial.localidad }}</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-                <!-- DATOS BASE/BIS -->
-                @if (p.becaBaseBis) {
-                    <div class="detalle-seccion">
-                        <h3>Datos BASE/BIS</h3>
-                        <div class="detalle-grid">
-                            <div class="detalle-field">
-                                <span class="field-label">Carrera</span>
-                                <span class="field-value">{{ p.becaBaseBis.carrera }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Condición laboral</span>
-                                <span class="field-value">{{ p.becaBaseBis.condicionLaboral }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Salud</span>
-                                <span class="field-value">{{ p.becaBaseBis.salud }}</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-                <!-- DATOS BINID -->
-                @if (p.becaBinid) {
-                    <div class="detalle-seccion">
-                        <h3>Datos BINID</h3>
-                        <div class="detalle-grid">
-                            <div class="detalle-field">
-                                <span class="field-label">Categoría</span>
-                                <span class="field-value">{{ p.becaBinid.categoriaBinid }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Carrera de grado</span>
-                                <span class="field-value">{{ p.becaBinid.carreraGrado }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Promedio con aplazos</span>
-                                <span class="field-value">{{ p.becaBinid.promedioConAplazos }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Director</span>
-                                <span class="field-value">{{ p.becaBinid.nombreDirectorProyecto }} {{ p.becaBinid.apellidoDirectorProyecto }}</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-                <!-- DATOS CARRERA INVESTIGADOR -->
-                @if (p.becaCarreraInvestigador) {
-                    <div class="detalle-seccion">
-                        <h3>Datos Carrera Investigador</h3>
-                        <div class="detalle-grid">
-                            <div class="detalle-field">
-                                <span class="field-label">Categoría actual</span>
-                                <span class="field-value">{{ p.becaCarreraInvestigador.categoriaActual ?? 'Sin categoría' }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Categoría solicitada</span>
-                                <span class="field-value">{{ p.becaCarreraInvestigador.categoriaSolicitada }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Carrera</span>
-                                <span class="field-value">{{ p.becaCarreraInvestigador.carreraGrado }}</span>
-                            </div>
-                            <div class="detalle-field">
-                                <span class="field-label">Materia</span>
-                                <span class="field-value">{{ p.becaCarreraInvestigador.materia }}</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-
             </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn-cerrar" (click)="cerrarDetalle()">Cerrar</button>
+            <!-- DOMICILIO -->
+            <div class="detalle-seccion">
+                <h3>Domicilio</h3>
+                <div class="detalle-grid">
+                    <div class="detalle-field">
+                        <span class="field-label">Calle</span>
+                        <span class="field-value">{{ d.domicilioCalle }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Número</span>
+                        <span class="field-value">{{ d.domicilioNumero }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Piso / Depto.</span>
+                        <span class="field-value">{{ d.domicilioPisoDepto || '-' }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Código postal</span>
+                        <span class="field-value">{{ d.codigoPostal }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Localidad</span>
+                        <span class="field-value">{{ localidadNombre() }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Provincia</span>
+                        <span class="field-value">{{ provinciaNombre() }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOMICILIO FAMILIAR -->
+            <div class="detalle-seccion">
+                <h3>Domicilio familiar</h3>
+
+                @if (d.domicilioFamiliarDistinto) {
+                <div class="detalle-grid">
+                    <div class="detalle-field">
+                        <span class="field-label">Calle</span>
+                        <span class="field-value">{{ d.domicilioFamiliarCalle || '-' }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Número</span>
+                        <span class="field-value">{{ d.domicilioFamiliarNumero || '-' }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Piso / Depto.</span>
+                        <span class="field-value">{{ d.domicilioFamiliarPisoDepto || '-' }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Código postal</span>
+                        <span class="field-value">{{ d.domicilioFamiliarCodigoPostal || '-' }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Localidad</span>
+                        <span class="field-value">{{ localidadFamiliarNombre() || '-' }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Provincia</span>
+                        <span class="field-value">{{ provinciaFamiliarNombre() || '-' }}</span>
+                    </div>
+                </div>
+                } @else {
+                <p class="texto-vacio">
+                    El domicilio familiar coincide con el domicilio declarado.
+                </p>
+                }
+            </div>
+
+            }
+            <!-- BASE/BIS -->
+            @if (p.becaBaseBis; as b) {
+            <div class="detalle-seccion">
+                <h3>Datos BASE/BIS</h3>
+                <div class="detalle-grid">
+                    <div class="detalle-field">
+                        <span class="field-label">Carrera</span>
+                        <span class="field-value">{{ b.carrera }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Tipo de vivienda</span>
+                        <span class="field-value">{{ b.tipoVivienda }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Condición laboral</span>
+                        <span class="field-value">{{ b.condicionLaboral }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Salud</span>
+                        <span class="field-value">{{ b.salud }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">¿Tiene condición de salud?</span>
+                        <span class="field-value">{{ b.tieneCondicionSalud ? 'Sí' : 'No' }}</span>
+                    </div>
+                    @if (b.tieneCondicionSalud && b.detalleCondicionSalud) {
+                    <div class="detalle-field">
+                        <span class="field-label">Detalle</span>
+                        <span class="field-value">{{ b.detalleCondicionSalud }}</span>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+
+            <!-- BINID -->
+            @if (p.becaBinid; as bi) {
+            <div class="detalle-seccion">
+                <h3>Datos BINID</h3>
+                <div class="detalle-grid">
+                    <div class="detalle-field">
+                        <span class="field-label">Categoría</span>
+                        <span class="field-value">{{ bi.categoriaBinid }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Carrera de grado</span>
+                        <span class="field-value">{{ bi.carreraGrado }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Año de ingreso</span>
+                        <span class="field-value">{{ bi.anioIngreso }}</span>
+                    </div>
+                    @if (bi.anioEgreso) {
+                    <div class="detalle-field">
+                        <span class="field-label">Año de egreso</span>
+                        <span class="field-value">{{ bi.anioEgreso }}</span>
+                    </div>
+                    }
+                    @if (bi.materiasCursadas !== null && bi.materiasCursadas !== undefined) {
+                    <div class="detalle-field">
+                        <span class="field-label">Materias cursadas</span>
+                        <span class="field-value">{{ bi.materiasCursadas }}</span>
+                    </div>
+                    }
+                    <div class="detalle-field">
+                        <span class="field-label">Promedio con aplazos</span>
+                        <span class="field-value">{{ bi.promedioConAplazos }}</span>
+                    </div>
+                    @if (bi.promedioSinAplazos !== null && bi.promedioSinAplazos !== undefined) {
+                    <div class="detalle-field">
+                        <span class="field-label">Promedio sin aplazos</span>
+                        <span class="field-value">{{ bi.promedioSinAplazos }}</span>
+                    </div>
+                    }
+                    <div class="detalle-field">
+                        <span class="field-label">Director del proyecto</span>
+                        <span class="field-value">{{ bi.nombreDirectorProyecto }} {{ bi.apellidoDirectorProyecto
+                            }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">¿Accedió a BINID anteriormente?</span>
+                        <span class="field-value">{{ bi.accedioABecaBinidAnterior ? 'Sí' : 'No' }}</span>
+                    </div>
+                </div>
+                @if (bi.pregunta) {
+                <div class="detalle-field sub-bloque">
+                    <span class="field-label">Respuesta</span>
+                    <span class="field-value">{{ bi.pregunta }}</span>
+                </div>
+                }
+            </div>
+            }
+
+            <!-- CARRERA INVESTIGADOR -->
+            @if (p.becaCarreraInvestigador; as ci) {
+            <div class="detalle-seccion">
+                <h3>Datos Carrera Investigador</h3>
+                <div class="detalle-grid">
+                    <div class="detalle-field">
+                        <span class="field-label">Categoría actual</span>
+                        <span class="field-value">{{ ci.categoriaActual ?? 'Sin categoría' }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Categoría solicitada</span>
+                        <span class="field-value">{{ ci.categoriaSolicitada }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Carrera de grado</span>
+                        <span class="field-value">{{ ci.carreraGrado }}</span>
+                    </div>
+                    <div class="detalle-field">
+                        <span class="field-label">Materia</span>
+                        <span class="field-value">{{ ci.materia }}</span>
+                    </div>
+                </div>
+            </div>
+            }
+
+            <!-- GRUPO FAMILIAR -->
+            @if (p.grupoFamiliar?.length) {
+            <div class="detalle-seccion">
+                <h3>Grupo familiar</h3>
+                <div class="tabla-scroll">
+                    <table class="tabla-detalle">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>DNI</th>
+                                <th>Parentesco</th>
+                                <th>Ocupación</th>
+                                <th>Ingreso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (f of p.grupoFamiliar; track f.id) {
+                            <tr>
+                                <td>{{ f.nombre }} {{ f.apellido }}</td>
+                                <td>{{ f.dni }}</td>
+                                <td>{{ f.parentesco }}</td>
+                                <td>{{ f.ocupacion }}</td>
+                                <td>{{ f.ingreso | currency:'ARS':'symbol-narrow':'1.0-0' }}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            }
+
+            <!-- MATERIAS A CURSAR -->
+            @if (p.materiasACursar?.length) {
+            <div class="detalle-seccion">
+                <h3>Materias a cursar</h3>
+                <div class="tabla-scroll">
+                    <table class="tabla-detalle">
+                        <thead>
+                            <tr>
+                                <th>Materia</th>
+                                <th>Nivel</th>
+                                <th>Régimen</th>
+                                <th>Año</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (m of p.materiasACursar; track m.id) {
+                            <tr>
+                                <td>{{ m.nombreMateria }}</td>
+                                <td>{{ m.nivelMateria }}</td>
+                                <td>{{ m.regimenMateria }}</td>
+                                <td>{{ m.anioMateria }}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            }
+
+            <!-- MATERIAS A RENDIR -->
+            @if (p.materiasARendir?.length) {
+            <div class="detalle-seccion">
+                <h3>Materias a rendir</h3>
+                <div class="tabla-scroll">
+                    <table class="tabla-detalle">
+                        <thead>
+                            <tr>
+                                <th>Materia</th>
+                                <th>Nivel</th>
+                                <th>Mes de mesa</th>
+                                <th>Año</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (m of p.materiasARendir; track m.id) {
+                            <tr>
+                                <td>{{ m.nombreMateria }}</td>
+                                <td>{{ m.nivelMateria }}</td>
+                                <td>{{ m.mesMesa }}</td>
+                                <td>{{ m.anioMesa }}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            }
+
+            <!-- DOCUMENTACIÓN -->
+            <div class="detalle-seccion">
+                <h3>Documentación</h3>
+
+                @for (a of archivos(); track a.id) {
+                <div class="archivo-item">
+                    <div class="detalle-field">
+                        <span class="field-label">{{ a.tipoArchivo }}</span>
+                        <span class="field-value">{{ a.nombreOriginal }}</span>
+                    </div>
+                    <button type="button" class="btn-ver" (click)="verArchivo(a.id)">Ver</button>
+                </div>
+                } @empty {
+                <p class="texto-vacio">No hay archivos adjuntos.</p>
+                }
             </div>
 
         </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-cerrar" (click)="cerrarDetalle()">Cerrar</button>
+        </div>
+
     </div>
+</div>
 }
