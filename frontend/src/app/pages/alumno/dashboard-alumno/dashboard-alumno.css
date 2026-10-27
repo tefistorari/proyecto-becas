@@ -219,11 +219,7 @@
 .postular-btn:hover {
     border-color: #1e3a5f;
     background: #1e3a5f;
-}
-
-.postular-btn:hover {
-    border-color: #1e3a5f;
-    background: #1e3a5f;
+    cursor: pointer;
 }
 
 /* Ya postulado (reemplaza al botón) */
