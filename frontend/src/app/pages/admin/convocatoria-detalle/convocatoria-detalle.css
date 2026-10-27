@@ -112,6 +112,71 @@
     line-height: 1.3;
 }
 
+/* =========================
+   RESULTADOS
+   ========================= */
+
+.resultados {
+    margin-top: 1.75rem;
+}
+
+.resultados h3 {
+    margin: 0 0 0.75rem;
+    color: #172b4d;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.resultados-estado {
+    margin: 0 0 1rem;
+    color: #68768a;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.resultados-estado.publicado {
+    color: #356b4a;
+}
+
+.publicar-btn,
+.despublicar-btn {
+    padding: 9px 16px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.publicar-btn {
+    border: 1px solid #274c77;
+    background: #274c77;
+    color: #ffffff;
+}
+
+.publicar-btn:hover:not(:disabled) {
+    background: #1f3d60;
+    border-color: #1f3d60;
+}
+
+.despublicar-btn {
+    border: 1px solid #cbd4df;
+    background: #ffffff;
+    color: #46566d;
+}
+
+.despublicar-btn:hover:not(:disabled) {
+    background: #f5f7fa;
+}
+
+.publicar-btn:disabled,
+.despublicar-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
 
 /* =========================
    ESTADO

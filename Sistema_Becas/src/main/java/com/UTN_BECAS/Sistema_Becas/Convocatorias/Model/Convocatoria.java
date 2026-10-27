@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table (name = "convocatoria")
+@Table(name = "convocatoria")
 public class Convocatoria {
 
     @Id
@@ -41,11 +41,14 @@ public class Convocatoria {
     @OneToOne(mappedBy = "convocatoria", cascade = CascadeType.ALL)
     private InformeConvocatoria informe;
 
-    public Convocatoria(){
+    @Column(name = "resultados_publicados", nullable = false, columnDefinition = "boolean default false")
+    private boolean resultadosPublicados = false;
+
+    public Convocatoria() {
     }
 
     public Convocatoria(Beca beca, Integer anio, LocalDateTime fechaApertura, LocalDateTime fechaCierre,
-                        EstadoConvocatoria estado, Usuario creadoPor) {
+            EstadoConvocatoria estado, Usuario creadoPor) {
         this.beca = beca;
         this.anio = anio;
         this.fechaApertura = fechaApertura;
@@ -126,10 +129,20 @@ public class Convocatoria {
         this.informe = informe;
     }
 
+    public boolean isResultadosPublicados() {
+        return resultadosPublicados;
+    }
+
+    public void setResultadosPublicados(boolean resultadosPublicados) {
+        this.resultadosPublicados = resultadosPublicados;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Convocatoria)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Convocatoria))
+            return false;
         Convocatoria convocatoria = (Convocatoria) o;
         return id != null && id.equals(convocatoria.id);
     }

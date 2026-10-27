@@ -49,6 +49,32 @@
     </section>
     }
 
+    @if (c.estado === EstadoConvocatoria.CERRADA) {
+    <section class="resultados">
+        <h3>Resultados</h3>
+
+        @if (c.resultadosPublicados) {
+        <p class="resultados-estado publicado">
+            Los resultados están publicados: los alumnos ven el estado real de su postulación.
+        </p>
+        <button class="despublicar-btn" (click)="cambiarPublicacion(false)" [disabled]="publicando()">
+            {{ publicando() ? 'Guardando...' : 'Ocultar resultados' }}
+        </button>
+        } @else {
+        <p class="resultados-estado">
+            Los resultados no están publicados: los alumnos ven sus postulaciones como pendientes.
+        </p>
+        <button class="publicar-btn" (click)="cambiarPublicacion(true)" [disabled]="publicando()">
+            {{ publicando() ? 'Publicando...' : 'Mostrar resultados a los postulantes' }}
+        </button>
+        }
+
+        @if (errorPublicacion()) {
+        <p class="error-message">{{ errorPublicacion() }}</p>
+        }
+    </section>
+    }
+
     @if (c.estado === EstadoConvocatoria.ABIERTA || c.estado === EstadoConvocatoria.PROGRAMADA) {
     <button class="cancelar-btn" (click)="cancelar()" [disabled]="cancelando()">
         {{ cancelando() ? 'Cancelando...' : 'Cancelar convocatoria' }}

@@ -369,13 +369,18 @@ public class PostulacionServiceImpl implements PostulacionService {
                     PostulacionBecaBinid binid = binidRepository.findByPostulacionId(p.getId()).orElse(null);
                     PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository
                             .findByPostulacionId(p.getId()).orElse(null);
+
+                    PostulacionResponse response;
                     if (baseBis != null)
-                        return PostulacionMapper.toResponse(p, baseBis);
-                    if (binid != null)
-                        return PostulacionMapper.toResponse(p, binid);
-                    if (carreraInvestigador != null)
-                        return PostulacionMapper.toResponse(p, carreraInvestigador);
-                    return PostulacionMapper.toResponse(p);
+                        response = PostulacionMapper.toResponse(p, baseBis);
+                    else if (binid != null)
+                        response = PostulacionMapper.toResponse(p, binid);
+                    else if (carreraInvestigador != null)
+                        response = PostulacionMapper.toResponse(p, carreraInvestigador);
+                    else
+                        response = PostulacionMapper.toResponse(p);
+
+                    return aplicarVisibilidad(response, p);
                 })
                 .collect(Collectors.toList());
     }
@@ -436,13 +441,18 @@ public class PostulacionServiceImpl implements PostulacionService {
         PostulacionBecaBinid binid = binidRepository.findByPostulacionId(id).orElse(null);
         PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(id)
                 .orElse(null);
+
+        PostulacionResponse response;
         if (baseBis != null)
-            return PostulacionMapper.toResponse(postulacion, baseBis);
-        if (binid != null)
-            return PostulacionMapper.toResponse(postulacion, binid);
-        if (carreraInvestigador != null)
-            return PostulacionMapper.toResponse(postulacion, carreraInvestigador);
-        return PostulacionMapper.toResponse(postulacion);
+            response = PostulacionMapper.toResponse(postulacion, baseBis);
+        else if (binid != null)
+            response = PostulacionMapper.toResponse(postulacion, binid);
+        else if (carreraInvestigador != null)
+            response = PostulacionMapper.toResponse(postulacion, carreraInvestigador);
+        else
+            response = PostulacionMapper.toResponse(postulacion);
+
+        return esAdmin ? response : aplicarVisibilidad(response, postulacion);
     }
 
     @Override
@@ -570,5 +580,19 @@ public class PostulacionServiceImpl implements PostulacionService {
                     return PostulacionMapper.toResponse(p);
                 })
                 .collect(Collectors.toList());
+    }
+
+    private PostulacionResponse aplicarVisibilidad(PostulacionResponse response, Postulacion postulacion) {
+        boolean publicados = postulacion.getConvocatoria().isResultadosPublicados();
+        EstadoPostulacion estado = postulacion.getEstado();
+
+        boolean esResultado = estado == EstadoPostulacion.EN_REVISION
+                || estado == EstadoPostulacion.ACEPTADO
+                || estado == EstadoPostulacion.RECHAZADO;
+
+        if (!publicados && esResultado) {
+            response.setEstado(EstadoPostulacion.PENDIENTE);
+        }
+        return response;
     }
 }

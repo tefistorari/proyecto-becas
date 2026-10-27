@@ -23,6 +23,8 @@ export class ConvocatoriaDetalle implements OnInit {
   error = signal<string | null>(null);
   cancelando = signal(false);
   estadisticas = signal<EstadisticasConvocatoriaResponse | null>(null);
+  publicando = signal(false);
+  errorPublicacion = signal<string | null>(null);
 
 
   EstadoConvocatoria = EstadoConvocatoria;
@@ -87,6 +89,30 @@ export class ConvocatoriaDetalle implements OnInit {
       }
     });
   }
+
+  cambiarPublicacion(publicados: boolean): void {
+  const actual = this.convocatoria();
+  if (!actual) return;
+
+  const mensaje = publicados
+    ? '¿Publicar los resultados? Los alumnos van a poder ver el estado real de su postulación.'
+    : '¿Ocultar los resultados? Los alumnos van a volver a ver sus postulaciones como pendientes.';
+  if (!confirm(mensaje)) return;
+
+  this.publicando.set(true);
+  this.errorPublicacion.set(null);
+
+  this.convocatoriaService.cambiarPublicacionResultados(actual.id, publicados).subscribe({
+    next: (actualizada) => {
+      this.convocatoria.set(actualizada);
+      this.publicando.set(false);
+    },
+    error: () => {
+      this.errorPublicacion.set('No se pudo cambiar la publicación de resultados.');
+      this.publicando.set(false);
+    },
+  });
+}
 
   volver(): void {
     this.router.navigate(['/admin/convocatorias']);

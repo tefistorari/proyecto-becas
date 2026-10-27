@@ -12,4 +12,5 @@ export interface ConvocatoriaResponse {
     beca: BecaResponse;
     informe?: InformeConvocatoriaResponse;
     yaPostulado: boolean;
+    resultadosPublicados: boolean;
 }

@@ -218,4 +218,13 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public ConvocatoriaResponse cambiarPublicacionResultados(Long id, boolean publicados) {
+        Convocatoria convocatoria = convocatoriaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Convocatoria no encontrada"));
+        convocatoria.setResultadosPublicados(publicados);
+        convocatoriaRepository.save(convocatoria);
+        return ConvocatoriaMapper.toResponse(convocatoria);
+    }
 }

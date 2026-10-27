@@ -55,5 +55,13 @@ export class ConvocatoriaService {
         return this.http.get<InformeConvocatoriaResponse>(`${this.API_URL}/${id}/informe`);
     }
 
+    cambiarPublicacionResultados(id: number, publicados: boolean): Observable<ConvocatoriaResponse> {
+    return this.http.put<ConvocatoriaResponse>(
+        `${this.API_URL}/${id}/resultados`,
+        null,
+        { params: { publicados } }
+    );
+}
+
     //metodo eliminar convocatoria ???? informes, postulaciones asociadas...
 }
