@@ -286,6 +286,56 @@ tbody tr:hover {
     word-break: break-word;
 }
 
+.sub-bloque {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #e5e9ef;
+}
+
+.texto-vacio {
+    margin: 0;
+    color: #68768a;
+    font-size: 0.85rem;
+}
+
+.tabla-scroll {
+    overflow-x: auto;
+}
+
+.tabla-detalle {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    border-collapse: collapse;
+    background: transparent;
+    font-size: 0.85rem;
+}
+
+.tabla-detalle th {
+    padding: 0.5rem 0.75rem;
+    background: transparent;
+    color: #68768a;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e5e9ef;
+}
+
+.tabla-detalle td {
+    padding: 0.55rem 0.75rem;
+    color: #172b4d;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.tabla-detalle tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-detalle tbody tr:hover {
+    background: transparent;
+}
+
 /* =========================
    CAMBIAR ESTADO
    ========================= */
@@ -369,16 +419,38 @@ tbody tr:hover {
     background: #f5f7fa;
 }
 
+.archivo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.archivo-item:last-child {
+    border-bottom: none;
+}
 
 .btn-ver {
+    flex-shrink: 0;
+    padding: 6px 14px;
     border: 1px solid #274c77;
+    border-radius: 5px;
     background: #ffffff;
     color: #274c77;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
 }
 
 .btn-ver:hover {
     background: #f1f5f9;
 }
+
+
 /* =========================
    RESPONSIVE
    ========================= */
@@ -407,6 +479,11 @@ tbody tr:hover {
 
     .modal-footer {
         padding: 1rem 1.25rem;
+    }
+
+    .tabla-detalle {
+        display: table;
+        white-space: normal;
     }
 }
 

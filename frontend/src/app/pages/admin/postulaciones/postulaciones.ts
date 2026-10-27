@@ -8,6 +8,7 @@ import { ArchivoResponse } from '../../../models/archivo-response';
 import { ActivatedRoute } from '@angular/router';
 import { ConvocatoriaService } from '../../../services/convocatoria-service';
 import { ConvocatoriaResponse } from '../../../models/convocatoria-response';
+import { UbicacionService } from '../../../services/ubicacion-service';
 
 type Filtro = EstadoPostulacion | 'TODAS';
 
@@ -23,6 +24,7 @@ export class Postulaciones implements OnInit {
   archivos = signal<ArchivoResponse[]>([]);
   private route = inject(ActivatedRoute);
   private convocatoriaService = inject(ConvocatoriaService);
+  private ubicacionService = inject(UbicacionService);
 
   convocatorias = signal<ConvocatoriaResponse[]>([]);
   convocatoriaId = signal<number | null>(null);
@@ -35,6 +37,11 @@ export class Postulaciones implements OnInit {
   cambiandoEstado = signal(false);
   errorEstado = signal<string | null>(null);
 
+  nacionalidadNombre = signal('');
+  provinciaNombre = signal('');
+  localidadNombre = signal('');
+  provinciaFamiliarNombre = signal('');
+  localidadFamiliarNombre = signal('');
   protected readonly EstadoPostulacion = EstadoPostulacion;
 
   postulacionesFiltradas = computed(() => {
@@ -99,14 +106,45 @@ export class Postulaciones implements OnInit {
     this.filtroEstado.set(filtro);
   }
 
-  verDetalle(postulacion: PostulacionResponse): void {
+  async verDetalle(postulacion: PostulacionResponse): Promise<void> {
+    this.limpiarUbicaciones();
     this.postulacionSeleccionada.set(postulacion);
     this.errorEstado.set(null);
+
     this.archivos.set([]);
     this.archivoService.listarPorPostulacion(postulacion.id).subscribe({
       next: (lista) => this.archivos.set(lista),
       error: (err) => console.error('Error al cargar archivos:', err),
     });
+
+    const d = postulacion.datosPersonalesHistorial;
+    if (!d) return;
+
+    const nacionalidades = await this.ubicacionService.getNacionalidades();
+    const provincias = await this.ubicacionService.getProvincias();
+
+    const nacionalidad = nacionalidades.find(n => n.iso2 === d.nacionalidad);
+    const provincia = provincias.find(p => p.iso2 === d.provincia);
+
+    this.nacionalidadNombre.set(nacionalidad?.name ?? d.nacionalidad);
+    this.provinciaNombre.set(provincia?.name ?? d.provincia);
+
+    if (d.provincia && d.localidad) {
+      const localidades = await this.ubicacionService.getLocalidades(d.provincia);
+      const localidad = localidades.find(l => String(l.id) === String(d.localidad));
+      this.localidadNombre.set(localidad?.name ?? String(d.localidad));
+    }
+
+    if (d.domicilioFamiliarDistinto && d.domicilioFamiliarProvincia) {
+      const provFam = provincias.find(p => p.iso2 === d.domicilioFamiliarProvincia);
+      this.provinciaFamiliarNombre.set(provFam?.name ?? d.domicilioFamiliarProvincia);
+
+      if (d.domicilioFamiliarLocalidad) {
+        const locsFam = await this.ubicacionService.getLocalidades(d.domicilioFamiliarProvincia);
+        const locFam = locsFam.find(l => String(l.id) === String(d.domicilioFamiliarLocalidad));
+        this.localidadFamiliarNombre.set(locFam?.name ?? String(d.domicilioFamiliarLocalidad));
+      }
+    }
   }
 
   verArchivo(id: number): void {
@@ -128,6 +166,16 @@ export class Postulaciones implements OnInit {
   cerrarDetalle(): void {
     this.postulacionSeleccionada.set(null);
     this.errorEstado.set(null);
+    this.archivos.set([]);
+    this.limpiarUbicaciones();
+  }
+
+  private limpiarUbicaciones(): void {
+    this.nacionalidadNombre.set('');
+    this.provinciaNombre.set('');
+    this.localidadNombre.set('');
+    this.provinciaFamiliarNombre.set('');
+    this.localidadFamiliarNombre.set('');
   }
 
   cambiarEstado(postulacion: PostulacionResponse, estado: EstadoPostulacion): void {
