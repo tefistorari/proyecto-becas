@@ -11,4 +11,5 @@ export interface ConvocatoriaResponse {
     estado: EstadoConvocatoria;
     beca: BecaResponse;
     informe?: InformeConvocatoriaResponse;
+    yaPostulado: boolean;
 }
