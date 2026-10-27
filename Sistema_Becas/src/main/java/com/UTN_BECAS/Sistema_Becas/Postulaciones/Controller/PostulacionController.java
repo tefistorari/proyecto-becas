@@ -28,10 +28,9 @@ public class PostulacionController {
     @PostMapping("/base-bis")
     public ResponseEntity<PostulacionResponse> postularBaseBis(
             @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody PostulacionBaseBisUnificadoRequest request
-            ) {
+            @Valid @RequestBody PostulacionBaseBisUnificadoRequest request) {
         Long usuarioId = ((Usuario) userDetails).getId();
-        return ResponseEntity.ok(postulacionService.postularBaseBis(usuarioId,request));
+        return ResponseEntity.ok(postulacionService.postularBaseBis(usuarioId, request));
     }
 
     @PreAuthorize("hasRole('ALUMNO')")
@@ -63,8 +62,10 @@ public class PostulacionController {
     @PreAuthorize("hasRole('ALUMNO')")
     @PostMapping("/{postulacionId}/finalizar")
     public ResponseEntity<PostulacionResponse> finalizar(
-            @PathVariable Long postulacionId) {
-        return ResponseEntity.ok(postulacionService.finalizar(postulacionId));
+            @PathVariable Long postulacionId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        Long usuarioId = ((Usuario) userDetails).getId();
+        return ResponseEntity.ok(postulacionService.finalizar(postulacionId, usuarioId));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -82,8 +83,13 @@ public class PostulacionController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ALUMNO')")
     @GetMapping("/{id}")
-    public ResponseEntity<PostulacionResponse> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(postulacionService.buscarPorId(id));
+    public ResponseEntity<PostulacionResponse> buscarPorId(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        Long usuarioId = ((Usuario) userDetails).getId();
+        boolean esAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        return ResponseEntity.ok(postulacionService.buscarPorId(id, usuarioId, esAdmin));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -92,5 +98,12 @@ public class PostulacionController {
             @PathVariable Long id,
             @RequestParam EstadoPostulacion estado) {
         return ResponseEntity.ok(postulacionService.cambiarEstado(id, estado));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/convocatoria/{convocatoriaId}")
+    public ResponseEntity<List<PostulacionResponse>> listarPorConvocatoria(
+            @PathVariable Long convocatoriaId) {
+        return ResponseEntity.ok(postulacionService.listarPorConvocatoria(convocatoriaId));
     }
 }

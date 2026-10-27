@@ -24,10 +24,12 @@ import com.UTN_BECAS.Sistema_Becas.Postulaciones.Mapper.PostulacionMapper;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Model.*;
 import com.UTN_BECAS.Sistema_Becas.Postulaciones.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,7 +97,7 @@ public class PostulacionServiceImpl implements PostulacionService {
             throw new ReglaDeNegocioException("Debe cargar al menos una materia a rendir");
         }
 
-        //Crear postulacion
+        // Crear postulacion
         Postulacion postulacion = new Postulacion();
         postulacion.setUsuario(usuario);
         postulacion.setConvocatoria(convocatoria);
@@ -121,7 +123,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         historial.setNacionalidad(dp.getNacionalidad());
         historial.setCbuCvu(dp.getCbuCvu());
         historial.setDomicilioFamiliarDistinto(dp.getDomicilioFamiliarDistinto());
-        if(Boolean.TRUE.equals(dp.getDomicilioFamiliarDistinto())) {
+        if (Boolean.TRUE.equals(dp.getDomicilioFamiliarDistinto())) {
             historial.setDomicilioFamiliarCalle(dp.getDomicilioFamiliarCalle());
             historial.setDomicilioFamiliarNumero(dp.getDomicilioFamiliarNumero());
             historial.setDomicilioFamiliarPisoDepto(dp.getDomicilioFamiliarPisoDepto());
@@ -144,7 +146,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         baseBisRepository.save(baseBis);
 
         // 4.grupo familiar
-        if(request.getGrupoFamiliar() != null) {
+        if (request.getGrupoFamiliar() != null) {
             for (GrupoFamiliarRequest gf : request.getGrupoFamiliar()) {
                 GrupoFamiliar familiar = new GrupoFamiliar();
                 familiar.setPostulacion(postulacion);
@@ -199,33 +201,34 @@ public class PostulacionServiceImpl implements PostulacionService {
         Convocatoria convocatoria = convocatoriaRepository.findById(request.getConvocatoriaId())
                 .orElseThrow(() -> new RecursoNoEncontradoException("Convocatoria no encontrada"));
 
-        if(convocatoria.getEstado() != EstadoConvocatoria.ABIERTA) {
+        if (convocatoria.getEstado() != EstadoConvocatoria.ABIERTA) {
             throw new ReglaDeNegocioException("La convocatoria no está abierta");
         }
 
-        if(postulacionRepository.existsByUsuarioIdAndConvocatoriaId(usuarioId, request.getConvocatoriaId())) {
+        if (postulacionRepository.existsByUsuarioIdAndConvocatoriaId(usuarioId, request.getConvocatoriaId())) {
             throw new ConflictoException("Ya te postulaste a esta convocatoria");
         }
 
-        if((request.getCategoriaBinid() == CategoriaBinid.GRADUADO ||
+        if ((request.getCategoriaBinid() == CategoriaBinid.GRADUADO ||
                 request.getCategoriaBinid() == CategoriaBinid.EGRESADO) &&
                 request.getAnioEgreso() == null) {
             throw new ReglaDeNegocioException("El año del egreso es obligatorio para egresados y graduados");
         }
 
-        if(request.getAnioEgreso() != null) {
+        if (request.getAnioEgreso() != null) {
             int anioActual = LocalDate.now().getYear();
             if (request.getAnioEgreso() < anioActual - 3) {
                 throw new ReglaDeNegocioException("Solo pueden postularse hasta 3 años después de recibido el título");
             }
         }
 
-        if(request.getCategoriaBinid() == CategoriaBinid.ESTUDIANTE_AVANZADO && request.getMateriasCursadas() == null) {
+        if (request.getCategoriaBinid() == CategoriaBinid.ESTUDIANTE_AVANZADO
+                && request.getMateriasCursadas() == null) {
             throw new ReglaDeNegocioException("Las materias cursadas son obligatorias para estudiantes avanzados");
         }
 
         long renovaciones = historialBecaBinidRepository.countByUsuarioId(usuarioId);
-        if(renovaciones >= 2) {
+        if (renovaciones >= 2) {
             throw new ReglaDeNegocioException("Superaste el límite de renovaciones BINID");
         }
 
@@ -255,7 +258,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         historial.setNacionalidad(dp.getNacionalidad());
         historial.setCbuCvu(dp.getCbuCvu());
         historial.setDomicilioFamiliarDistinto(dp.getDomicilioFamiliarDistinto());
-        if(Boolean.TRUE.equals(dp.getDomicilioFamiliarDistinto())) {
+        if (Boolean.TRUE.equals(dp.getDomicilioFamiliarDistinto())) {
             historial.setDomicilioFamiliarCalle(dp.getDomicilioFamiliarCalle());
             historial.setDomicilioFamiliarNumero(dp.getDomicilioFamiliarNumero());
             historial.setDomicilioFamiliarPisoDepto(dp.getDomicilioFamiliarPisoDepto());
@@ -291,7 +294,8 @@ public class PostulacionServiceImpl implements PostulacionService {
 
     @Override
     @Transactional
-    public PostulacionResponse postularCarreraInvestigador(Long usuarioId, PostulacionCarreraInvestigadorUnificadoRequest request) {
+    public PostulacionResponse postularCarreraInvestigador(Long usuarioId,
+            PostulacionCarreraInvestigadorUnificadoRequest request) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -363,10 +367,14 @@ public class PostulacionServiceImpl implements PostulacionService {
                 .map(p -> {
                     PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(p.getId()).orElse(null);
                     PostulacionBecaBinid binid = binidRepository.findByPostulacionId(p.getId()).orElse(null);
-                    PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(p.getId()).orElse(null);
-                    if (baseBis != null) return PostulacionMapper.toResponse(p, baseBis);
-                    if (binid != null) return PostulacionMapper.toResponse(p, binid);
-                    if (carreraInvestigador != null) return PostulacionMapper.toResponse(p, carreraInvestigador);
+                    PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository
+                            .findByPostulacionId(p.getId()).orElse(null);
+                    if (baseBis != null)
+                        return PostulacionMapper.toResponse(p, baseBis);
+                    if (binid != null)
+                        return PostulacionMapper.toResponse(p, binid);
+                    if (carreraInvestigador != null)
+                        return PostulacionMapper.toResponse(p, carreraInvestigador);
                     return PostulacionMapper.toResponse(p);
                 })
                 .collect(Collectors.toList());
@@ -380,10 +388,14 @@ public class PostulacionServiceImpl implements PostulacionService {
                 .map(p -> {
                     PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(p.getId()).orElse(null);
                     PostulacionBecaBinid binid = binidRepository.findByPostulacionId(p.getId()).orElse(null);
-                    PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(p.getId()).orElse(null);
-                    if (baseBis != null) return PostulacionMapper.toResponse(p, baseBis);
-                    if (binid != null) return PostulacionMapper.toResponse(p, binid);
-                    if (carreraInvestigador != null) return PostulacionMapper.toResponse(p, carreraInvestigador);
+                    PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository
+                            .findByPostulacionId(p.getId()).orElse(null);
+                    if (baseBis != null)
+                        return PostulacionMapper.toResponse(p, baseBis);
+                    if (binid != null)
+                        return PostulacionMapper.toResponse(p, binid);
+                    if (carreraInvestigador != null)
+                        return PostulacionMapper.toResponse(p, carreraInvestigador);
                     return PostulacionMapper.toResponse(p);
                 })
                 .collect(Collectors.toList());
@@ -397,10 +409,14 @@ public class PostulacionServiceImpl implements PostulacionService {
                 .map(p -> {
                     PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(p.getId()).orElse(null);
                     PostulacionBecaBinid binid = binidRepository.findByPostulacionId(p.getId()).orElse(null);
-                    PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(p.getId()).orElse(null);
-                    if (baseBis != null) return PostulacionMapper.toResponse(p, baseBis);
-                    if (binid != null) return PostulacionMapper.toResponse(p, binid);
-                    if (carreraInvestigador != null) return PostulacionMapper.toResponse(p, carreraInvestigador);
+                    PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository
+                            .findByPostulacionId(p.getId()).orElse(null);
+                    if (baseBis != null)
+                        return PostulacionMapper.toResponse(p, baseBis);
+                    if (binid != null)
+                        return PostulacionMapper.toResponse(p, binid);
+                    if (carreraInvestigador != null)
+                        return PostulacionMapper.toResponse(p, carreraInvestigador);
                     return PostulacionMapper.toResponse(p);
                 })
                 .collect(Collectors.toList());
@@ -408,15 +424,24 @@ public class PostulacionServiceImpl implements PostulacionService {
 
     @Override
     @Transactional(readOnly = true)
-    public PostulacionResponse buscarPorId(Long id) {
+    public PostulacionResponse buscarPorId(Long id, Long usuarioId, boolean esAdmin) {
         Postulacion postulacion = postulacionRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
+
+        if (!esAdmin && !postulacion.getUsuario().getId().equals(usuarioId)) {
+            throw new AccessDeniedException("No tenés acceso a esta postulación");
+        }
+
         PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(id).orElse(null);
         PostulacionBecaBinid binid = binidRepository.findByPostulacionId(id).orElse(null);
-        PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(id).orElse(null);
-        if (baseBis != null) return PostulacionMapper.toResponse(postulacion, baseBis);
-        if (binid != null) return PostulacionMapper.toResponse(postulacion, binid);
-        if (carreraInvestigador != null) return PostulacionMapper.toResponse(postulacion, carreraInvestigador);
+        PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(id)
+                .orElse(null);
+        if (baseBis != null)
+            return PostulacionMapper.toResponse(postulacion, baseBis);
+        if (binid != null)
+            return PostulacionMapper.toResponse(postulacion, binid);
+        if (carreraInvestigador != null)
+            return PostulacionMapper.toResponse(postulacion, carreraInvestigador);
         return PostulacionMapper.toResponse(postulacion);
     }
 
@@ -428,91 +453,122 @@ public class PostulacionServiceImpl implements PostulacionService {
         postulacion.setEstado(estado);
         postulacionRepository.save(postulacion);
 
-
         PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(id).orElse(null);
         PostulacionBecaBinid binid = binidRepository.findByPostulacionId(id).orElse(null);
-        PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(id).orElse(null);
-        if (baseBis != null) return PostulacionMapper.toResponse(postulacion, baseBis);
-        if (binid != null) return PostulacionMapper.toResponse(postulacion, binid);
-        if (carreraInvestigador != null) return PostulacionMapper.toResponse(postulacion, carreraInvestigador);
+        PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(id)
+                .orElse(null);
+        if (baseBis != null)
+            return PostulacionMapper.toResponse(postulacion, baseBis);
+        if (binid != null)
+            return PostulacionMapper.toResponse(postulacion, binid);
+        if (carreraInvestigador != null)
+            return PostulacionMapper.toResponse(postulacion, carreraInvestigador);
         return PostulacionMapper.toResponse(postulacion);
     }
 
-        @Override
-        @Transactional
-        public PostulacionResponse finalizar(Long postulacionId) {
-            Postulacion postulacion = postulacionRepository.findById(postulacionId)
-                    .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
+    @Override
+    @Transactional
+    public PostulacionResponse finalizar(Long postulacionId, Long usuarioId) {
+        Postulacion postulacion = postulacionRepository.findById(postulacionId)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Postulacion no encontrada"));
 
-            if(postulacion.getEstado() != EstadoPostulacion.BORRADOR) {
-                throw new ReglaDeNegocioException("Solo se pueden finalizar postulaciones en estado BORRADOR");
+        if (!postulacion.getUsuario().getId().equals(usuarioId)) {
+            throw new AccessDeniedException("No tenés acceso a esta postulación");
+        }
+
+        if (postulacion.getEstado() != EstadoPostulacion.BORRADOR) {
+            throw new ReglaDeNegocioException("Solo se pueden finalizar postulaciones en estado BORRADOR");
+        }
+
+        List<TipoArchivo> archivosSubidos = archivoRepository.findByPostulacionId(postulacionId)
+                .stream()
+                .map(a -> a.getTipoArchivo())
+                .collect(Collectors.toList());
+
+        boolean esBaseBis = baseBisRepository.findByPostulacionId(postulacionId).isPresent();
+        boolean esBinid = binidRepository.findByPostulacionId(postulacionId).isPresent();
+        boolean esCarreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(postulacionId).isPresent();
+
+        if (esBaseBis) {
+            if (!archivosSubidos.contains(TipoArchivo.DNI)) {
+                throw new ReglaDeNegocioException("Falta el archivo DNI obligatorio");
             }
+        }
 
-            List<TipoArchivo> archivosSubidos = archivoRepository.findByPostulacionId(postulacionId)
-                    .stream()
-                    .map(a -> a.getTipoArchivo())
+        if (esBinid) {
+            List<TipoArchivo> obligatoriosBinid = List.of(
+                    TipoArchivo.DNI,
+                    TipoArchivo.NOTA_AVAL_DIRECTOR,
+                    TipoArchivo.CARTA_MOTIVACION,
+                    TipoArchivo.ANALITICO,
+                    TipoArchivo.CERTIFICADO_ALUMNO_REGULAR);
+
+            List<TipoArchivo> faltantes = obligatoriosBinid.stream()
+                    .filter(tipo -> !archivosSubidos.contains(tipo))
                     .collect(Collectors.toList());
 
-            boolean esBaseBis = baseBisRepository.findByPostulacionId(postulacionId).isPresent();
-            boolean esBinid = binidRepository.findByPostulacionId(postulacionId).isPresent();
-            boolean esCarreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(postulacionId).isPresent();
-
-            if(esBaseBis) {
-                if(!archivosSubidos.contains(TipoArchivo.DNI)) {
-                    throw new ReglaDeNegocioException("Falta el archivo DNI obligatorio");
-                }
+            if (!faltantes.isEmpty()) {
+                throw new ReglaDeNegocioException("Faltan los siguientes archivos obligatorios: " + faltantes);
             }
-
-            if(esBinid) {
-                List<TipoArchivo> obligatoriosBinid = List.of(
-                        TipoArchivo.DNI,
-                        TipoArchivo.NOTA_AVAL_DIRECTOR,
-                        TipoArchivo.CARTA_MOTIVACION,
-                        TipoArchivo.ANALITICO,
-                        TipoArchivo.CERTIFICADO_ALUMNO_REGULAR
-                );
-
-                List<TipoArchivo> faltantes = obligatoriosBinid.stream()
-                        .filter(tipo -> !archivosSubidos.contains(tipo))
-                        .collect(Collectors.toList());
-
-                if(!faltantes.isEmpty()) {
-                    throw new ReglaDeNegocioException("Faltan los siguientes archivos obligatorios: " + faltantes);
-                }
-            }
-
-            if (esCarreraInvestigador) {
-                List<TipoArchivo> obligatoriosCarreraInvestigador = List.of(
-                        TipoArchivo.FORMULARIO_INSCRIPCION,
-                        TipoArchivo.CURRICULUM_VITAE
-                );
-                List<TipoArchivo> faltantes = obligatoriosCarreraInvestigador.stream()
-                        .filter(tipo -> !archivosSubidos.contains(tipo))
-                        .collect(Collectors.toList());
-                if (!faltantes.isEmpty()) {
-                    throw new ReglaDeNegocioException("Faltan los siguientes archivos obligatorios: " + faltantes);
-                }
-            }
-
-            postulacion.setEstado(EstadoPostulacion.PENDIENTE);
-            postulacionRepository.save(postulacion);
-
-            if(esBaseBis) {
-                PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(postulacionId).orElse(null);
-                return PostulacionMapper.toResponse(postulacion, baseBis);
-            }
-
-            if(esBinid) {
-                PostulacionBecaBinid binid = binidRepository.findByPostulacionId(postulacionId).orElse(null);
-                return PostulacionMapper.toResponse(postulacion, binid);
-            }
-
-            if (esCarreraInvestigador) {
-                PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository.findByPostulacionId(postulacionId).orElse(null);
-                return PostulacionMapper.toResponse(postulacion, carreraInvestigador);
-            }
-
-
-            return PostulacionMapper.toResponse(postulacion);
         }
+
+        if (esCarreraInvestigador) {
+            List<TipoArchivo> obligatoriosCarreraInvestigador = List.of(
+                    TipoArchivo.FORMULARIO_INSCRIPCION,
+                    TipoArchivo.CURRICULUM_VITAE);
+            List<TipoArchivo> faltantes = obligatoriosCarreraInvestigador.stream()
+                    .filter(tipo -> !archivosSubidos.contains(tipo))
+                    .collect(Collectors.toList());
+            if (!faltantes.isEmpty()) {
+                throw new ReglaDeNegocioException("Faltan los siguientes archivos obligatorios: " + faltantes);
+            }
+        }
+
+        postulacion.setFechaEnvio(LocalDateTime.now());
+        postulacion.setEstado(EstadoPostulacion.PENDIENTE);
+        postulacionRepository.save(postulacion);
+
+        if (esBaseBis) {
+            PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(postulacionId).orElse(null);
+            return PostulacionMapper.toResponse(postulacion, baseBis);
+        }
+
+        if (esBinid) {
+            PostulacionBecaBinid binid = binidRepository.findByPostulacionId(postulacionId).orElse(null);
+            return PostulacionMapper.toResponse(postulacion, binid);
+        }
+
+        if (esCarreraInvestigador) {
+            PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository
+                    .findByPostulacionId(postulacionId).orElse(null);
+            return PostulacionMapper.toResponse(postulacion, carreraInvestigador);
+        }
+
+        return PostulacionMapper.toResponse(postulacion);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PostulacionResponse> listarPorConvocatoria(Long convocatoriaId) {
+        if (!convocatoriaRepository.existsById(convocatoriaId)) {
+            throw new RecursoNoEncontradoException("Convocatoria no encontrada");
+        }
+
+        return postulacionRepository.findByConvocatoriaId(convocatoriaId)
+                .stream()
+                .map(p -> {
+                    PostulacionBecaBaseBis baseBis = baseBisRepository.findByPostulacionId(p.getId()).orElse(null);
+                    PostulacionBecaBinid binid = binidRepository.findByPostulacionId(p.getId()).orElse(null);
+                    PostulacionCarreraInvestigador carreraInvestigador = carreraInvestigadorRepository
+                            .findByPostulacionId(p.getId()).orElse(null);
+                    if (baseBis != null)
+                        return PostulacionMapper.toResponse(p, baseBis);
+                    if (binid != null)
+                        return PostulacionMapper.toResponse(p, binid);
+                    if (carreraInvestigador != null)
+                        return PostulacionMapper.toResponse(p, carreraInvestigador);
+                    return PostulacionMapper.toResponse(p);
+                })
+                .collect(Collectors.toList());
+    }
 }

@@ -12,10 +12,11 @@ public interface PostulacionService {
     PostulacionResponse postularBaseBis(Long usuarioId, PostulacionBaseBisUnificadoRequest request);
     PostulacionResponse postularBinid(Long usuarioId, PostulacionBinidUnificadoRequest request);
     PostulacionResponse postularCarreraInvestigador(Long usuarioId, PostulacionCarreraInvestigadorUnificadoRequest request);
-    PostulacionResponse finalizar(Long postulacionId);
+    PostulacionResponse finalizar(Long postulacionId, Long usuarioId);
     List<PostulacionResponse> listarPorUsuario(Long usuarioId);
     List<PostulacionResponse> listarTodas();
     List<PostulacionResponse> listarPorEstado(EstadoPostulacion estado);
-    PostulacionResponse buscarPorId(Long id);
+    PostulacionResponse buscarPorId(Long id, Long usuarioId, boolean esAdmin);
     PostulacionResponse cambiarEstado(Long id, EstadoPostulacion estado);
+    List<PostulacionResponse> listarPorConvocatoria(Long convocatoriaId);
 }

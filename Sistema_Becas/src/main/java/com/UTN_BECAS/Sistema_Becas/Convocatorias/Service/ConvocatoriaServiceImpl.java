@@ -204,4 +204,18 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Informe no encontrado"));
         return InformeConvocatoriaMapper.toResponse(informe);
     }
+
+    @Override
+    public List<ConvocatoriaResponse> listarAbiertasParaUsuario(Long usuarioId) {
+        return convocatoriaRepository.findByEstado(EstadoConvocatoria.ABIERTA)
+                .stream()
+                .map(convocatoria -> {
+                    ConvocatoriaResponse response = ConvocatoriaMapper.toResponse(convocatoria);
+                    response.setYaPostulado(
+                            postulacionRepository.existsByUsuarioIdAndConvocatoriaId(
+                                    usuarioId, convocatoria.getId()));
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
 }

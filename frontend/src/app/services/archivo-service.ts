@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ArchivoResponse } from '../models/archivo-response';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class ArchivoService {
     private http = inject(HttpClient);
     private readonly API_URL = 'http://localhost:8080/api/archivos';
@@ -18,5 +18,9 @@ export class ArchivoService {
 
     eliminar(archivoId: number): Observable<void> {
         return this.http.delete<void>(`${this.API_URL}/${archivoId}`);
+    }
+
+    descargar(archivoId: number): Observable<Blob> {
+        return this.http.get(`${this.API_URL}/${archivoId}/descargar`, { responseType: 'blob' });
     }
 }

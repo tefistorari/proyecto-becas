@@ -28,75 +28,82 @@
 
         @if (convocatoriasAbiertas().length > 0) {
 
-            <div class="convocatorias-list">
+        <div class="convocatorias-list">
 
-                @for (convocatoria of convocatoriasAbiertas(); track convocatoria.id) {
+            @for (convocatoria of convocatoriasAbiertas(); track convocatoria.id) {
 
-                    <article class="convocatoria-card">
+            <article class="convocatoria-card">
 
-                        <div class="convocatoria-info">
+                <div class="convocatoria-info">
 
-                            <span class="convocatoria-badge">
-                                ABIERTA
-                            </span>
+                    <span class="convocatoria-badge">
+                        ABIERTA
+                    </span>
 
-                            <h3>
-                                {{ convocatoria.beca.nombre }}
-                            </h3>
+                    <h3>
+                        {{ convocatoria.beca.nombre }}
+                    </h3>
 
-                            <p class="convocatoria-year">
-                                Convocatoria {{ convocatoria.anio }}
-                            </p>
+                    <p class="convocatoria-year">
+                        Convocatoria {{ convocatoria.anio }}
+                    </p>
 
-                            <p class="convocatoria-description">
-                                {{ convocatoria.beca.descripcion }}
-                            </p>
+                    <p class="convocatoria-description">
+                        {{ convocatoria.beca.descripcion }}
+                    </p>
 
-                            <div class="convocatoria-date">
+                    <div class="convocatoria-date">
 
-                                <span>
-                                    Cierra el
-                                    <strong>
-                                        {{ convocatoria.fechaCierre | date:'dd/MM/yyyy' }}
-                                    </strong>
-                                </span>
+                        <span>
+                            Cierra el
+                            <strong>
+                                {{ convocatoria.fechaCierre | date:'dd/MM/yyyy' }}
+                            </strong>
+                        </span>
 
-                            </div>
+                    </div>
 
-                        </div>
+                </div>
 
-                        <div class="convocatoria-action">
+                <div class="convocatoria-action">
 
-                            <button
-                                type="button"
-                                class="postular-btn"
-                                (click)="irAFormulario(convocatoria)">
+                    @if (convocatoria.yaPostulado) {
 
-                                Postularme
-                            </button>
+                    <div class="ya-postulado">
+                        <span class="ya-postulado-icon">✓</span>
+                        <span>Ya te postulaste a esta convocatoria</span>
+                    </div>
 
-                        </div>
+                    } @else {
 
-                    </article>
+                    <button type="button" class="postular-btn" (click)="irAFormulario(convocatoria)">
+                        Postularme
+                    </button>
 
-                }
+                    }
 
-            </div>
+                </div>
+
+            </article>
+
+            }
+
+        </div>
 
         } @else {
 
-            <div class="empty-state">
+        <div class="empty-state">
 
-                <span class="empty-icon">○</span>
+            <span class="empty-icon">○</span>
 
-                <h3>No hay convocatorias abiertas</h3>
+            <h3>No hay convocatorias abiertas</h3>
 
-                <p>
-                    Actualmente no hay convocatorias disponibles para postularse.
-                    Volvé a consultar más adelante.
-                </p>
+            <p>
+                Actualmente no hay convocatorias disponibles para postularse.
+                Volvé a consultar más adelante.
+            </p>
 
-            </div>
+        </div>
 
         }
 
@@ -109,9 +116,7 @@
 
     <div class="links-grid">
 
-        <a
-            routerLink="/alumno/mis-postulaciones"
-            class="dashboard-link">
+        <a routerLink="/alumno/mis-postulaciones" class="dashboard-link">
 
             <div class="icon-container">
                 <span class="icon">☷</span>
@@ -132,9 +137,7 @@
         </a>
 
 
-        <a
-            routerLink="/cambio-password"
-            class="dashboard-link">
+        <a routerLink="/cambio-password" class="dashboard-link">
 
             <div class="icon-container">
                 <span class="icon">♙</span>

@@ -36,33 +36,35 @@ public class ConvocatoriaController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<ConvocatoriaResponse>> listarTodas(){
+    public ResponseEntity<List<ConvocatoriaResponse>> listarTodas() {
         return ResponseEntity.ok(convocatoriaService.listarTodas());
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ALUMNO')")
     @GetMapping("/abiertas")
-    public ResponseEntity<List<ConvocatoriaResponse>> listarAbiertas(){
-        return ResponseEntity.ok(convocatoriaService.listarPorEstado(EstadoConvocatoria.ABIERTA));
+    public ResponseEntity<List<ConvocatoriaResponse>> listarAbiertas(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        Long usuarioId = ((Usuario) userDetails).getId();
+        return ResponseEntity.ok(convocatoriaService.listarAbiertasParaUsuario(usuarioId));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ALUMNO')")
     @GetMapping("/{id}")
-    public ResponseEntity<ConvocatoriaResponse> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<ConvocatoriaResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(convocatoriaService.buscarPorId(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ConvocatoriaResponse> actualizar(@PathVariable Long id,
-                                                           @Valid @RequestBody ConvocatoriaRequest request) {
+            @Valid @RequestBody ConvocatoriaRequest request) {
         return ResponseEntity.ok(convocatoriaService.actualizar(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/estado")
     public ResponseEntity<ConvocatoriaResponse> cambiarEstado(@PathVariable Long id,
-                                                              @RequestParam EstadoConvocatoria estado) {
+            @RequestParam EstadoConvocatoria estado) {
         return ResponseEntity.ok(convocatoriaService.cambiarEstado(id, estado));
     }
 

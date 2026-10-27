@@ -21,4 +21,5 @@ public interface ConvocatoriaService {
     EstadisticasConvocatoriaResponse obtenerEstadisticas(Long convocatoriaId);
     InformeConvocatoriaResponse subirInforme(Long convocatoriaId, MultipartFile file);
     InformeConvocatoriaResponse obtenerInforme(Long convocatoriaId);
+    List<ConvocatoriaResponse> listarAbiertasParaUsuario(Long usuarioId);
 }

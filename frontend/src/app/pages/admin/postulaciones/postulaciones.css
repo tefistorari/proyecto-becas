@@ -6,6 +6,7 @@
     margin: 0 auto;
     padding: 3.5rem 1.5rem;
 }
+
 /* =========================
    ENCABEZADO
    ========================= */
@@ -17,12 +18,14 @@
     border-bottom: 1px solid #d9dee7;
     padding-bottom: 1.25rem;
 }
+
 .header h2 {
     margin: 0;
     color: #172b4d;
     font-size: 1.7rem;
     font-weight: 600;
 }
+
 /* =========================
    FILTROS
    ========================= */
@@ -32,6 +35,7 @@
     gap: 0.5rem;
     margin-bottom: 1.25rem;
 }
+
 .filtros button {
     padding: 7px 14px;
     border: 1px solid #cbd4df;
@@ -47,16 +51,55 @@
         border-color 0.15s ease,
         color 0.15s ease;
 }
+
 .filtros button:hover {
     background: #f5f7fa;
     border-color: #9aa8ba;
 }
+
 .filtros button.activo {
     background: #274c77;
     border-color: #274c77;
     color: #ffffff;
     font-weight: 600;
 }
+
+.filtro-convocatoria select {
+    min-width: 260px;
+    padding: 8px 36px 8px 14px;
+
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+
+    background-color: #ffffff;
+    color: #37475b;
+
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2352627a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.filtro-convocatoria select:hover {
+    border-color: #9aa8ba;
+}
+
+.filtro-convocatoria select:focus {
+    outline: none;
+    border-color: #274c77;
+    box-shadow: 0 0 0 3px rgba(39, 76, 119, 0.15);
+}
+
 /* =========================
    TABLA
    ========================= */
@@ -69,9 +112,11 @@ table {
     border-radius: 6px;
     overflow: hidden;
 }
+
 thead {
     background: #f5f7fa;
 }
+
 th {
     padding: 0.85rem 1rem;
     text-align: left;
@@ -81,21 +126,26 @@ th {
     letter-spacing: 0.02em;
     border-bottom: 1px solid #dce2ea;
 }
+
 td {
     padding: 0.85rem 1rem;
     color: #37475b;
     font-size: 0.87rem;
     border-bottom: 1px solid #edf0f4;
 }
+
 tbody tr:last-child td {
     border-bottom: none;
 }
+
 tbody tr {
     transition: background-color 0.12s ease;
 }
+
 tbody tr:hover {
     background: #f8fafc;
 }
+
 /* =========================
    ERROR
    ========================= */
@@ -108,6 +158,7 @@ tbody tr:hover {
     color: #8b3a3a;
     font-size: 0.85rem;
 }
+
 /* =========================
    MODAL OVERLAY
    ========================= */
@@ -120,6 +171,7 @@ tbody tr:hover {
     background: rgba(15, 23, 42, 0.45);
     z-index: 1000;
 }
+
 .modal-detalle {
     width: min(750px, calc(100% - 32px));
     max-height: 85vh;
@@ -131,6 +183,7 @@ tbody tr:hover {
     box-shadow: 0 12px 35px rgba(15, 23, 42, 0.18);
     overflow: hidden;
 }
+
 /* =========================
    MODAL HEADER
    ========================= */
@@ -141,6 +194,7 @@ tbody tr:hover {
     padding: 1.5rem 1.75rem;
     border-bottom: 1px solid #d9dee7;
 }
+
 .eyebrow {
     display: block;
     margin-bottom: 0.4rem;
@@ -149,16 +203,19 @@ tbody tr:hover {
     font-weight: 700;
     letter-spacing: 0.12em;
 }
+
 .modal-header h2 {
     margin: 0;
     color: #172b4d;
     font-size: 1.35rem;
     font-weight: 600;
 }
+
 .modal-email {
     color: #68768a;
     font-size: 0.82rem;
 }
+
 .modal-close {
     display: flex;
     align-items: center;
@@ -173,9 +230,11 @@ tbody tr:hover {
     font-size: 1.3rem;
     cursor: pointer;
 }
+
 .modal-close:hover {
     background: #f5f7fa;
 }
+
 /* =========================
    MODAL CONTENT
    ========================= */
@@ -183,12 +242,15 @@ tbody tr:hover {
     padding: 1.5rem 1.75rem;
     overflow-y: auto;
 }
+
 .detalle-seccion {
     margin-bottom: 1.75rem;
 }
+
 .detalle-seccion:last-child {
     margin-bottom: 0;
 }
+
 .detalle-seccion h3 {
     margin: 0 0 1rem;
     padding-bottom: 0.5rem;
@@ -197,16 +259,19 @@ tbody tr:hover {
     font-size: 0.95rem;
     font-weight: 600;
 }
+
 .detalle-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
 }
+
 .detalle-field {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
 }
+
 .field-label {
     color: #68768a;
     font-size: 0.72rem;
@@ -214,11 +279,13 @@ tbody tr:hover {
     letter-spacing: 0.04em;
     text-transform: uppercase;
 }
+
 .field-value {
     color: #172b4d;
     font-size: 0.88rem;
     word-break: break-word;
 }
+
 /* =========================
    CAMBIAR ESTADO
    ========================= */
@@ -227,6 +294,7 @@ tbody tr:hover {
     gap: 0.75rem;
     flex-wrap: wrap;
 }
+
 .btn-estado {
     padding: 8px 16px;
     border-radius: 5px;
@@ -238,34 +306,42 @@ tbody tr:hover {
         background-color 0.15s ease,
         border-color 0.15s ease;
 }
+
 .btn-estado:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
 .btn-revision {
     border: 1px solid #b5891a;
     background: #ffffff;
     color: #8a6314;
 }
+
 .btn-revision:hover:not(:disabled) {
     background: #fdf8ed;
 }
+
 .btn-aceptar {
     border: 1px solid #2e7d4f;
     background: #ffffff;
     color: #1e5c39;
 }
+
 .btn-aceptar:hover:not(:disabled) {
     background: #eef6f1;
 }
+
 .btn-rechazar {
     border: 1px solid #b45353;
     background: #ffffff;
     color: #8b3a3a;
 }
+
 .btn-rechazar:hover:not(:disabled) {
     background: #fdf2f2;
 }
+
 /* =========================
    MODAL FOOTER
    ========================= */
@@ -276,6 +352,7 @@ tbody tr:hover {
     border-top: 1px solid #d9dee7;
     background: #fafbfc;
 }
+
 .btn-cerrar {
     padding: 9px 18px;
     border: 1px solid #cbd4df;
@@ -287,8 +364,20 @@ tbody tr:hover {
     font-weight: 600;
     cursor: pointer;
 }
+
 .btn-cerrar:hover {
     background: #f5f7fa;
+}
+
+
+.btn-ver {
+    border: 1px solid #274c77;
+    background: #ffffff;
+    color: #274c77;
+}
+
+.btn-ver:hover {
+    background: #f1f5f9;
 }
 /* =========================
    RESPONSIVE
@@ -297,29 +386,40 @@ tbody tr:hover {
     .postulaciones-page {
         padding: 2.5rem 1.25rem;
     }
+
     table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
+
     .detalle-grid {
         grid-template-columns: 1fr;
     }
+
     .modal-header {
         padding: 1.25rem;
     }
+
     .modal-content {
         padding: 1.25rem;
     }
+
     .modal-footer {
         padding: 1rem 1.25rem;
     }
 }
+
 @media (max-width: 600px) {
     .estado-acciones {
         flex-direction: column;
     }
+
     .btn-estado {
+        width: 100%;
+    }
+
+    .filtro-convocatoria select {
         width: 100%;
     }
 }
