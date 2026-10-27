@@ -5,7 +5,10 @@
     } @else if (error()) {
     <p class="error-message">{{ error() }}</p>
     } @else if (convocatoria(); as c) {
-    <button class="volver-btn" (click)="volver()">← Volver</button>
+    <div class="acciones-top">
+        <button class="volver-btn" (click)="volver()">← Volver</button>
+        <button class="postulaciones-btn" (click)="verPostulaciones(c.id)">Ver postulaciones</button>
+    </div>
 
     <h2>{{ c.beca.nombre }} — {{ c.anio }}</h2>
 

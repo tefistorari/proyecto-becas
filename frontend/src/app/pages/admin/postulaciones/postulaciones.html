@@ -3,6 +3,17 @@
         <h2>Postulaciones</h2>
     </div>
 
+    <div class="filtros filtro-convocatoria">
+        <select (change)="setConvocatoria($any($event.target).value)">
+            <option value="" [selected]="convocatoriaId() === null">Todas las convocatorias</option>
+            @for (c of convocatorias(); track c.id) {
+            <option [value]="c.id" [selected]="c.id === convocatoriaId()">
+                {{ c.beca.nombre }} {{ c.anio }}
+            </option>
+            }
+        </select>
+    </div>
+
     <!-- FILTROS -->
     <div class="filtros">
         <button [class.activo]="filtroEstado() === 'TODAS'" (click)="setFiltro('TODAS')">Todas</button>
@@ -212,7 +223,7 @@
                 <div class="detalle-field">
                     <span class="field-label">{{ a.tipoArchivo }}</span>
                     <span class="field-value">{{ a.nombreOriginal }}</span>
-                    <button type="button" class="btn-estado" (click)="verArchivo(a.id)">Ver</button>
+                    <button type="button" class="btn-estado btn-ver" (click)="verArchivo(a.id)">Ver</button>
                 </div>
                 } @empty {
                 <p>No hay archivos adjuntos.</p>

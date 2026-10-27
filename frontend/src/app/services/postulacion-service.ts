@@ -40,6 +40,10 @@ export class PostulacionService {
         return this.http.get<PostulacionResponse[]>(this.API_URL);
     }
 
+    listarPorConvocatoria(convocatoriaId: number): Observable<PostulacionResponse[]> {
+        return this.http.get<PostulacionResponse[]>(`${this.API_URL}/convocatoria/${convocatoriaId}`);
+    }
+
     listarPorEstado(estado: EstadoPostulacion): Observable<PostulacionResponse[]> {
         return this.http.get<PostulacionResponse[]>(`${this.API_URL}/estado`, {
             params: { estado }

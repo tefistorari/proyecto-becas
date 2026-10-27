@@ -91,4 +91,8 @@ export class ConvocatoriaDetalle implements OnInit {
   volver(): void {
     this.router.navigate(['/admin/convocatorias']);
   }
+
+  verPostulaciones(id: number): void {
+    this.router.navigate(['/admin/postulaciones'], { queryParams: { convocatoriaId: id } });
+  }
 }

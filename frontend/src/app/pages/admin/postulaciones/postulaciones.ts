@@ -5,6 +5,9 @@ import { PostulacionResponse } from '../../../models/postulacion-response';
 import { EstadoPostulacion } from '../../../models/estado-postulacion';
 import { ArchivoService } from '../../../services/archivo-service';
 import { ArchivoResponse } from '../../../models/archivo-response';
+import { ActivatedRoute } from '@angular/router';
+import { ConvocatoriaService } from '../../../services/convocatoria-service';
+import { ConvocatoriaResponse } from '../../../models/convocatoria-response';
 
 type Filtro = EstadoPostulacion | 'TODAS';
 
@@ -18,6 +21,11 @@ export class Postulaciones implements OnInit {
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
   archivos = signal<ArchivoResponse[]>([]);
+  private route = inject(ActivatedRoute);
+  private convocatoriaService = inject(ConvocatoriaService);
+
+  convocatorias = signal<ConvocatoriaResponse[]>([]);
+  convocatoriaId = signal<number | null>(null);
 
   todas = signal<PostulacionResponse[]>([]);
   cargando = signal(true);
@@ -36,7 +44,41 @@ export class Postulaciones implements OnInit {
   });
 
   ngOnInit(): void {
-    this.cargarTodas();
+    const id = this.route.snapshot.queryParamMap.get('convocatoriaId');
+    this.convocatoriaId.set(id ? Number(id) : null);
+
+    this.convocatoriaService.listarTodas().subscribe({
+      next: (lista) => this.convocatorias.set(lista),
+      error: (err) => console.error('Error al cargar convocatorias:', err),
+    });
+
+    this.cargar();
+  }
+
+  private cargar(): void {
+    this.cargando.set(true);
+    this.error.set(null);
+
+    const id = this.convocatoriaId();
+    const peticion = id
+      ? this.postulacionService.listarPorConvocatoria(id)
+      : this.postulacionService.listarTodas();
+
+    peticion.subscribe({
+      next: (data) => {
+        this.todas.set(data);
+        this.cargando.set(false);
+      },
+      error: () => {
+        this.error.set('No se pudieron cargar las postulaciones.');
+        this.cargando.set(false);
+      },
+    });
+  }
+
+  setConvocatoria(valor: string): void {
+    this.convocatoriaId.set(valor ? Number(valor) : null);
+    this.cargar();
   }
 
   private cargarTodas(): void {
