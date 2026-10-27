@@ -91,28 +91,45 @@ export class ConvocatoriaDetalle implements OnInit {
   }
 
   cambiarPublicacion(publicados: boolean): void {
-  const actual = this.convocatoria();
-  if (!actual) return;
+    const actual = this.convocatoria();
+    if (!actual) return;
 
-  const mensaje = publicados
-    ? '¿Publicar los resultados? Los alumnos van a poder ver el estado real de su postulación.'
-    : '¿Ocultar los resultados? Los alumnos van a volver a ver sus postulaciones como pendientes.';
-  if (!confirm(mensaje)) return;
+    let mensaje: string;
 
-  this.publicando.set(true);
-  this.errorPublicacion.set(null);
+    if (publicados) {
+      const sinResolver =
+        this.cantidad(EstadoPostulacion.PENDIENTE) +
+        this.cantidad(EstadoPostulacion.EN_REVISION);
 
-  this.convocatoriaService.cambiarPublicacionResultados(actual.id, publicados).subscribe({
-    next: (actualizada) => {
-      this.convocatoria.set(actualizada);
-      this.publicando.set(false);
-    },
-    error: () => {
-      this.errorPublicacion.set('No se pudo cambiar la publicación de resultados.');
-      this.publicando.set(false);
-    },
-  });
-}
+      mensaje = '¿Publicar los resultados? Los alumnos van a poder ver el estado real de su postulación.';
+
+      if (sinResolver > 0) {
+        mensaje =
+          `⚠ Todavía hay ${sinResolver} postulación(es) sin resolver (pendientes o en revisión).\n\n` +
+          'Si publicás ahora, esos alumnos van a seguir viendo su postulación como pendiente ' +
+          'y los demás verán su resultado final.\n\n' +
+          '¿Querés publicar los resultados de todas formas?';
+      }
+    } else {
+      mensaje = '¿Ocultar los resultados? Los alumnos van a volver a ver sus postulaciones como pendientes.';
+    }
+
+    if (!confirm(mensaje)) return;
+
+    this.publicando.set(true);
+    this.errorPublicacion.set(null);
+
+    this.convocatoriaService.cambiarPublicacionResultados(actual.id, publicados).subscribe({
+      next: (actualizada) => {
+        this.convocatoria.set(actualizada);
+        this.publicando.set(false);
+      },
+      error: () => {
+        this.errorPublicacion.set('No se pudo cambiar la publicación de resultados.');
+        this.publicando.set(false);
+      },
+    });
+  }
 
   volver(): void {
     this.router.navigate(['/admin/convocatorias']);
