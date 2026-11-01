@@ -12,6 +12,7 @@ public class BecaMapper {
         response.setDescripcion(beca.getDescripcion());
         response.setTipoBeca(beca.getTipoBeca());
         response.setRequiereIngenieria(beca.isRequiereIngenieria());
+        response.setOrganismo(beca.getOrganismo());
         return response;
     }
 }

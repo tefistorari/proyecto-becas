@@ -1,3 +1,4 @@
+import { Organismo } from "./organismo";
 import { TipoBeca } from "./tipo-beca";
 
 export interface BecaResponse {
@@ -6,4 +7,5 @@ export interface BecaResponse {
     tipoBeca: TipoBeca;
     descripcion: string;
     requiereIngenieria: boolean;
+    organismo: Organismo;
 }
