@@ -16,6 +16,7 @@ public class ConvocatoriaResponse {
     private BecaResponse beca;
     private InformeConvocatoriaResponse informe;
     private Boolean yaPostulado;
+    private Boolean resultadosPublicados = false;
 
     public ConvocatoriaResponse() {
 
@@ -91,5 +92,13 @@ public class ConvocatoriaResponse {
 
     public void setYaPostulado(Boolean yaPostulado) {
         this.yaPostulado = yaPostulado;
+    }
+
+    public Boolean getResultadosPublicados() {
+        return resultadosPublicados;
+    }
+
+    public void setResultadosPublicados(Boolean resultadosPublicados) {
+        this.resultadosPublicados = resultadosPublicados;
     }
 }

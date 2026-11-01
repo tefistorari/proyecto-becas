@@ -17,7 +17,8 @@ public class BecaRequest {
     @NotNull(message = "El campo requiere ingeniera es obligatorio")
     private Boolean requiereIngenieria;
 
-    public BecaRequest(){
+
+    public BecaRequest() {
 
     }
 
@@ -52,4 +53,5 @@ public class BecaRequest {
     public void setRequiereIngenieria(Boolean requiereIngenieria) {
         this.requiereIngenieria = requiereIngenieria;
     }
+
 }

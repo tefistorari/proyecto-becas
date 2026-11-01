@@ -6,6 +6,7 @@ import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
 import com.UTN_BECAS.Sistema_Becas.Auth.Repository.RolRepository;
 import com.UTN_BECAS.Sistema_Becas.Auth.Repository.UsuarioRepository;
 import com.UTN_BECAS.Sistema_Becas.Becas.Model.Beca;
+import com.UTN_BECAS.Sistema_Becas.Becas.Model.Organismo;
 import com.UTN_BECAS.Sistema_Becas.Becas.Model.TipoBeca;
 import com.UTN_BECAS.Sistema_Becas.Becas.Repository.BecaRepository;
 
@@ -70,7 +71,8 @@ public class DataInitializer implements CommandLineRunner {
             Beca base = new Beca(
                 "Beca de Ayuda Social Economica - BASE",
                 TipoBeca.BASE,
-                false
+                false,
+                Organismo.SAE
             );
 
             base.setDescripcion("Beca de Ayuda Social y Económica destinada a estudiantes que necesitan apoyo "
@@ -85,7 +87,8 @@ public class DataInitializer implements CommandLineRunner {
             Beca bis = new Beca(
                 "Beca de Investigación/Servicio - BIS",
                 TipoBeca.BIS,
-                false
+                false,
+                Organismo.SAE
             );
 
             bis.setDescripcion("Becas destinadas a tutorias, de Investigación y Servicio para estudiantes "
@@ -100,7 +103,8 @@ public class DataInitializer implements CommandLineRunner {
             Beca binid = new Beca(
                 "Beca de Iniciación en Investigación y Desarrollo - BINID",
                 TipoBeca.BINID,
-                true
+                true,
+                Organismo.CIENCIA_Y_TECNOLOGIA
             );
 
             binid.setDescripcion("Beca de Iniciación en Investigación y Desarrollo destinada a estudiantes avanzados "
@@ -115,7 +119,8 @@ public class DataInitializer implements CommandLineRunner {
             Beca carreraInvestigador = new Beca(
                     "Carrera del Investigador UTN",
                     TipoBeca.CARRERA_INVESTIGADOR,
-                    true
+                    true,
+                    Organismo.CIENCIA_Y_TECNOLOGIA
             );
             carreraInvestigador.setDescripcion("Beca destinada a docentes e investigadores de la UTN que solicitan " +
                     "categorización en la Carrera del Investigador, permitiendo el reconocimiento formal " +

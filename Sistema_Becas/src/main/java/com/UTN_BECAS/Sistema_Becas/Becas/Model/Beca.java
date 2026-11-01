@@ -22,13 +22,18 @@ public class Beca {
     @Column(name = "requiere_ingenieria", nullable = false)
     private boolean requiereIngenieria;
 
-    public Beca(){
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Organismo organismo;
+
+    public Beca() {
     }
 
-    public Beca(String nombre, TipoBeca tipoBeca, boolean requiereIngenieria) {
+    public Beca(String nombre, TipoBeca tipoBeca, boolean requiereIngenieria, Organismo organismo) {
         this.nombre = nombre;
         this.tipoBeca = tipoBeca;
         this.requiereIngenieria = requiereIngenieria;
+        this.organismo = organismo;
     }
 
     public Long getId() {
@@ -71,10 +76,20 @@ public class Beca {
         this.requiereIngenieria = requiereIngenieria;
     }
 
+    public Organismo getOrganismo() {
+        return organismo;
+    }
+
+    public void setOrganismo(Organismo organismo) {
+        this.organismo = organismo;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Beca)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Beca))
+            return false;
         Beca beca = (Beca) o;
         return id != null && id.equals(beca.id);
     }

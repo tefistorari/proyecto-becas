@@ -4,6 +4,8 @@ import com.UTN_BECAS.Sistema_Becas.Becas.DTO.BecaRequest;
 import com.UTN_BECAS.Sistema_Becas.Becas.DTO.BecaResponse;
 import com.UTN_BECAS.Sistema_Becas.Becas.Mapper.BecaMapper;
 import com.UTN_BECAS.Sistema_Becas.Becas.Model.Beca;
+import com.UTN_BECAS.Sistema_Becas.Becas.Model.Organismo;
+import com.UTN_BECAS.Sistema_Becas.Becas.Model.TipoBeca;
 import com.UTN_BECAS.Sistema_Becas.Becas.Repository.BecaRepository;
 import com.UTN_BECAS.Sistema_Becas.Core.Exception.RecursoNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,13 @@ public class BecaServiceImpl implements BecaService {
     private BecaRepository becaRepository;
 
     @Override
-    public BecaResponse crear(BecaRequest request){
+    public BecaResponse crear(BecaRequest request) {
         Beca beca = new Beca();
         beca.setNombre(request.getNombre());
         beca.setDescripcion(request.getDescripcion());
         beca.setTipoBeca(request.getTipoBeca());
         beca.setRequiereIngenieria(request.getRequiereIngenieria());
+        beca.setOrganismo(determinarOrganismo(request.getTipoBeca()));
         becaRepository.save(beca);
         return BecaMapper.toResponse(beca);
     }
@@ -52,6 +55,7 @@ public class BecaServiceImpl implements BecaService {
         beca.setDescripcion(request.getDescripcion());
         beca.setTipoBeca(request.getTipoBeca());
         beca.setRequiereIngenieria(request.getRequiereIngenieria());
+        beca.setOrganismo(determinarOrganismo(request.getTipoBeca()));
         becaRepository.save(beca);
         return BecaMapper.toResponse(beca);
     }
@@ -61,5 +65,12 @@ public class BecaServiceImpl implements BecaService {
         Beca beca = becaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Beca no encontrada"));
         becaRepository.delete(beca);
+    }
+
+    private Organismo determinarOrganismo(TipoBeca tipoBeca) {
+        return switch (tipoBeca) {
+            case BASE, BIS, BINID -> Organismo.SAE;
+            case CARRERA_INVESTIGADOR -> Organismo.CIENCIA_Y_TECNOLOGIA;
+        };
     }
 }

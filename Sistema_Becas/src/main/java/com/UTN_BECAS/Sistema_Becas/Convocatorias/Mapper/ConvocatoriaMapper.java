@@ -18,6 +18,7 @@ public class ConvocatoriaMapper {
         if (convocatoria.getInforme() != null){
             response.setInforme(InformeConvocatoriaMapper.toResponse(convocatoria.getInforme()));
         }
+        response.setResultadosPublicados(convocatoria.isResultadosPublicados());
         return response;
     }
 }

@@ -6,6 +6,8 @@ import { ConvocatoriaResponse } from '../../../models/convocatoria-response';
 import { DatePipe } from '@angular/common';
 import { TipoBeca } from '../../../models/tipo-beca';
 import { LogoutButton } from "../../../components/logout-button/logout-button";
+import { Organismo } from '../../../models/organismo';
+
 
 @Component({
   selector: 'app-dashboard-alumno',
@@ -13,7 +15,7 @@ import { LogoutButton } from "../../../components/logout-button/logout-button";
   templateUrl: './dashboard-alumno.html',
   styleUrl: './dashboard-alumno.css',
 })
-export class DashboardAlumno implements OnInit{
+export class DashboardAlumno implements OnInit {
   protected authService = inject(AuthService);
 
   private router = inject(Router);
@@ -44,7 +46,7 @@ export class DashboardAlumno implements OnInit{
   }
 
   irAFormulario(convocatoria: ConvocatoriaResponse): void {
-    switch(convocatoria.beca.tipoBeca) {
+    switch (convocatoria.beca.tipoBeca) {
 
       case TipoBeca.BASE:
         this.router.navigate(['/alumno/postular/base', convocatoria.id]);
@@ -60,6 +62,16 @@ export class DashboardAlumno implements OnInit{
       case TipoBeca.CARRERA_INVESTIGADOR:
         this.router.navigate(['alumno/postular/carrera-investigador', convocatoria.id]);
         break;
+    }
+  }
+
+  obtenerNombreOrganismo(organismo: Organismo): string {
+    switch (organismo) {
+      case Organismo.SAE:
+        return 'Secretaría de Asuntos Estudiantiles (SAE)';
+
+      case Organismo.CIENCIA_Y_TECNOLOGIA:
+        return 'Secretaría de Ciencia y Tecnología (SCyT)';
     }
   }
 

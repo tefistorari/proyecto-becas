@@ -1,5 +1,6 @@
 package com.UTN_BECAS.Sistema_Becas.Becas.DTO;
 
+import com.UTN_BECAS.Sistema_Becas.Becas.Model.Organismo;
 import com.UTN_BECAS.Sistema_Becas.Becas.Model.TipoBeca;
 
 public class BecaResponse {
@@ -9,8 +10,9 @@ public class BecaResponse {
     private String descripcion;
     private TipoBeca tipoBeca;
     private boolean requiereIngenieria;
+    private Organismo organismo;
 
-    public BecaResponse(){
+    public BecaResponse() {
 
     }
 
@@ -52,5 +54,13 @@ public class BecaResponse {
 
     public void setRequiereIngenieria(boolean requiereIngenieria) {
         this.requiereIngenieria = requiereIngenieria;
+    }
+
+    public Organismo getOrganismo() {
+        return organismo;
+    }
+
+    public void setOrganismo(Organismo organismo) {
+        this.organismo = organismo;
     }
 }

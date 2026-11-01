@@ -91,6 +91,14 @@ public class ConvocatoriaController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}/resultados")
+    public ResponseEntity<ConvocatoriaResponse> cambiarPublicacionResultados(
+            @PathVariable Long id,
+            @RequestParam boolean publicados) {
+        return ResponseEntity.ok(convocatoriaService.cambiarPublicacionResultados(id, publicados));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         convocatoriaService.eliminar(id);
