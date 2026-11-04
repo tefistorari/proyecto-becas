@@ -34,8 +34,8 @@
                     <tr (click)="verDetalle(c.id)" style="cursor: pointer;">
                         <td>{{ c.beca.nombre }}</td>
                         <td>{{ c.anio }}</td>
-                        <td>{{ c.fechaApertura | date:'short' }}</td>
-                        <td>{{ c.fechaCierre | date: 'short'}}</td>
+                        <td>{{ c.fechaApertura | date:'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ c.fechaCierre | date: 'dd/MM/yyyy HH:mm'}}</td>
                         <td>{{ c.estado }}</td>
                     </tr>
                 }
