@@ -11,7 +11,6 @@ public class ConvocatoriaResponse {
     private Integer anio;
     private LocalDateTime fechaApertura;
     private LocalDateTime fechaCierre;
-    private String descripcion;
     private EstadoConvocatoria estado;
     private BecaResponse beca;
     private InformeConvocatoriaResponse informe;
@@ -52,14 +51,6 @@ public class ConvocatoriaResponse {
 
     public void setFechaCierre(LocalDateTime fechaCierre) {
         this.fechaCierre = fechaCierre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public EstadoConvocatoria getEstado() {

@@ -29,8 +29,7 @@ export class ConvocatoriaForm {
     becaId: [null as number | null, Validators.required],
     anio: [this.anioActual, [Validators.required, Validators.min(this.anioActual)]],
     fechaApertura: ['', [Validators.required, fechaNoPasadaValidator()]],
-    fechaCierre: ['', [Validators.required, fechaNoPasadaValidator()]],
-    descripcion: ['']
+    fechaCierre: ['', [Validators.required, fechaNoPasadaValidator()]]
   });
 
   constructor() {
@@ -61,8 +60,7 @@ export class ConvocatoriaForm {
       becaId: raw.becaId!,
       anio: raw.anio!,
       fechaApertura: `${raw.fechaApertura}:00`,
-      fechaCierre: `${raw.fechaCierre}:00`,
-      descripcion: raw.descripcion ?? ''
+      fechaCierre: `${raw.fechaCierre}:00`
     }).subscribe({
       next: () => this.router.navigate(['admin/convocatorias']),
       error: (err) => {

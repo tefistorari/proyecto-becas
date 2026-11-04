@@ -17,7 +17,6 @@
     <div class="info">
         <p><strong>Apertura:</strong> {{ c.fechaApertura | date:'short' }}</p>
         <p><strong>Cierre:</strong> {{ c.fechaCierre | date:'short' }}</p>
-        <p><strong>Descripción:</strong> {{ c.descripcion || '—' }}</p>
     </div>
 
     @if (estadisticas(); as s) {

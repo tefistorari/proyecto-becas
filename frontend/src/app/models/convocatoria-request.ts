@@ -3,5 +3,4 @@ export interface ConvocatoriaRequest {
     anio: number;
     fechaApertura: string;
     fechaCierre: string;
-    descripcion?: string;
 }
