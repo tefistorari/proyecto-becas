@@ -20,7 +20,6 @@ public class ConvocatoriaRequest {
     @NotNull(message = "La fecha de cierre es obligatoria")
     private LocalDateTime fechaCierre;
 
-    private String descripcion;
 
     public ConvocatoriaRequest(){
 
@@ -56,14 +55,6 @@ public class ConvocatoriaRequest {
 
     public void setFechaCierre(LocalDateTime fechaCierre) {
         this.fechaCierre = fechaCierre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
 }

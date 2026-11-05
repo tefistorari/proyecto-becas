@@ -7,7 +7,6 @@ export interface ConvocatoriaResponse {
     anio: number;
     fechaApertura: string;
     fechaCierre: string;
-    descripcion?: string;
     estado: EstadoConvocatoria;
     beca: BecaResponse;
     informe?: InformeConvocatoriaResponse;

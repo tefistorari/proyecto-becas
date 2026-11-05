@@ -12,7 +12,6 @@ public class ConvocatoriaMapper {
         response.setAnio(convocatoria.getAnio());
         response.setFechaApertura(convocatoria.getFechaApertura());
         response.setFechaCierre(convocatoria.getFechaCierre());
-        response.setDescripcion(convocatoria.getDescripcion());
         response.setEstado(convocatoria.getEstado());
         response.setBeca(BecaMapper.toResponse(convocatoria.getBeca()));
         if (convocatoria.getInforme() != null){

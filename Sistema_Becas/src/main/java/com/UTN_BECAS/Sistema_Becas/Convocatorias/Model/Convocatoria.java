@@ -27,9 +27,6 @@ public class Convocatoria {
     @Column(name = "fecha_cierre", nullable = false)
     private LocalDateTime fechaCierre;
 
-    @Column(columnDefinition = "TEXT")
-    private String descripcion;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoConvocatoria estado;
@@ -95,14 +92,6 @@ public class Convocatoria {
 
     public void setFechaCierre(LocalDateTime fechaCierre) {
         this.fechaCierre = fechaCierre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public EstadoConvocatoria getEstado() {

@@ -74,7 +74,6 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
         convocatoria.setAnio(request.getAnio());
         convocatoria.setFechaApertura(request.getFechaApertura());
         convocatoria.setFechaCierre(request.getFechaCierre());
-        convocatoria.setDescripcion(request.getDescripcion());
         convocatoria.setEstado(
                 request.getFechaApertura().isAfter(LocalDateTime.now())
                         ? EstadoConvocatoria.PROGRAMADA
@@ -124,7 +123,6 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
         convocatoria.setAnio(request.getAnio());
         convocatoria.setFechaApertura(request.getFechaApertura());
         convocatoria.setFechaCierre(request.getFechaCierre());
-        convocatoria.setDescripcion(request.getDescripcion());
 
         convocatoriaRepository.save(convocatoria);
         return ConvocatoriaMapper.toResponse(convocatoria);
