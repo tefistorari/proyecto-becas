@@ -24,6 +24,8 @@ export class DashboardAdmin {
 
   // BUSCADOR DE ALUMNOS
   textoBusqueda = '';
+  readonly LIMITE_RESULTADOS = 10;
+  readonly MIN_CARACTERES = 3;
 
   alumnosEncontrados = signal<UsuarioResponse[]>([]);
   buscando = signal(false);
@@ -38,10 +40,10 @@ export class DashboardAdmin {
   localidadFamiliarNombre = signal('');
 
   buscarAlumnos(): void {
-    
+
     const texto = this.textoBusqueda.trim();
 
-    if(!texto) {
+    if (texto.length < this.MIN_CARACTERES) {
       this.alumnosEncontrados.set([]);
       return;
     }
@@ -62,7 +64,7 @@ export class DashboardAdmin {
   }
 
   verPerfil(alumno: UsuarioResponse): void {
-    
+
     this.nacionalidadNombre.set('');
     this.provinciaNombre.set('');
     this.localidadNombre.set('');
@@ -71,7 +73,7 @@ export class DashboardAdmin {
 
     this.perfilService.buscarPorUsuarioId(alumno.id).subscribe({
       next: async (perfil) => {
-        
+
         this.alumnoSeleccionado.set(alumno);
         this.perfilSeleccionado.set(perfil);
 
@@ -88,7 +90,7 @@ export class DashboardAdmin {
         this.nacionalidadNombre.set(nacionalidad?.name ?? perfil.nacionalidad);
         this.provinciaNombre.set(provincia?.name ?? perfil.provincia);
 
-        if(perfil.provincia && perfil.localidad) {
+        if (perfil.provincia && perfil.localidad) {
           const localidades = await this.ubicacionService.getLocalidades(
             perfil.provincia
           );
@@ -100,7 +102,7 @@ export class DashboardAdmin {
         }
 
         //domicilio familiar
-        if(perfil.domicilioFamiliarDistinto && perfil.domicilioFamiliarProvincia) {
+        if (perfil.domicilioFamiliarDistinto && perfil.domicilioFamiliarProvincia) {
           const provinciaFamiliar = provincias.find(
             p => p.iso2 === perfil.domicilioFamiliarProvincia
           );
@@ -109,7 +111,7 @@ export class DashboardAdmin {
             provinciaFamiliar?.name ?? perfil.domicilioFamiliarProvincia
           );
 
-          if(perfil.domicilioFamiliarLocalidad) {
+          if (perfil.domicilioFamiliarLocalidad) {
             const localidadesFamiliar = await this.ubicacionService.getLocalidades(
               perfil.domicilioFamiliarProvincia
             );
@@ -119,15 +121,15 @@ export class DashboardAdmin {
             );
 
             this.localidadFamiliarNombre.set(
-              localidadFamiliar?.name ?? 
+              localidadFamiliar?.name ??
               String(perfil.domicilioFamiliarLocalidad)
             );
           }
         }
       },
-      error:(error) => {
+      error: (error) => {
         console.error('Error al obtener el perfil:', error);
-        if(error.status === 404) {
+        if (error.status === 404) {
           this.alumnoSeleccionado.set(alumno);
           this.perfilSeleccionado.set(null);
         }
