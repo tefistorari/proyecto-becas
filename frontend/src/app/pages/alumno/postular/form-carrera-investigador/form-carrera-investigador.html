@@ -302,9 +302,16 @@
 
         <div class="campo">
           <label>Materia que dictás</label>
-          <input type="text" formControlName="materia" placeholder="Ej: Análisis Matemático I">
-          @if (campoInvalido('materia')) {
-          <span class="campo-error">Campo obligatorio</span>
+          <select formControlName="materia">
+            <option value="" disabled>
+              {{ form.get('carreraGrado')?.value ? 'Seleccioná materia...' : 'Elegí primero tu carrera'}}
+            </option>
+            @for(m of materiasDisponibles(); track m.id) {
+              <option [value]="m.nombre"> {{m.nombre}} </option>
+            }
+          </select>
+          @if(campoInvalido('materia')) {
+            <span class="campo-error">Campo obligatorio</span>
           }
         </div>
 

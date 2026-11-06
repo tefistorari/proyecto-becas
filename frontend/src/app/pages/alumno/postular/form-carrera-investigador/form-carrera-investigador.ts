@@ -15,6 +15,8 @@ import { UbicacionService } from '../../../../services/ubicacion-service';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../../../services/auth-service';
 import { ActivatedRoute } from '@angular/router';
+import { Materia } from '../../../../models/Materia';
+import { MateriaService } from '../../../../services/materia-service';
 
 const MAX_MB_POR_ARCHIVO = 5;
 
@@ -35,6 +37,9 @@ export class FormCarreraInvestigador implements OnInit {
   private route = inject(ActivatedRoute);
 
   convocatoriaId!: number;
+
+  private materiaService = inject(MateriaService);
+  materiasDisponibles = signal<Materia[]>([]);
 
   //Listas de ubicacion
   nacionalidades = signal<any[]>([]);
@@ -64,6 +69,7 @@ export class FormCarreraInvestigador implements OnInit {
     this.inicializarForm();
     this.cargarNombreUsuario();
     this.configurarValidacionesCondicionales();
+    this.configurarCambioCarrera();
     this.cargarDatosPersonales();
   }
 
@@ -186,6 +192,20 @@ export class FormCarreraInvestigador implements OnInit {
     if (codigoProvincia) {
       this.localidadesFamiliar.set(await this.ubicacionService.getLocalidades(codigoProvincia));
     }
+  }
+
+  private configurarCambioCarrera(): void {
+    this.form.get('carreraGrado')?.valueChanges.subscribe((carrera: string | null) => {
+      this.materiasDisponibles.set([]);
+      this.form.patchValue({materia: ''});
+
+      if(carrera) {
+        this.materiaService.listarPorCarrera(carrera).subscribe({
+          next: (materias) => this.materiasDisponibles.set(materias),
+          error: (err) => console.error('Error al cargar materias:', err),
+        });
+      }
+    });
   }
 
   configurarValidacionesCondicionales(): void {
