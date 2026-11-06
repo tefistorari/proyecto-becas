@@ -3,7 +3,7 @@
    ========================= */
 
 .dashboard-page {
-    max-width: 950px;
+    max-width: 1150px; /* Antes 950px */
     margin: 0 auto;
     padding: 4rem 1.5rem;
 }
@@ -251,6 +251,29 @@
     padding-top: 1rem;
 
     border-top: 1px solid #d9dee7;
+
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 6px;
+    
+}
+
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: #f1f3f6;
+    border-radius: 10px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: #bdc7d4;
+    border-radius: 10px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover {
+    background: #8c9bb0;
 }
 
 .results-title {
