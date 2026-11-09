@@ -8,6 +8,7 @@ import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaRequest;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.EstadisticasConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.InformeConvocatoriaResponse;
+import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ReporteConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Mapper.ConvocatoriaMapper;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Mapper.InformeConvocatoriaMapper;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Model.Convocatoria;
@@ -224,5 +225,45 @@ public class ConvocatoriaServiceImpl implements ConvocatoriaService {
         convocatoria.setResultadosPublicados(publicados);
         convocatoriaRepository.save(convocatoria);
         return ConvocatoriaMapper.toResponse(convocatoria);
+    }
+
+    @Override
+    public ReporteConvocatoriaResponse armarReporte(Long convocatoriaId) {
+        Convocatoria convocatoria = convocatoriaRepository.findById(convocatoriaId)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Convocatoria no encontrada"));
+
+        if (convocatoria.getEstado() != EstadoConvocatoria.CERRADA) {
+            throw new ReglaDeNegocioException("La convocatoria todavía no está cerrada");
+        }
+
+        EstadisticasConvocatoriaResponse stats = obtenerEstadisticas(convocatoriaId);
+        Map<EstadoPostulacion, Long> porEstado = stats.getPorEstado();
+
+        long aprobados = porEstado.get(EstadoPostulacion.ACEPTADO);
+        long rechazados = porEstado.get(EstadoPostulacion.RECHAZADO);
+        long borradores = porEstado.get(EstadoPostulacion.BORRADOR);
+        long pendientes = stats.getTotalPostulaciones() - borradores - aprobados - rechazados;
+
+        if (pendientes > 0) {
+            throw new ReglaDeNegocioException("Hay " + pendientes + " postulaciones sin corregir");
+        }
+
+        List<ReporteConvocatoriaResponse.Postulado> postulados = postulacionRepository
+                .findParaReporte(convocatoriaId, List.of(EstadoPostulacion.ACEPTADO, EstadoPostulacion.RECHAZADO))
+                .stream()
+                .map(p -> new ReporteConvocatoriaResponse.Postulado(
+                        p.getDatosPersonalesHistorial().getApellido(),
+                        p.getDatosPersonalesHistorial().getNombre(),
+                        p.getDatosPersonalesHistorial().getDni(),
+                        p.getEstado()))
+                .toList();
+
+        return new ReporteConvocatoriaResponse(
+                convocatoria.getBeca().getNombre(),
+                convocatoria.getAnio(),
+                aprobados + rechazados,
+                aprobados,
+                rechazados,
+                postulados);
     }
 }

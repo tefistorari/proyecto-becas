@@ -30,4 +30,14 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, Long> 
     long countByConvocatoriaId(Long convocatoriaId);
 
     long countByConvocatoriaIdAndEstado(Long convocatoriaId, EstadoPostulacion estado);
+
+    @Query("""
+            SELECT p FROM Postulacion p
+            JOIN FETCH p.datosPersonalesHistorial d
+            WHERE p.convocatoria.id = :convocatoriaId
+              AND p.estado IN :estados
+            ORDER BY d.apellido, d.nombre
+            """)
+    List<Postulacion> findParaReporte(@Param("convocatoriaId") Long convocatoriaId,
+            @Param("estados") List<EstadoPostulacion> estados);
 }
