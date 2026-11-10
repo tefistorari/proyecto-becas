@@ -55,6 +55,10 @@ export class ConvocatoriaService {
         return this.http.get<InformeConvocatoriaResponse>(`${this.API_URL}/${id}/informe`);
     }
 
+    descargarReporte(id: number): Observable<Blob> {
+        return this.http.get(`${this.API_URL}/${id}/reporte`, { responseType: 'blob'})
+    }
+    
     cambiarPublicacionResultados(id: number, publicados: boolean): Observable<ConvocatoriaResponse> {
     return this.http.put<ConvocatoriaResponse>(
         `${this.API_URL}/${id}/resultados`,

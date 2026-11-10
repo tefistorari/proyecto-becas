@@ -26,6 +26,8 @@ export class ConvocatoriaDetalle implements OnInit {
   publicando = signal(false);
   errorPublicacion = signal<string | null>(null);
 
+  generandoInforme = signal(false);
+  errorInforme = signal<string | null>(null);
 
   EstadoConvocatoria = EstadoConvocatoria;
 
@@ -127,6 +129,35 @@ export class ConvocatoriaDetalle implements OnInit {
       error: () => {
         this.errorPublicacion.set('No se pudo cambiar la publicación de resultados.');
         this.publicando.set(false);
+      },
+    });
+  }
+
+  generarInforme(): void {
+    const actual = this.convocatoria();
+    if(!actual) return;
+
+    this.generandoInforme.set(true);
+    this.errorInforme.set(null);
+
+    this.convocatoriaService.descargarReporte(actual.id).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `informe-convocatoria-${actual.id}-${actual.beca.nombre}-${actual.anio}.pdf`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.generandoInforme.set(false);
+      },
+      error: async(err) => {
+        let mensaje = 'No se pudo generar el informe.';
+        try {
+          // pedimos un blob, así que el error del backend también llega como Blob
+          mensaje = JSON.parse(await err.error.text()).error ?? mensaje;
+        } catch {}
+        this.errorInforme.set(mensaje);
+        this.generandoInforme.set(false);
       },
     });
   }

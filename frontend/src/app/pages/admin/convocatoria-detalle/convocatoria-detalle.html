@@ -72,6 +72,20 @@
         <p class="error-message">{{ errorPublicacion() }}</p>
         }
     </section>
+
+    <section class="resultados">
+        <h3>Informe</h3>
+        <p class="resultados-estado">
+            Descargá un PDF con el total de postulados, aceptados, rechazados y el listado con nombre, apellido
+            y DNI. Solo se puede generar cuando totas las postulaciones están corregidas.
+        </p>
+        <button class="publicar-btn" (click)="generarInforme()" [disabled]="generandoInforme()">
+            {{ generandoInforme() ? 'Generando...' : 'Generar informe' }}
+        </button>
+        @if (errorInforme()) {
+        <p class="error-message">{{ errorInforme() }}</p>
+        }
+    </section>
     }
 
     @if (c.estado === EstadoConvocatoria.ABIERTA || c.estado === EstadoConvocatoria.PROGRAMADA) {

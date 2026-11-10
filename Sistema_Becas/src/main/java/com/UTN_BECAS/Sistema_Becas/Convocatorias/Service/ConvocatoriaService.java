@@ -4,6 +4,7 @@ import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaRequest;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.EstadisticasConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.InformeConvocatoriaResponse;
+import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ReporteConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Model.EstadoConvocatoria;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,4 +24,5 @@ public interface ConvocatoriaService {
     InformeConvocatoriaResponse obtenerInforme(Long convocatoriaId);
     List<ConvocatoriaResponse> listarAbiertasParaUsuario(Long usuarioId);
     ConvocatoriaResponse cambiarPublicacionResultados(Long id, boolean publicados);
+    ReporteConvocatoriaResponse armarReporte(Long convocatoriaId);
 }

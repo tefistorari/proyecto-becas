@@ -5,6 +5,7 @@ import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaRequest;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.EstadisticasConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.InformeConvocatoriaResponse;
+import com.UTN_BECAS.Sistema_Becas.Convocatorias.DTO.ReporteConvocatoriaResponse;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Model.EstadoConvocatoria;
 import com.UTN_BECAS.Sistema_Becas.Convocatorias.Service.ConvocatoriaService;
 import jakarta.validation.Valid;
@@ -15,6 +16,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import com.UTN_BECAS.Sistema_Becas.Convocatorias.Service.ReportePdfGenerator;
 
 import java.util.List;
 
@@ -24,6 +28,9 @@ public class ConvocatoriaController {
 
     @Autowired
     private ConvocatoriaService convocatoriaService;
+
+    @Autowired
+    private ReportePdfGenerator reportePdfGenerator;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
@@ -103,5 +110,16 @@ public class ConvocatoriaController {
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         convocatoriaService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}/reporte")
+    public ResponseEntity<byte[]> descargarReporte(@PathVariable Long id) {
+        byte[] pdf = reportePdfGenerator.generar(convocatoriaService.armarReporte(id));
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"informe-convocatoria-" + id + ".pdf\"")
+                .body(pdf);
     }
 }
