@@ -91,8 +91,8 @@ public class DataInitializer implements CommandLineRunner {
                 Organismo.SAE
             );
 
-            bis.setDescripcion("Becas destinadas a tutorias, de Investigación y Servicio para estudiantes "
-                + "en proyectos de investigacion y desarrollar tareas técnicas no administrativas "
+            bis.setDescripcion("Becas destinadas a tutorías, de Investigación y Servicio para estudiantes "
+                + "en proyectos de investigación y desarrollar tareas técnicas no administrativas "
                 + "que contribuyan a cubrir necesidades de la Facultad Regional."
             );
 

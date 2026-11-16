@@ -2,6 +2,7 @@ package com.UTN_BECAS.Sistema_Becas.Auth.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
@@ -14,6 +15,10 @@ public class RegisterRequest {
 
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "El email no tiene un formato valido")
+    @Pattern(
+        regexp = "(?i)^[A-Za-z0-9._%+-]+@(estudiante|docentes)\\.mdp\\.utn\\.edu\\.ar$",
+        message = "Solo se permiten correos @estudiante.mdp.utn.edu.ar o @docentes.mdp.utn.edu.ar"
+    )
     private String email;
 
     @NotBlank(message = "La contraseña es obligatoria")

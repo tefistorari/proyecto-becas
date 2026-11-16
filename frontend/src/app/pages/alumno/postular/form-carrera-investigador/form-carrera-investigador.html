@@ -267,7 +267,7 @@
         <div class="campo">
           <label>Categoría Solicitada</label>
           <select formControlName="categoriaSolicitada">
-            <option value="" disabled>Seleccioná la categoría que solicitás...</option>
+            <option [ngValue]="null" disabled>Seleccioná la categoría que solicitás...</option>
             @for (c of categoriasInvestigador; track c) {
             <option [value]="c">{{ categoriaInvestigadorDescripcion[c] }}</option>
             }

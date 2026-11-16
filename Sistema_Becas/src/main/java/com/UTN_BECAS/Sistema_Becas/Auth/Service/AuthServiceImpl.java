@@ -6,6 +6,7 @@ import com.UTN_BECAS.Sistema_Becas.Auth.DTO.AuthResponse;
 import com.UTN_BECAS.Sistema_Becas.Auth.DTO.ChangePasswordRequest;
 import com.UTN_BECAS.Sistema_Becas.Auth.Model.NombreRol;
 import com.UTN_BECAS.Sistema_Becas.Auth.Model.Rol;
+import com.UTN_BECAS.Sistema_Becas.Auth.Model.TipoUsuario;
 import com.UTN_BECAS.Sistema_Becas.Auth.Model.Usuario;
 import com.UTN_BECAS.Sistema_Becas.Auth.Repository.RolRepository;
 import com.UTN_BECAS.Sistema_Becas.Auth.Repository.UsuarioRepository;
@@ -54,6 +55,11 @@ public class AuthServiceImpl implements AuthService {
         usuario.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         usuario.setRol(rol);
 
+        usuario.setTipoUsuario(
+            request.getEmail().toLowerCase().endsWith("@docentes.mdp.utn.edu.ar")
+            ? TipoUsuario.DOCENTE : TipoUsuario.ESTUDIANTE 
+            );
+
         usuarioRepository.save(usuario);
 
         String token = jwtUtil.generateToken(usuario.getEmail());
@@ -63,6 +69,9 @@ public class AuthServiceImpl implements AuthService {
         response.setApellido(usuario.getApellido());
         response.setEmail(usuario.getEmail());
         response.setRol(rol.getNombre().name());
+        response.setTipoUsuario(
+            usuario.getTipoUsuario() != null ? usuario.getTipoUsuario().name() : null
+        );
         response.setToken(token);
 
         return response;
@@ -92,6 +101,9 @@ public class AuthServiceImpl implements AuthService {
         response.setApellido(usuario.getApellido());
         response.setEmail(usuario.getEmail());
         response.setRol(usuario.getRol().getNombre().name());
+        response.setTipoUsuario(
+            usuario.getTipoUsuario() != null ? usuario.getTipoUsuario().name() : null
+        );
 
         return response;
     }

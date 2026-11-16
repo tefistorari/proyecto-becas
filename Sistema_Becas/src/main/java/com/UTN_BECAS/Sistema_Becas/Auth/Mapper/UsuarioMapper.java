@@ -12,6 +12,9 @@ public class UsuarioMapper {
         response.setApellido(usuario.getApellido());
         response.setEmail(usuario.getEmail());
         response.setRol(usuario.getRol().getNombre().name());
+        response.setTipoUsuario(
+            usuario.getTipoUsuario() != null ? usuario.getTipoUsuario().name() : null
+        );
         return response;
     }
 }

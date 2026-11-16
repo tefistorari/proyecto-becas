@@ -35,6 +35,10 @@ public class Usuario implements UserDetails {
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario")
+    private TipoUsuario tipoUsuario;
+
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private DatosPersonales datosPersonales;
 
@@ -114,6 +118,15 @@ public class Usuario implements UserDetails {
 
     public void setPostulaciones(List<Postulacion> postulaciones) {
         this.postulaciones = postulaciones;
+    }
+
+    public TipoUsuario getTipoUsuario() { 
+        return tipoUsuario; 
+    }
+
+
+    public void setTipoUsuario(TipoUsuario tipoUsuario) { 
+        this.tipoUsuario = tipoUsuario; 
     }
 
     @Override

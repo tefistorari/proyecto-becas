@@ -7,6 +7,7 @@ public class UsuarioResponse {
     private String apellido;
     private String email;
     private String rol;
+    private String tipoUsuario;
 
     public UsuarioResponse(){
 
@@ -50,5 +51,13 @@ public class UsuarioResponse {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public String getTipoUsuario() {
+    return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 }
