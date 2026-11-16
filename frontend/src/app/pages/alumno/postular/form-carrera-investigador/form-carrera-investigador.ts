@@ -316,7 +316,7 @@ export class FormCarreraInvestigador implements OnInit {
       await this.subirArchivos(postulacion.id);
       await firstValueFrom(this.postulacionService.finalizar(postulacion.id));
       this.enviando = false;
-      this.router.navigate(['/mis-postulaciones']);
+      this.router.navigate(['/alumno/mis-postulaciones']);
     } catch (err) {
       this.enviando = false;
       console.error('Error al postularse:', err);

@@ -436,7 +436,7 @@ export class FormularioBase implements OnInit {
       // Paso 3 — Finalizar (POST, según PostulacionController)
       await firstValueFrom(this.postulacionService.finalizar(postulacion.id));
       this.enviando = false;
-      this.router.navigate(['/mis-postulaciones']);
+      this.router.navigate(['/alumno/mis-postulaciones']);
     } catch (err) {
       this.enviando = false;
       console.error('Error al postularse:', err);
