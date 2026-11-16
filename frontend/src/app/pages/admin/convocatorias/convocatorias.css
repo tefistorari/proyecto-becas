@@ -115,20 +115,46 @@
    TABLA
    ========================= */
 
+.tabla-container {
+    max-height: 60vh;
+    /* scroll vertical si hay muchas filas */
+    overflow: auto;
+    /* scroll horizontal y vertical */
+
+    background: #ffffff;
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+}
+
 table {
     width: 100%;
+    min-width: 640px;
+    /* por debajo de este ancho aparece el scroll horizontal */
 
     border-collapse: separate;
     border-spacing: 0;
-
-    background: #ffffff;
-
-    border: 1px solid #dce2ea;
-    border-radius: 6px;
-
-    overflow: hidden;
 }
 
+/* Encabezado fijo al hacer scroll vertical */
+th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    background: #f5f7fa;
+    /* necesario para que no se transparente */
+}
+
+
+.tabla-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.tabla-container::-webkit-scrollbar-thumb {
+    background: #cbd4df;
+    border-radius: 4px;
+}
 
 /* =========================
    ENCABEZADO DE TABLA
@@ -228,15 +254,6 @@ td:last-child {
         font-size: 1.5rem;
     }
 
-    /*
-     * Permite desplazar la tabla horizontalmente
-     * en pantallas pequeñas.
-     */
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
 }
 
 
