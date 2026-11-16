@@ -5,17 +5,25 @@
 .detalle-page {
     width: min(700px, calc(100% - 3rem));
     box-sizing: border-box;
-
     margin: 5rem auto;
-
     padding: 2rem;
-
     background: #ffffff;
-
     border: 1px solid #dce2ea;
     border-radius: 6px;
 }
 
+.detalle-page h2 {
+    /* ...lo que ya tenés... */
+    overflow-wrap: anywhere;
+}
+
+/* Stat cards adaptables */
+.stat-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
 
 /* =========================
    CONTENEDOR DEL DETALLE
@@ -421,16 +429,26 @@
    ========================= */
 
 @media (max-width: 600px) {
-
     .detalle-page {
+        width: 100%;               /* <- el fix clave */
         margin: 0;
-        padding: 2.5rem 1.25rem;
+        padding: 1.5rem 1.25rem;
         border: none;
         border-radius: 0;
     }
 
     .detalle-page h2 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+    }
+
+    .acciones-top {
+        flex-direction: column-reverse; /* "Ver postulaciones" arriba, "Volver" abajo */
+        align-items: stretch;
+    }
+
+    .volver-btn {
+        justify-content: center;
+        min-height: 44px;
     }
 
     .info p {
@@ -442,16 +460,15 @@
         min-width: auto;
     }
 
+    .postulaciones-btn,
+    .publicar-btn,
+    .despublicar-btn,
     .cancelar-btn {
         width: 100%;
+        min-height: 44px;
     }
 
-    .acciones-top {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .postulaciones-btn {
-        width: 100%;
+    .stat-num {
+        font-size: 1.4rem;
     }
 }
