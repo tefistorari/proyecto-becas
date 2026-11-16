@@ -18,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Materia } from '../../../../models/Materia';
 import { MateriaService } from '../../../../services/materia-service';
 
-const MAX_MB_POR_ARCHIVO = 5;
+const MAX_MB_POR_ARCHIVO = 10;
 
 @Component({
   selector: 'app-form-carrera-investigador',
@@ -54,6 +54,7 @@ export class FormCarreraInvestigador implements OnInit {
   enviando = false;
   intentoEnvio = false;
   erroresArchivo: string[] = [];
+  maxMb = MAX_MB_POR_ARCHIVO;
 
   tipoDocumento = TipoDocumento;
   archivos: Partial<Record<TipoDocumento, File[]>> = {};
@@ -197,9 +198,9 @@ export class FormCarreraInvestigador implements OnInit {
   private configurarCambioCarrera(): void {
     this.form.get('carreraGrado')?.valueChanges.subscribe((carrera: string | null) => {
       this.materiasDisponibles.set([]);
-      this.form.patchValue({materia: ''});
+      this.form.patchValue({ materia: '' });
 
-      if(carrera) {
+      if (carrera) {
         this.materiaService.listarPorCarrera(carrera).subscribe({
           next: (materias) => this.materiasDisponibles.set(materias),
           error: (err) => console.error('Error al cargar materias:', err),
@@ -240,16 +241,21 @@ export class FormCarreraInvestigador implements OnInit {
 
   onArchivoSeleccionado(event: Event, tipo: TipoDocumento): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const archivosArray = Array.from(input.files);
-      const invalidos = archivosArray.filter(f => f.size > MAX_MB_POR_ARCHIVO * 1024 * 1024);
-      if (invalidos.length > 0) {
-        this.erroresArchivo.push(`El archivo "${invalidos[0].name}" supera el tamaño máximo de ${MAX_MB_POR_ARCHIVO} MB.`);
-        return;
-      }
-      this.archivos[tipo] = archivosArray;
-      this.erroresArchivo = [];
+    if (!input.files || input.files.length === 0) return;
+
+    this.erroresArchivo = [];
+
+    const archivosArray = Array.from(input.files);
+    const invalidos = archivosArray.filter((f) => f.size > MAX_MB_POR_ARCHIVO * 1024 * 1024);
+    if (invalidos.length > 0) {
+      this.erroresArchivo.push(
+        `El archivo "${invalidos[0].name}" supera el tamaño máximo de ${MAX_MB_POR_ARCHIVO} MB.`
+      );
+      input.value = '';
+      return;
     }
+
+    this.archivos[tipo] = archivosArray;
   }
 
   campoInvalido(campo: string): boolean {

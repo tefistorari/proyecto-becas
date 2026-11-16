@@ -15,7 +15,7 @@ import { UbicacionService } from '../../../../services/ubicacion-service';
 import { AuthService } from '../../../../services/auth-service';
 import { ActivatedRoute } from '@angular/router';
 
-const MAX_MB_POR_ARCHIVO = 5;
+const MAX_MB_POR_ARCHIVO = 10;
 @Component({
   selector: 'app-formulario-binid',
   imports: [ReactiveFormsModule, CommonModule, LabelEnumPipe],
@@ -47,6 +47,7 @@ export class FormularioBinid implements OnInit {
   enviando = false;
   intentoEnvio = false;
   erroresArchivo: string[] = [];
+  maxMb = MAX_MB_POR_ARCHIVO;
 
   generos = Object.values(Genero);
   anioActual = new Date().getFullYear();
@@ -278,18 +279,20 @@ export class FormularioBinid implements OnInit {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
 
+    this.erroresArchivo = [];
+
     const archivosArray = Array.from(input.files);
     const invalidos = archivosArray.filter((f) => f.size > MAX_MB_POR_ARCHIVO * 1024 * 1024);
     if (invalidos.length > 0) {
       this.erroresArchivo.push(
         `El archivo "${invalidos[0].name}" supera el tamaño máximo de ${MAX_MB_POR_ARCHIVO} MB.`
       );
+      input.value = '';
       return;
     }
 
     const clave = this.mapaTipoAClave[tipo] ?? tipo.toLowerCase();
     this.archivos[clave] = archivosArray;
-    this.erroresArchivo = [];
   }
 
   // --- Validación de campos ---

@@ -25,7 +25,7 @@ import { Materia } from '../../../../models/Materia';
 import { MateriaService } from '../../../../services/materia-service';
 import { CarreraBaseBis, CarreraBaseBisDescripcion } from '../../../../models/carrera-base-bis';
 
-const MAX_MB_POR_ARCHIVO = 5;
+const MAX_MB_POR_ARCHIVO = 10;
 @Component({
   selector: 'app-formulario-bis',
   imports: [ReactiveFormsModule, CommonModule, LabelEnumPipe],
@@ -63,6 +63,7 @@ export class FormularioBis implements OnInit {
   enviando = false;
   intentoEnvio = false;
   erroresArchivo: string[] = [];
+  maxMb = MAX_MB_POR_ARCHIVO;
 
   // Para referenciar tipoDocumento.DNI, etc. desde el template
   tipoDocumento = TipoDocumento;
@@ -298,17 +299,21 @@ export class FormularioBis implements OnInit {
 
   onArchivoSeleccionado(event: Event, tipo: TipoDocumento): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const archivosArray = Array.from(input.files);
-      // Validar tamaño máximo 5MB por archivo
-      const invalidos = archivosArray.filter((f) => f.size > MAX_MB_POR_ARCHIVO * 1024 * 1024);
-      if (invalidos.length > 0) {
-        this.erroresArchivo.push(`El archivo "${invalidos[0].name}" supera el tamaño máximo de ${MAX_MB_POR_ARCHIVO} MB.`);
-        return;
-      }
-      this.archivos[tipo] = archivosArray;
-      this.erroresArchivo = [];
+    if (!input.files || input.files.length === 0) return;
+
+    this.erroresArchivo = [];
+
+    const archivosArray = Array.from(input.files);
+    const invalidos = archivosArray.filter((f) => f.size > MAX_MB_POR_ARCHIVO * 1024 * 1024);
+    if (invalidos.length > 0) {
+      this.erroresArchivo.push(
+        `El archivo "${invalidos[0].name}" supera el tamaño máximo de ${MAX_MB_POR_ARCHIVO} MB.`
+      );
+      input.value = '';
+      return;
     }
+
+    this.archivos[tipo] = archivosArray;
   }
 
   // --- Validación de campos ---

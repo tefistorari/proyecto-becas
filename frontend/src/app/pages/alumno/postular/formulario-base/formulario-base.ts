@@ -25,7 +25,7 @@ import { CarreraBaseBis, CarreraBaseBisDescripcion } from '../../../../models/ca
 import { Materia } from '../../../../models/Materia';
 import { MateriaService } from '../../../../services/materia-service';
 
-const MAX_MB_POR_ARCHIVO = 5;
+const MAX_MB_POR_ARCHIVO = 10;
 @Component({
   selector: 'app-formulario-base',
   imports: [ReactiveFormsModule, CommonModule, LabelEnumPipe],
@@ -81,6 +81,7 @@ export class FormularioBase implements OnInit {
   carreraDescripcion = CarreraBaseBisDescripcion;
 
   anioActual = new Date().getFullYear();
+  maxMb = MAX_MB_POR_ARCHIVO;
 
   ngOnInit(): void {
     this.convocatoriaId = Number(this.route.snapshot.paramMap.get('convocatoriaId'));
@@ -301,17 +302,21 @@ export class FormularioBase implements OnInit {
 
   onArchivoSeleccionado(event: Event, tipo: TipoDocumento): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const archivosArray = Array.from(input.files);
-      // Validar tamaño máximo 5MB por archivo
-      const invalidos = archivosArray.filter((f) => f.size > MAX_MB_POR_ARCHIVO * 1024 * 1024);
-      if (invalidos.length > 0) {
-        this.erroresArchivo.push(`El archivo "${invalidos[0].name}" supera el tamaño máximo de ${MAX_MB_POR_ARCHIVO} MB.`);
-        return;
-      }
-      this.archivos[tipo] = archivosArray;
-      this.erroresArchivo = [];
+    if (!input.files || input.files.length === 0) return;
+
+    this.erroresArchivo = [];
+
+    const archivosArray = Array.from(input.files);
+    const invalidos = archivosArray.filter((f) => f.size > MAX_MB_POR_ARCHIVO * 1024 * 1024);
+    if (invalidos.length > 0) {
+      this.erroresArchivo.push(
+        `El archivo "${invalidos[0].name}" supera el tamaño máximo de ${MAX_MB_POR_ARCHIVO} MB.`
+      );
+      input.value = '';
+      return;
     }
+
+    this.archivos[tipo] = archivosArray;
   }
 
   // --- Validación de campos ---
