@@ -3,67 +3,112 @@
         <h2>Postulaciones</h2>
     </div>
 
-    <div class="filtros filtro-convocatoria">
-        <select (change)="setConvocatoria($any($event.target).value)">
-            <option value="" [selected]="convocatoriaId() === null">Todas las convocatorias</option>
-            @for (c of convocatorias(); track c.id) {
-            <option [value]="c.id" [selected]="c.id === convocatoriaId()">
-                {{ c.beca.nombre }} {{ c.anio }}
-            </option>
-            }
-        </select>
-    </div>
+    <div class="layout">
 
-    <!-- FILTROS -->
-    <div class="filtros">
-        <button [class.activo]="filtroEstado() === 'TODAS'" (click)="setFiltro('TODAS')">Todas</button>
-        <button [class.activo]="filtroEstado() === EstadoPostulacion.BORRADOR"
-            (click)="setFiltro(EstadoPostulacion.BORRADOR)">Borrador</button>
-        <button [class.activo]="filtroEstado() === EstadoPostulacion.PENDIENTE"
-            (click)="setFiltro(EstadoPostulacion.PENDIENTE)">Pendientes</button>
-        <button [class.activo]="filtroEstado() === EstadoPostulacion.EN_REVISION"
-            (click)="setFiltro(EstadoPostulacion.EN_REVISION)">En revisión</button>
-        <button [class.activo]="filtroEstado() === EstadoPostulacion.ACEPTADO"
-            (click)="setFiltro(EstadoPostulacion.ACEPTADO)">Aceptadas</button>
-        <button [class.activo]="filtroEstado() === EstadoPostulacion.RECHAZADO"
-            (click)="setFiltro(EstadoPostulacion.RECHAZADO)">Rechazadas</button>
-    </div>
+        <!-- PANEL IZQUIERDO: CONVOCATORIAS -->
+        <aside class="side">
+            <div class="side-title">Convocatorias</div>
+            <div class="side-list">
+                <button type="button" class="conv" [class.activa]="convocatoriaId() === null"
+                    (click)="seleccionarConvocatoria(null)">
+                    <span>Todas las postulaciones</span>
+                    <span class="conv-count">{{ todas().length }}</span>
+                </button>
 
-    @if (cargando()) {
-    <p>Cargando...</p>
-    } @else if (error()) {
-    <p class="error-message">{{ error() }}</p>
-    } @else if (postulacionesFiltradas().length === 0) {
-    <p>No hay postulaciones para mostrar.</p>
-    } @else {
-    <table>
-        <thead>
-            <tr>
-                <th>Alumno</th>
-                <th>Beca</th>
-                <th>Convocatoria</th>
-                <th>Fecha de envío</th>
-                <th>Estado</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (p of postulacionesFiltradas(); track p.id) {
-            <tr (click)="verDetalle(p)" style="cursor: pointer;">
-                <td>{{ p.usuario.nombre }} {{ p.usuario.apellido }}</td>
-                <td>{{ tipoBeca(p) }}</td>
-                <td>{{ p.convocatoria.beca.nombre }} {{ p.convocatoria.anio }}</td>
-                <td>{{ p.estado === EstadoPostulacion.BORRADOR ? '—' : (p.fechaEnvio | date:'dd/MM/yyyy HH:mm') }}</td>
-                <td>{{ p.estado }}</td>
-                <td>Ver →</td>
-            </tr>
+                @for (grupo of convocatoriasPorAnio(); track grupo.anio) {
+                <div class="grupo-anio">{{ grupo.anio }}</div>
+                @for (c of grupo.items; track c.id) {
+                <button type="button" class="conv" [class.activa]="c.id === convocatoriaId()"
+                    (click)="seleccionarConvocatoria(c.id)">
+                    <span>{{ c.beca.nombre }}</span>
+                    <span class="conv-count">
+                        @if (conteoPorConvocatoria().get(c.id)?.pendientes) {
+                        <span class="pendientes" title="Pendientes">{{ conteoPorConvocatoria().get(c.id)?.pendientes
+                            }}</span>
+                        }
+                        {{ conteoPorConvocatoria().get(c.id)?.total ?? 0 }}
+                    </span>
+                </button>
+                }
+                }
+            </div>
+        </aside>
+
+        <!-- PANEL DERECHO: LISTADO -->
+        <section class="principal">
+
+            <!-- Solo se ve en mobile -->
+            <select class="select-mobile" aria-label="Convocatoria" (change)="setConvocatoria($any($event.target).value)">
+                <option value="" [selected]="convocatoriaId() === null">Todas las postulaciones</option>
+                @for (c of convocatorias(); track c.id) {
+                <option [value]="c.id" [selected]="c.id === convocatoriaId()">
+                    {{ c.beca.nombre }} {{ c.anio }}
+                </option>
+                }
+            </select>
+
+            <div class="principal-head">
+                <h3>
+                    @if (convocatoriaActual(); as c) {
+                    {{ c.beca.nombre }} {{ c.anio }}
+                    } @else {
+                    Todas las postulaciones
+                    }
+                </h3>
+                <span>{{ postulacionesDeConvocatoria().length }} postulaciones</span>
+            </div>
+
+            <!-- FILTROS -->
+            <div class="filtros">
+                @for (f of filtros; track f.valor) {
+                <button type="button" [class.activo]="filtroEstado() === f.valor" (click)="setFiltro(f.valor)">
+                    {{ f.texto }} <b>{{ conteoPorEstado()[f.valor] ?? 0 }}</b>
+                </button>
+                }
+            </div>
+
+            @if (cargando()) {
+            <p>Cargando...</p>
+            } @else if (error()) {
+            <p class="error-message">{{ error() }}</p>
+            } @else if (postulacionesFiltradas().length === 0) {
+            <p class="texto-vacio vacio">No hay postulaciones para mostrar.</p>
+            } @else {
+            <div class="tabla-wrap">
+                <table class="tabla-postulaciones">
+                    <thead>
+                        <tr>
+                            <th>Alumno</th>
+                            <th>Beca</th>
+                            <th>Convocatoria</th>
+                            <th>Fecha de envío</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (p of postulacionesFiltradas(); track p.id) {
+                        <tr (click)="verDetalle(p)" (keydown.enter)="verDetalle(p)" tabindex="0">
+                            <td class="alumno">{{ p.usuario.nombre }} {{ p.usuario.apellido }}</td>
+                            <td>{{ tipoBeca(p) }}</td>
+                            <td>{{ p.convocatoria.beca.nombre }} {{ p.convocatoria.anio }}</td>
+                            <td>{{ p.estado === EstadoPostulacion.BORRADOR ? '—' : (p.fechaEnvio |
+                                date:'dd/MM/yyyy HH:mm') }}</td>
+                            <td><span class="badge" [class]="'badge estado-' + p.estado">{{ etiquetaEstado(p.estado)
+                                    }}</span></td>
+                            <td class="ver">Ver →</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
             }
-        </tbody>
-    </table>
-    }
+
+        </section>
+    </div>
 </div>
 
-<!-- MODAL DETALLE -->
+<!-- MODAL DETALLE (sin cambios) -->
 @if (postulacionSeleccionada(); as p) {
 <div class="modal-overlay" (click)="cerrarDetalle()">
     <div class="modal-detalle" (click)="$event.stopPropagation()">

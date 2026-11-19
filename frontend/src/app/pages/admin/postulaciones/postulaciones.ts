@@ -21,10 +21,11 @@ type Filtro = EstadoPostulacion | 'TODAS';
 export class Postulaciones implements OnInit {
   private postulacionService = inject(PostulacionService);
   private archivoService = inject(ArchivoService);
-  archivos = signal<ArchivoResponse[]>([]);
   private route = inject(ActivatedRoute);
   private convocatoriaService = inject(ConvocatoriaService);
   private ubicacionService = inject(UbicacionService);
+
+  archivos = signal<ArchivoResponse[]>([]);
 
   convocatorias = signal<ConvocatoriaResponse[]>([]);
   convocatoriaId = signal<number | null>(null);
@@ -44,13 +45,73 @@ export class Postulaciones implements OnInit {
   localidadFamiliarNombre = signal('');
   protected readonly EstadoPostulacion = EstadoPostulacion;
 
-  postulacionesFiltradas = computed(() => {
-    const filtro = this.filtroEstado();
-    if (filtro === 'TODAS') return this.todas();
-    return this.todas().filter(p => p.estado === filtro);
+  /** Chips de estado (el orden es el que se muestra) */
+  readonly filtros: { valor: Filtro; texto: string }[] = [
+    { valor: 'TODAS', texto: 'Todas' },
+    { valor: EstadoPostulacion.BORRADOR, texto: 'Borrador' },
+    { valor: EstadoPostulacion.PENDIENTE, texto: 'Pendientes' },
+    { valor: EstadoPostulacion.EN_REVISION, texto: 'En revisión' },
+    { valor: EstadoPostulacion.ACEPTADO, texto: 'Aceptadas' },
+    { valor: EstadoPostulacion.RECHAZADO, texto: 'Rechazadas' },
+  ];
+
+  // ---------- Derivados ----------
+
+  /** Convocatoria elegida (null = todas) */
+  convocatoriaActual = computed(() => {
+    const id = this.convocatoriaId();
+    return id === null ? null : this.convocatorias().find(c => c.id === id) ?? null;
   });
 
+  /** Postulaciones de la convocatoria elegida, sin filtrar por estado */
+  postulacionesDeConvocatoria = computed(() => {
+    const id = this.convocatoriaId();
+    const todas = this.todas();
+    return id === null ? todas : todas.filter(p => p.convocatoria.id === id);
+  });
+
+  /** Lo que se ve en la tabla: convocatoria + estado */
+  postulacionesFiltradas = computed(() => {
+    const filtro = this.filtroEstado();
+    const lista = this.postulacionesDeConvocatoria();
+    return filtro === 'TODAS' ? lista : lista.filter(p => p.estado === filtro);
+  });
+
+  /** Cantidad por estado dentro de la convocatoria elegida (para los chips) */
+  conteoPorEstado = computed(() => {
+    const lista = this.postulacionesDeConvocatoria();
+    const conteo: Record<string, number> = { TODAS: lista.length };
+    for (const p of lista) conteo[p.estado] = (conteo[p.estado] ?? 0) + 1;
+    return conteo;
+  });
+
+  /** Total y pendientes por convocatoria (para el panel izquierdo) */
+  conteoPorConvocatoria = computed(() => {
+    const mapa = new Map<number, { total: number; pendientes: number }>();
+    for (const p of this.todas()) {
+      const actual = mapa.get(p.convocatoria.id) ?? { total: 0, pendientes: 0 };
+      actual.total++;
+      if (p.estado === EstadoPostulacion.PENDIENTE) actual.pendientes++;
+      mapa.set(p.convocatoria.id, actual);
+    }
+    return mapa;
+  });
+
+  /** Convocatorias agrupadas por año, del más nuevo al más viejo */
+  convocatoriasPorAnio = computed(() => {
+    const grupos = new Map<number, ConvocatoriaResponse[]>();
+    for (const c of this.convocatorias()) {
+      grupos.set(c.anio, [...(grupos.get(c.anio) ?? []), c]);
+    }
+    return [...grupos.entries()]
+      .sort((a, b) => b[0] - a[0])
+      .map(([anio, items]) => ({ anio, items }));
+  });
+
+  // ---------- Carga ----------
+
   ngOnInit(): void {
+    // Se mantiene el link ?convocatoriaId=… (por ejemplo desde la pantalla de convocatorias)
     const id = this.route.snapshot.queryParamMap.get('convocatoriaId');
     this.convocatoriaId.set(id ? Number(id) : null);
 
@@ -66,30 +127,6 @@ export class Postulaciones implements OnInit {
     this.cargando.set(true);
     this.error.set(null);
 
-    const id = this.convocatoriaId();
-    const peticion = id
-      ? this.postulacionService.listarPorConvocatoria(id)
-      : this.postulacionService.listarTodas();
-
-    peticion.subscribe({
-      next: (data) => {
-        this.todas.set(data);
-        this.cargando.set(false);
-      },
-      error: () => {
-        this.error.set('No se pudieron cargar las postulaciones.');
-        this.cargando.set(false);
-      },
-    });
-  }
-
-  setConvocatoria(valor: string): void {
-    this.convocatoriaId.set(valor ? Number(valor) : null);
-    this.cargar();
-  }
-
-  private cargarTodas(): void {
-    this.cargando.set(true);
     this.postulacionService.listarTodas().subscribe({
       next: (data) => {
         this.todas.set(data);
@@ -98,13 +135,31 @@ export class Postulaciones implements OnInit {
       error: () => {
         this.error.set('No se pudieron cargar las postulaciones.');
         this.cargando.set(false);
-      }
+      },
     });
+  }
+
+  // ---------- Selección ----------
+
+  seleccionarConvocatoria(id: number | null): void {
+    this.convocatoriaId.set(id);
+    this.filtroEstado.set('TODAS');
+  }
+
+  /** Para el <select> de mobile */
+  setConvocatoria(valor: string): void {
+    this.seleccionarConvocatoria(valor ? Number(valor) : null);
   }
 
   setFiltro(filtro: Filtro): void {
     this.filtroEstado.set(filtro);
   }
+
+  etiquetaEstado(estado: string): string {
+    return estado.replace('_', ' ');
+  }
+
+  // ---------- Detalle ----------
 
   async verDetalle(postulacion: PostulacionResponse): Promise<void> {
     this.limpiarUbicaciones();
@@ -187,6 +242,7 @@ export class Postulaciones implements OnInit {
 
     this.postulacionService.cambiarEstado(postulacion.id, estado).subscribe({
       next: (actualizada) => {
+        // Al actualizar `todas`, los contadores del panel y de los chips se recalculan solos
         this.todas.update(lista =>
           lista.map(p => p.id === actualizada.id ? actualizada : p)
         );
