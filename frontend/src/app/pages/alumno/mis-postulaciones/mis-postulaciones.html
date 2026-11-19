@@ -23,7 +23,7 @@
                     {{ p.estado }}
                 </span>
                 <h3>{{ p.convocatoria.beca.nombre }}</h3>
-                <p class="card-sub">{{ tipoBeca(p) }} · Convocatoria {{ p.convocatoria.anio }}</p>
+                <p class="card-sub">Convocatoria {{ p.convocatoria.anio }} · {{ p.convocatoria.beca.nombre }}</p>
                 <p class="card-fecha">Enviada el <strong>{{ p.fechaEnvio | date:'dd/MM/yyyy' }}</strong></p>
             </div>
             <span class="card-arrow">→</span>
@@ -42,7 +42,7 @@
             <div>
                 <span class="eyebrow">POSTULACIÓN #{{ p.id }}</span>
                 <h2>{{ p.convocatoria.beca.nombre }}</h2>
-                <span class="modal-sub">{{ tipoBeca(p) }} · Convocatoria {{ p.convocatoria.anio }}</span>
+                <span class="modal-sub"> Convocatoria {{ p.convocatoria.anio }} · {{ p.convocatoria.beca.nombre}}</span>
             </div>
             <button type="button" class="modal-close" (click)="cerrarDetalle()">×</button>
         </div>
