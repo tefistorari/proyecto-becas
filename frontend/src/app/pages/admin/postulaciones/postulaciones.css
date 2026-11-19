@@ -2,7 +2,7 @@
    PÁGINA
    ========================= */
 .postulaciones-page {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 3.5rem 1.5rem;
 }
@@ -13,7 +13,7 @@
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     margin-bottom: 1.75rem;
     border-bottom: 1px solid #d9dee7;
     padding-bottom: 1.25rem;
@@ -27,17 +27,175 @@
 }
 
 /* =========================
+   LAYOUT: PANEL IZQUIERDO + LISTADO
+   ========================= */
+.layout {
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+}
+
+/* ---------- Panel de convocatorias ---------- */
+.side {
+    position: sticky;
+    top: 1rem;
+    display: flex;
+    flex-direction: column;
+    /* Alto máximo: si hay más convocatorias, aparece la scroll bar interna */
+    max-height: calc(100vh - 8rem);
+    background: #ffffff;
+    border: 1px solid #dce2ea;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.side-title {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #dce2ea;
+    color: #52627a;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.side-list {
+    flex: 1;
+    min-height: 0;
+    padding: 0.4rem;
+    overflow-y: auto;
+}
+.side-list > .conv:first-child {
+    margin-bottom: 0.25rem;
+    border-bottom: 2px solid #4e709c;
+    border-radius: 5px 5px 0 0;
+}
+
+.grupo-anio {
+    padding: 0.75rem 0.6rem 0.3rem;
+    color: #68768a;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.conv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    margin: 1px 0;
+    padding: 0.6rem 0.7rem;
+    border: 0;
+    border-left: 3px solid transparent;
+    border-radius: 5px;
+    background: transparent;
+    color: #37475b;
+    font-family: inherit;
+    font-size: 0.87rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.conv:hover {
+    background: #f8fafc;
+}
+
+.conv.activa {
+    border-left-color: #274c77;
+    background: #eaf0f7;
+    color: #274c77;
+    font-weight: 600;
+}
+
+.conv-count {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #68768a;
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.conv.activa .conv-count {
+    color: #274c77;
+}
+
+.pendientes {
+    min-width: 20px;
+    padding: 1px 6px;
+    border: 1px solid #b5891a;
+    border-radius: 10px;
+    background: #fdf8ed;
+    color: #8a6314;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.conv:focus-visible,
+.filtros button:focus-visible,
+tbody tr:focus-visible {
+    outline: 2px solid #274c77;
+    outline-offset: 1px;
+}
+
+/* ---------- Panel derecho ---------- */
+.principal {
+    min-width: 0;
+}
+
+.principal-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #d9dee7;
+}
+
+.principal-head h3 {
+    margin: 0;
+    color: #172b4d;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.principal-head span {
+    color: #68768a;
+    font-size: 0.85rem;
+}
+
+/* Select de convocatoria: solo en mobile */
+.select-mobile {
+    display: none;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 9px 12px;
+    border: 1px solid #cbd4df;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #37475b;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+/* =========================
    FILTROS
    ========================= */
 .filtros {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 .filtros button {
-    padding: 7px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 7px 12px;
     border: 1px solid #cbd4df;
     border-radius: 5px;
     background: #ffffff;
@@ -52,6 +210,12 @@
         color 0.15s ease;
 }
 
+.filtros button b {
+    color: #37475b;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
 .filtros button:hover {
     background: #f5f7fa;
     border-color: #9aa8ba;
@@ -64,45 +228,17 @@
     font-weight: 600;
 }
 
-.filtro-convocatoria select {
-    min-width: 260px;
-    padding: 8px 36px 8px 14px;
-
-    border: 1px solid #cbd4df;
-    border-radius: 5px;
-
-    background-color: #ffffff;
-    color: #37475b;
-
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 500;
-
-    cursor: pointer;
-
-    appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2352627a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-
-    transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-.filtro-convocatoria select:hover {
-    border-color: #9aa8ba;
-}
-
-.filtro-convocatoria select:focus {
-    outline: none;
-    border-color: #274c77;
-    box-shadow: 0 0 0 3px rgba(39, 76, 119, 0.15);
+.filtros button.activo b {
+    color: #ffffff;
 }
 
 /* =========================
    TABLA
    ========================= */
+.tabla-wrap {
+    overflow-x: auto;
+}
+
 table {
     width: 100%;
     border-collapse: separate;
@@ -111,6 +247,10 @@ table {
     border: 1px solid #dce2ea;
     border-radius: 6px;
     overflow: hidden;
+}
+
+.tabla-postulaciones {
+    min-width: 640px;
 }
 
 thead {
@@ -142,8 +282,62 @@ tbody tr {
     transition: background-color 0.12s ease;
 }
 
+.tabla-postulaciones tbody tr {
+    cursor: pointer;
+}
+
 tbody tr:hover {
     background: #f8fafc;
+}
+
+td.alumno {
+    color: #172b4d;
+    font-weight: 500;
+}
+
+td.ver {
+    color: #274c77;
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Etiquetas de estado */
+.badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.estado-BORRADOR {
+    background: #eef1f5;
+    color: #52627a;
+}
+
+.estado-PENDIENTE {
+    background: #fdf8ed;
+    color: #8a6314;
+}
+
+.estado-EN_REVISION {
+    background: #eaf0f7;
+    color: #274c77;
+}
+
+.estado-ACEPTADO {
+    background: #eef6f1;
+    color: #1e5c39;
+}
+
+.estado-RECHAZADO {
+    background: #fdf2f2;
+    color: #8b3a3a;
+}
+
+.vacio {
+    padding: 2.5rem 1rem;
+    text-align: center;
 }
 
 /* =========================
@@ -450,7 +644,6 @@ tbody tr:hover {
     background: #f1f5f9;
 }
 
-
 /* =========================
    RESPONSIVE
    ========================= */
@@ -459,10 +652,17 @@ tbody tr:hover {
         padding: 2.5rem 1.25rem;
     }
 
-    table {
+    /* El panel izquierdo se reemplaza por el select */
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .side {
+        display: none;
+    }
+
+    .select-mobile {
         display: block;
-        overflow-x: auto;
-        white-space: nowrap;
     }
 
     .detalle-grid {
@@ -480,11 +680,6 @@ tbody tr:hover {
     .modal-footer {
         padding: 1rem 1.25rem;
     }
-
-    .tabla-detalle {
-        display: table;
-        white-space: normal;
-    }
 }
 
 @media (max-width: 600px) {
@@ -493,10 +688,6 @@ tbody tr:hover {
     }
 
     .btn-estado {
-        width: 100%;
-    }
-
-    .filtro-convocatoria select {
         width: 100%;
     }
 }
